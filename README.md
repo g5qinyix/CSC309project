@@ -90,8 +90,8 @@ CDF id: c4zhutia
 email: tianlun.zhu@mail.utoronto.ca
 
 
-Name:
+Name: Wei Jun Zeng
 
-CDF id:
+CDF id: g4zengwe
 
-email:
+email: weijun.zeng@mail.utoronto.ca
