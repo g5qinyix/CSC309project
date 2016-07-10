@@ -12,7 +12,9 @@ Creating a web application that allows gamers to offer and receive mentorship fo
 
 **Why this web application is important**:
 
-In current day, online gaming has evolved to something beyond a mere hobby. The introduction of competitive online gaming has not only paved the road for gamers to be able to earn a living by doing what they love: playing online games, but also bolstered motivation for casual players to improve their skills. On top of this, online gaming communities worldwide have increased in numbers, with many new players demanding coaching services. Mentors can meet this increasing demand through coaching via (InsertNameHere).
+In current day, online gaming has evolved to something beyond a mere hobby. The introduction of competitive online gaming has not only paved the road for gamers to be able to earn a living by doing what they love: playing online games, but also bolstered motivation for casual players to improve their skills. On top of this, online gaming communities worldwide have increased in numbers, with many new players demanding coaching services; mentors can meet this increasing demand through coaching via (InsertNameHere).
+
+Skilled players are attracted to the prospect of becoming a mentor as it not only allows them to earn money, but also provides them the opportunity to positively shape and grow the online gaming community that they are a member of. New players will be attracted to coaching as they are presented with the opportunity to learn the game faster and to avoid the unforgiving learning curve that many modern day online games are notorious for having. Existing, casual/less-skilled players who are tired of being stuck at the same rank/elo will want a better player observing their gameplay to catch on mistakes so they can improve.  
 
 
 **How it works**:
