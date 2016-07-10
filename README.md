@@ -32,7 +32,7 @@ We plan to use (InsertDatabaseName) as our database. It will store user authoriz
 
 - Login and User Authentication:
 
-  After the user signs up, his/her username and password are stored in a database. When he/she attempts to login, the inputted authentication details are checked with that in the database. 
+  After the user signs up, his/her username and password are stored in a database. When he/she attempts to login, the inputted authentication details are checked with that in the database. We also have a further authentication feature via logging in with Facebook and Google Accounts.
 
 - User Profile (Coach/Mentor and Student/Mentee):
   When the user profile is loaded, we retrieve the user data from the database. The data is added to the html page.
