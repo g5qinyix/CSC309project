@@ -11,8 +11,8 @@ body{
 /*homepage*/
 .section {
   position: relative;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 10%;
+  padding-right: 10%;
   overflow: auto;
   padding-top: 2%;
   padding-bottom: 2%;
@@ -22,7 +22,7 @@ body{
 .banner{
 	height: auto;
 	margin: 5%;
-	padding: 9%;
+	padding: 15%;
 	background: #fff;
 	word-break: break-all;
 }
@@ -31,7 +31,6 @@ body{
 	text-align: center;
 	margin: 0 auto;
 	position: relative;
-	top: ;
 }
 
 .banner .inner h1{
@@ -44,66 +43,115 @@ header{
 	height: 50px;
 }
 
-nav{
-	width: 100%;
-	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
-	background-color: rgb(245, 245, 245);
-	position: fixed;
-	opacity: 0.95;
-	z-index: 999;
+#nav {
+    display:inline-block;
+    width:100%;
+    margin:0px auto;
+    padding:0;
+    background:white;
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    */
+    /*box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    */
+}
+#nav li {
+    margin:10px;
+    float:left;
+    position:relative;
+    list-style:none;
+}
+#nav a {
+    font-weight:bold;
+    color:color:rgb(178,102,255);
+    text-decoration:none;
+    display:block;
+    padding:8px 20px;
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    text-shadow:0 2px 2px rgba(0,0,0, .7);
+    */
 }
 
-a{
-	color:#555;
-	word-break: break-all;
+/* selected menu element */
+#nav .current a, #nav li:hover > a {
+    background:white;
+    color:rgb(178,102,255);
+    border-top:1px solid #f8f8f8;
+    /*
+    box-shadow:0 2px 2px rgba(0,0,0, .7); 
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .7);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .7);
+    text-shadow:0 2px 2px rgba(255,255,255, 0.7);
+    */
 }
 
-nav ul{
-	list-style: none;
-	margin: 0;
+/* sublevels */
+#nav ul li:hover a, #nav li:hover li a {
+    background:rgb(32,32,32);
+    border:none;
+    color:white;
+}
+#nav ul li a:hover {
+    background:rgb(32,32,32);
+    color:white;
+
 }
 
-nav ul li{
-	display: inline-block;
-	line-height: 40px;
-	float: right;
-	margin-right: 20px;
+#nav ul li:first-child > a {
+    -moz-border-radius-topleft:10px; 
+    -moz-border-radius-topright:10px;
+    -webkit-border-top-left-radius:10px;
+    -webkit-border-top-right-radius:10px;
+}
+#nav ul li:last-child > a {
+    -moz-border-radius-bottomleft:10px; 
+    -moz-border-radius-bottomright:10px;
+    -webkit-border-bottom-left-radius:10px;
+    -webkit-border-bottom-right-radius:10px;
 }
 
-
-nav ul li a{
-	line-height: 40px;
-	text-decoration: none;
-	display: inline-block;
-	height: 40px;
-	color: black;
+/* drop down */
+#nav li:hover > ul {
+    opacity:1;
+    visibility:visible;
 }
+#nav ul {
+    opacity:0;
+    visibility:hidden;
+    padding:0;
+    width:175px;
+    position:absolute;
+    background:white;
+    border:1px solid #7788aa;
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .5);
 
-
-nav ul li.logo{
-	float: left
+    -moz-transition:opacity .25s linear, visibility .1s linear .1s;
+    -webkit-transition:opacity .25s linear, visibility .1s linear .1s;
+    -o-transition:opacity .25s linear, visibility .1s linear .1s;
+    transition:opacity .25s linear, visibility .1s linear .1s;
 }
-
-
-.logo{
-	font-size: 18px;
-	font-weight: 700;
-	letter-spacing: 1px;
+#nav ul li {
+    float:none;
+    margin:0;
 }
-
-
-.logo a{
-	color: black;
+#nav ul a {
+    font-weight:normal;
 }
-
-
-.drop-down{
-	display:none;
-}
-
-
-#drop_down{
-	display: none;
+#nav ul ul {
+    left:160px;
+    top:0px;
 }
 
 .col-md-3{
@@ -111,7 +159,7 @@ nav ul li.logo{
   	min-height: 1px;
  	padding-left: 2%;
   	padding-right: 2%;
-  	width: 25%;
+  	width: 20%;
   	float: left;
   	box-sizing: border-box;
 }
@@ -267,7 +315,9 @@ form {
 	width: 50%;
 }
 
-
+.home{
+  float: left;
+}
 
 
 
