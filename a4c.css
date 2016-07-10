@@ -175,6 +175,20 @@ nav ul li.logo{
 
 
 
+
+.form ul.google{
+	padding-left: 200px;
+}
+
+ul.google li{
+	float:left;
+	list-style: none;
+}
+
+
+
+
+
 /*Sign up*/
 .form span{
   font-family: "Roboto", sans-serif;
