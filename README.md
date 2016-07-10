@@ -24,50 +24,50 @@ After registering on (InsertNameHere), the user has the option of applying as co
 We plan to use (InsertDatabaseName) as our database. It will store user authorization details (username and password) as well as profile information of the user (Name, Games, coach or not, profile picture, ratings and reviews).
 
 
-Sign up:
+- Sign up:
 
-The user will register an account through form fields. The information will be entered into a database for authenticating the user (upon future attempts to sign in).
+  The user will register an account through form fields. The information will be entered into a database for authenticating the user (upon future attempts to sign in).
 
-Login and User Authentication:
+- Login and User Authentication:
 
-After the user signs up, his/her username and password are stored in a database. When he/she attempts to login, the inputted authentication details are checked with that in the database. 
+  After the user signs up, his/her username and password are stored in a database. When he/she attempts to login, the inputted authentication details are checked with that in the database. 
 
-User Profile: Coach/Mentor and Student/Mentee
-
-When the profile is loaded, we retrieve the user data from the database. The data is dynamically added to the html page.
-Coach and Student:
--Both have the ability to change their password, profile information, etc. These changes will be saved in the database.
-Coach:
--Have the added feature of a badge that identifies them as a coach. 
-
-
-Rating System:
+- User Profile (Coach/Mentor and Student/Mentee):
+  When the profile is loaded, we retrieve the user data from the database. The data is dynamically added to the html page.
+  - Coach and Student:
+    Both have the ability to change their password, profile information, etc. These changes will be saved in the database.
+  - Coach:
+    Have the added feature of a badge that identifies them as a coach. 
 
 
-Messaging/Social Network:
+- Rating/Review System:
+  Mentees, after going through the tutoring session, can give a review/rating (i.e. rating out of 5 and a few sentences) to the mentor. This will be displayed on the mentor's profile. The mentor has the option of replying to any comments/reviews from the mentee.
+
+- Messaging/Social Network:
+  If a potential mentee has any questions for another user, he/she can send a direct/instant message to the user. 
+
+- Searching for coaches on the website:
 
 
-Searching for coaches on the website:
+- Recommending coaches:
 
 
-Recommending coaches:
+- Searching for nearby coaches available for in-person coaching/mentoring:
+  Looking at map provided by Google map api, shows coaches/mentors "online" and available for coaching.
 
 
-Searching for nearby coaches available for in-person coaching/mentoring:
--Looking at 
-
-Admin functionaility:
+- Admin functionaility:
 
 
-Payment Processing:
-
-
-
-Task Allocation:
+- Payment Processing:
 
 
 
-Team Member Contact Information:
+**Task Allocation**:
+
+
+
+**Team Member Contact Information**:
 
 Name: Yixiao (Albert) Qin
 
