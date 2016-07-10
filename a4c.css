@@ -70,6 +70,7 @@ nav ul li{
 	margin-right: 20px;
 }
 
+
 nav ul li a{
 	line-height: 40px;
 	text-decoration: none;
@@ -78,9 +79,11 @@ nav ul li a{
 	color: black;
 }
 
+
 nav ul li.logo{
 	float: left
 }
+
 
 .logo{
 	font-size: 18px;
@@ -88,13 +91,16 @@ nav ul li.logo{
 	letter-spacing: 1px;
 }
 
+
 .logo a{
 	color: black;
 }
 
+
 .drop-down{
 	display:none;
 }
+
 
 #drop_down{
 	display: none;
@@ -109,6 +115,7 @@ nav ul li.logo{
   	float: left;
   	box-sizing: border-box;
 }
+
 .img-responsive{
 	display: block;
 	max-width: 100%;
@@ -116,14 +123,7 @@ nav ul li.logo{
 }
 
 
-
-
-
-
-
 /*login*/
-
-
 .login-page {
   width: 460px;
   padding: 10px 10px 10px;
@@ -148,6 +148,7 @@ nav ul li.logo{
   box-sizing: border-box;
   font-size: 15px;
 }
+
 .form a input {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
@@ -173,13 +174,13 @@ nav ul li.logo{
 }
 
 
-/*Sign up*/
 
+/*Sign up*/
 .form span{
   font-family: "Roboto", sans-serif;
   font-weight: bold;
   color: #000000;
-  font-size: 14px;	
+  font-size: 15px;
 }
 
 .form select{
@@ -187,11 +188,9 @@ nav ul li.logo{
   outline: 0;
   background: #f2f2f2;
   width: 100%;
-  border: 0;
   margin: 0 0 15px;
-  padding: 15px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 15px;
 	
 }
 
@@ -205,6 +204,46 @@ div.login-page h2{
 
 
 
+
+/*personal profile*/
+.head{
+	margin-top: 100px;
+	margin-left: 100px;
+	width: 300px;
+	height: 300px;
+	border: 1px solid black;
+}
+
+
+
+.info{
+	position:fixed;
+	top: 100px;
+	right: 120px;
+
+	width: 400px;
+	height: 800px;
+}
+
+
+
+.info a input{
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 20%;
+  border: 0;
+  padding: 12px;
+  color: #FFFFFF;
+  font-size: 12px;
+	
+}
+
+
+.info a input#return{
+	width: 50%;
+}
 
 
 
