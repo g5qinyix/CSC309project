@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="jquery-2.2.4.min.js" defer></script><!-- jQuery should be first -->
 	<title>login</title>
 </head>
 <body>
@@ -19,11 +20,11 @@
     
 <div class="login-page">
   <div class="form">
-    <form class="login-form" action="./successlogin.html">
-      <input type="text" placeholder="username"/>
-      <input type="password" placeholder="password"/>
+    <form class="login-form" action="./index.html" method="GET">
+      <input id="loginname" type="text" name="username" placeholder="username"/>
+      <input id="loginpassword" type="password" name="password" placeholder="password"/>
        <a href="home.html">
-		<input type="submit" value="Login" />
+	  <input id= "loginsubmit" type="submit" value="Login" />
 	  </a>
       <p class="message">Not registered? <a href="signup.html">Create an account</a></p>
 	  <ul class="google">
