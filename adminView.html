@@ -18,13 +18,20 @@
 
 	<div class="form">
 		<form>
-			<span>Edit/Add User with name:</span>
-			<input type="text" placeholder="Username"></input>
+			<h2>Manage Users</h2>
+			<select>
+				<option>Add a new user</option>
+		        <option>Delete a user</option>
+		        <option>Edit a user</option>
+		   </select>
+			<input type="text" placeholder="Enter username"></input>
+			<a><input type="submit" value="Submit"><a>
 			<!-- Include option to delete on profile page? How to distinguish between coach and student? -->
-		  	<input type="checkbox" name="adminAction" id="adminActionDelete" value="delete">Delete User</input>
-		  	<a><input type="button" value="Edit Profile/Add User"></a>
-
-
+		  	
+		  	<h2>Manage Database</h2>
+			<a><input type="button" value="Repopulating the database"></a>
+			<h2>Admin setting</h2>
+			<a><input type="button" value="Reset password and username"></a> 
 		</form>
 	</div>
 
