@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="a4c.css">
+	<link rel="stylesheet" href="profile.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="jquery-2.2.1.js"></script>
+    <script type="text/javascript" src="coachprofile.js"></script>
 	<title>Profile</title>
 </head>
 <body>
-	<!--codes for the navigation bar-->
 	<header>
 		<nav>
-			<ul id='nav'>
-				<li class="logo"><a href="index.html">Carry Me!</a></li>
-				<li><a href="login.html">Log out</a></li>
-				<li><a href="#panel-in">Games</a></li>
+			<ul id = "nav">
+				<li class="home"><a href="#panel-home">Carry Me!</a></li>
+				<li><a href="login.html">Log In</a></li>
+				<li><a href="#panel-in">Games</a>
+                    <ul>
+                        <li><a href="#">League of Legends</a></li>
+                        <li><a href="#">Overwatch</a></li>
+                        <li><a href="#">Dota2</a></li>
+                        <li><a href="#">CS:GO</a></li>
+                    </ul>
+                </li>
 			</ul>
 		</nav>
 	</header>
-	<div class="file">
-		<div class="head">
-			<img src="person.gif" alt="Who is that" style="width:300px;height:300px;">
-		</div>
-		<div class="info">
-			<h2>Your profile: </h2>
-			<h3>Accout Name: Sylar</h3>
-			<h3>Occupation:  Coach</h3>
-			<h3>Language:  Chinese</h2>
-			<h3>E-mail:  123@gmail.com</h3>
-            <h3>Teaching Language:  Chinese</h3>
-            <h3>Teaching game:  Dota2</h3>
-            <h3>Hiring rate:  $20/hr</h3>
-			<a href="editcoach.html">
-				<input type="button" value="Edit" />
-			</a>
-			<a href="index.html">
-				<input id="return" type="button" value="Return to Home page" />
-			</a>
-		</div>
-		
-		
-		
-		
+	<div class="main_content">
+		<section class="information">
+			<div class = "img">
+				<img src="person.gif" alt="Who is that" style="width:150px;height:150px;">
+			</div>
+			<div>
+				<p> I am TBWorks, I am a professional Warwick player.</p>
+				<p> Rank: Gold V</p>
+				<button type="button">edit my file</button>
+			</div>
+		</section>
+		<section class="my_life">
+			<div id = "original">
+				<input type="text" placeholder="write something!"></input>
+				<button type="button" id="post_button">Post!</button>
+			</div>
+		</section>
 	</div>
-</body>
-
-
-
-<div 
 </html>
