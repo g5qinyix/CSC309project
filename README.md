@@ -69,10 +69,10 @@ We plan to use (InsertDatabaseName) as our database. It will store user authoriz
   - Recommendation System of coaches:
   - Messaging/Social Network System/Bulletin Board:
   - Searching for coaches/filtering coaches:
-  - Register and Login System:
+  - Register and Login System: Yixiong Chen
   - Create review System:
-  - Admin Functionality:
-  - Map of nearby Coaches:
+  - Admin Functionality: Yixiong Chen
+  - Map of nearby Coaches: Yixiong Chen
 
 
 **Team Member Contact Information**:
