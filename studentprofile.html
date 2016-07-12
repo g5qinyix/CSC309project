@@ -3,7 +3,8 @@
 <head>
 	<link rel="stylesheet" href="profile.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<script type="text/javascript" src="jquery-2.2.1.js"></script>
+    <script type="text/javascript" src="coachprofile.js"></script>
 	<title>Profile</title>
 </head>
 <body>
@@ -25,24 +26,51 @@
 		</nav>
 	</header>
 	<div class="main_content">
+	<div class="main_content">
 		<section class="information">
-
-			<div class = "photo">
-				<img src="images/person.gif" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
-
+			<div class = "profile">
+				<div class = "photo">
+					<img src="images/person.gif" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+				</div>
+				<div class="g_information">
+					<h2>TBWorks</h2>
+					<p> I am TBWorks, I am a professional Warwick player.</p>
+					<div class="location">
+						<img src="images/adress-logo.png" class="address" style="width:20px;height:20px;">
+						toronto
+					</div>
+				</div>
+				<div class="messager" onclick="location.href='message.html'">
+					Edit my profile
+				</div>
 			</div>
-			<div class = "g_information">
-				<h2>Salmon</h2>
-				<p>Student</p>
-				<p> Rank: Gold V</p>
-				<button onclick="location.href='editstudent.html'">edit my file</button>
+
+			<div class="service">
+				<h3 class = "title">Games</h3>
+				<div class="types">
+					<div class = "game_pic">
+						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>League of Legends</p>
+					
+					</div>
+				</div>
+				<div class="types" onclick="location.href='rating.html'">
+					<div class = "game_pic">
+						<img src="images/overwatch_logo.png" style="width: 50px; height: 50px">
+						<br>
+						
+					</div>
+					<div class = "description">
+						<p>Overwatch</p>
+						
+					</div>
+				</div>
+
 			</div>
 		</section>
-		<section class="my_life">
-			<div id = "my_posts">
-				<input type="text" placeholder="write something!"></input>
-				<button type="button" id="post_button">Post!</button>
-			</div>
-		</section>
+	
 	</div>
 </html>

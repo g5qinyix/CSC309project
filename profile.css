@@ -12,12 +12,11 @@ body{
 	float:left;
 	display: block;
 	width: 20%;
-	background: white;
 	text-align: center;
 	box-sizing: border-box;
 	height: 100em;
-	background:white;
-	margin: 5% auto;;
+	background:#f0f0f5;
+	margin: 5% 1% auto;;
 }
 
 .main_content{
@@ -46,23 +45,34 @@ body{
     background:white;
     box-shadow:0 2px 2px rgba(0,0,0, .2);
     position: fixed;
- 
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    */
+    /*box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    */
 }
-
 #nav li {
     margin:10px;
     float:left;
     position:relative;
     list-style:none;
 }
-
 #nav a {
     font-weight:bold;
     color:rgb(100, 65, 165);
     text-decoration:none;
     display:block;
     padding:8px 20px;
-
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    text-shadow:0 2px 2px rgba(0,0,0, .7);
+    */
 }
 
 /* selected menu element */
@@ -70,6 +80,12 @@ body{
     background:#6441A5;
     color:white;
     border-top:1px solid #f8f8f8;
+    /*
+    box-shadow:0 2px 2px rgba(0,0,0, .7); 
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .7);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .7);
+    text-shadow:0 2px 2px rgba(255,255,255, 0.7);
+    */
 }
 
 /* sublevels */
@@ -150,16 +166,13 @@ input{
 }
 
 .rating{
-    width: 150px;
+    width: 30px;
 }
 
 .post_img{
     width: 30%;
 }
 
-section{
-    border-radius:10px;
-}
 
 .photo{
     padding: 5%;
@@ -167,7 +180,6 @@ section{
     height: 100px;
     background: #6441A5;
     text-align: center;
-    border-radius:10px;
 }
 
 .img-responsive{
@@ -182,6 +194,12 @@ section{
     margin: 10%;
 }
 
+.profile{
+    background:white;
+    border-radius:10px;
+    margin-bottom: 4%;
+}
+
 .others_life{
     float:left;
     display: block;
@@ -190,7 +208,71 @@ section{
     text-align: center;
     box-sizing: border-box;
     margin: 5% 1% auto;;
-    padding: 3%;
+    padding: 2%;
     text-align: left;
     background: white;
+}
+
+h4{
+    font-weight: bold;
+}
+
+.ID{
+    font-weight: 700;
+}
+
+.small_photo{
+    float: left;
+    margin: 1%;
+    width:7%;
+}
+
+.content{
+    float: left;
+    margin: 1%;
+    width: 88%;
+}
+
+.game_pic{
+    float: left;
+    margin: 1%;
+    width: 49%;
+    text-align: center;
+    height: 6em;
+    padding-top: 5%;
+    box-sizing: border-box;
+}
+
+.description{
+    text-align: left;
+    width: 49%;
+    float: left;
+    font-size: 10px;
+    height: 6em;
+}
+
+.service{
+    background:white;
+    overflow: auto;
+    margin-top: 4%;
+}
+
+.title{
+}
+
+.types{
+    overflow: auto;
+    cursor: pointer;
+}
+
+.location{
+    font-size: 1px;
+}
+
+.messager{
+    padding: 5%;
+    cursor:pointer;
+    background: rgb(100, 65, 165);
+    color: white;
+	margin-bottom:5px;
 }

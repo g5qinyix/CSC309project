@@ -26,23 +26,52 @@
 		</nav>
 	</header>
 	<div class="main_content">
+	<div class="main_content">
 		<section class="information">
-
-			<div class = "photo">
-				<img src="images/person.gif" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
-
+			<div class = "profile">
+				<div class = "photo">
+					<img src="images/person.gif" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+				</div>
+				<div class="g_information">
+					<h2>Jack</h2>
+					<p>Coach</p>
+					<div class="location">
+						<img src="images/adress-logo.png" class="address" style="width:20px;height:20px;">
+						toronto
+					</div>
+				</div>
+				<div class="messager" onclick="location.href='message.html'">
+					Edit my profile
+				</div>
 			</div>
-			<div class = "g_information">
-				<h2>TBWorks</h2>
-				<p> I am TBWorks, I am a professional Warwick player.</p>
-				<p> Rank: Gold V</p>
-				<p> Price: 10$/h</p>
-				<img src="images/rating.png" class = "rating">
-				<br>
-				<a href="#">View all comments</a>
-				<br>
-				<br>
-				<button onclick="location.href='editcoach.html'">edit my file</button>
+
+			<div class="service">
+				<h3 class = "title">Service</h3>
+				<div class="types" onclick="location.href='rating.html'">
+					<div class = "game_pic">
+						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
+						<br>
+						<img src="images/rating.png" class = "rating">
+					</div>
+					<div class = "description">
+						<p>League of Legends</p>
+						<p>Online</p>
+						<p>Price:10$/h</p>
+					</div>
+				</div>
+				<div class="types" onclick="location.href='rating.html'">
+					<div class = "game_pic">
+						<img src="images/overwatch_logo.png" style="width: 50px; height: 50px">
+						<br>
+						<img src="images/rating.png" class = "rating">
+					</div>
+					<div class = "description">
+						<p>Overwatch</p>
+						<p>Online</p>
+						<p>Price:5$/h</p>
+					</div>
+				</div>
+
 			</div>
 		</section>
 		<section class="my_life">
