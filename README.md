@@ -2,7 +2,7 @@
 
 **Topic**:
 
-Creating a web application that allows gamers to offer and receive mentorship for the popular online games League of Legends, Dota2, Starcraft2, and CS:GO.
+Creating a web application that allows gamers to offer and receive mentorship for the popular online games League of Legends, Dota2, Overwatch, CS:GO.
 
 
 **Description of web application**:
@@ -23,8 +23,19 @@ After registering on (InsertNameHere), the user has the option of applying as co
 
 
 **Features & Implementation Details (plan)**:
-We plan to use (InsertDatabaseName) as our database. It will store user authorization details (username and password) as well as profile information of the user (Name, Games, coach or not, profile picture, ratings and reviews).
+- High level overview of the architecture:
+  
+  We plan to use the MVC architectural pattern for our web application because it effectively makes clear of how data is stored, obtained, and changed. It provides a level of organization as it can classify different components of our web application.
+  - Model:
+    The model consists of the database that stores user information. The model is updated when the user inputs information that needs to be stored in the database.
+  - View:
+    The view acts as the visual representation of the model/database. That is, the data is displayed to the user through the front-end. It comprises of javascript, html, and css files. 
+  - Controller:
+    The controller connects the model with the view together; a large part of the controller is the node.js server. Another component is the javascript that takes the input entered by the user and inputs it to the database. It also takes information from the database and passes it to the View components (html) to be displayed for the user.
 
+- Database: 
+
+  We plan to use (InsertDatabaseName) as our database. It will store user authorization details (username and password) as well as profile information of the user (Name, Games, coach or not, profile picture, ratings and reviews).
 
 - Sign up:
 
@@ -45,7 +56,7 @@ We plan to use (InsertDatabaseName) as our database. It will store user authoriz
   Mentees, after going through the tutoring session, can give a review/rating (i.e. rating out of 5 and a few sentences) to the mentor. This will be displayed on the mentor's profile. The mentor has the option of replying to any comments/reviews from the mentee. The reviews are stored in the database and are loaded upon profile loading. 
 
 - Messaging/Social Network:
-  If a potential mentee has any questions for another user, he/she can send a direct/instant message to the user. This will be implemented using Node.js. We also want to implement a broadcasting/bulletin board that allows coaches to update their status.
+  If a potential mentee has any questions for another user, he/she can send a direct/instant message to the user. This will be implemented using Node.js. We also want to implement a broadcasting/bulletin board that allows coaches to update their status. There is also the feature of being able to "friend" a coach. Friends can post comments on each other's profile.
 
 - Searching for coaches on the website:
   After a potential student chooses a game of his or her choosing, all the coaches for the particular game will be listed (loaded from the database). If the student has a particular coach that he/she wants to search for, we can use the database to query for the coach name and display the coach in question.
