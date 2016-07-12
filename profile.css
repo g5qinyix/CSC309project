@@ -17,7 +17,7 @@ body{
 	box-sizing: border-box;
 	height: 100em;
 	background:white;
-	margin: 1%;
+	margin: 5% auto;;
 }
 
 .main_content{
@@ -32,7 +32,7 @@ body{
 	background: white;
 	text-align: center;
 	box-sizing: border-box;
-	margin: 1%;
+	margin: 5% 1% auto;
     padding: 3%;
     text-align: left;
     background: rgba(100, 65, 165, 0.08);
@@ -206,7 +206,7 @@ section{
     background: white;
     text-align: center;
     box-sizing: border-box;
-    margin: 1%;
+    margin: 5% 1% auto;;
     padding: 3%;
     text-align: left;
     background: white;
