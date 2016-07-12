@@ -255,3 +255,9 @@ img{
 	margin-left:13%;
 
 }
+
+
+td img{
+	height: 30px;
+	width:70px;
+}
