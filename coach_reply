@@ -45,7 +45,6 @@
 				<div class="messager">
 					Follow
 				</div>
-				
 			</div>
 
 			<div class="service">
@@ -91,7 +90,10 @@
 						<img src="images/placement.jpg" class = "post_img">
 					</div>
 				</div>
-				<img src="images/reply_icon.png" style="width: 20px; height: 20px" onclick="location.href='coach_reply'">
+			</div>
+			<div class="reply_box">
+				<input type="text" placeholder="write something!" class = "reply"></input>
+				<button type="button" id="post_button">add comments!</button>	
 			</div>
 		</section>
 	</div>
