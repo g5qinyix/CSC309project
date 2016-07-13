@@ -25,7 +25,7 @@ After registering on (InsertNameHere), the user has the option of applying as co
 **Features & Implementation Details (plan)**:
 - High level overview of the architecture:
   
-  We plan to use the MVC architectural pattern for our web application because it effectively makes clear of how data is stored, obtained, and changed. It provides a level of organization as it can classify different components of our web application.
+  We plan to use the MVC architectural pattern for our web application because it is relatively effective and simple in understanding how data is stored, obtained, changed, and transported within the context of our web application. It provides a greater level of organization as it can classify different components of the web application.
   - Model:
     The model consists of the database that stores user information. The model is updated when the user inputs information that needs to be stored in the database.
   - View:
