@@ -7,7 +7,7 @@ Creating a web application that allows gamers to offer and receive mentorship fo
 
 **Description of web application**:
 
-(InsertNameHere) is a web application that facilitates the interaction between those who wish to improve his or her skillset at a particular game (student/mentee) and those who are willing to offer his or her area of expertise in the same game (coach/mentor). A coach can choose to coach many different games and can decide to offer online mentoring (i.e. watching the user play and informing him/her of his/her mistakes over Skype or Teamviewer), or they can offer offline mentoring: meeting up with mentees face-to-face at an internet cafe to play together in real life. (InsertNameHere) also provides the added security of payments being dealt (for online for offline meet-ups), rather than players needing to pay at the physical location. 
+(BeMaster) is a web application that facilitates the interaction between those who wish to improve his or her skillset at a particular game (student/mentee) and those who are willing to offer his or her area of expertise in the same game (coach/mentor). A coach can choose to coach many different games and can decide to offer online mentoring (i.e. watching the user play and informing him/her of his/her mistakes over Skype or Teamviewer), or they can offer offline mentoring: meeting up with mentees face-to-face at an internet cafe to play together in real life. (InsertNameHere) also provides the added security of payments being dealt (for online for offline meet-ups), rather than players needing to pay at the physical location. 
 
 
 **Why this web application is important**:
