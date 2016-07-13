@@ -70,20 +70,18 @@ After registering on (InsertNameHere), the user has the option of applying as co
 - Admin functionaility:
   Have the ability to change passwords, update database, delete users, ban users, etc. There is a specific administrator account. We utilize a flag to test if the admin has logged in or not. 
 
-- Payment Processing:
-  Use the Paypal API. Setup payment processes using Paypal. 
+
 
 
 **Task Allocation**:
   - Database creation/querying: Albert and WeiJun
-  - Paypal/payment processing:
-  - Recommendation System of coaches:
-  - Messaging/Social Network System/Bulletin Board:
-  - Searching for coaches/filtering coaches:
-  - Register and Login System: Yixiong Chen
-  - Create review System:
-  - Admin Functionality: Yixiong Chen
-  - Map of nearby Coaches: Yixiong Chen
+  - Recommendation System of coaches: Albert and Weijun
+  - Messaging/Social Network System/Bulletin Board: TianLu Zhu and Yixiong Chen
+  - Searching for coaches/filtering coaches: Albert and Weijun
+  - Register and Login System: Tianlun Zhu and Yixiong Chen 
+  - Create review System: Tianlun Zhu and Yixiong Chen
+  - Admin Functionality: Albert and WeiJun
+  - Map of nearby Coaches: Tianlun Zhu and Yixiong Chen
 
 
 **Team Member Contact Information**:
