@@ -23,6 +23,7 @@ After registering on BeMaster, the user has the option of applying as coach. As 
 
 
 **Features & Implementation Details (plan)**:
+**Please view the homepage.html file for links to all the html files.**
 - Hosting:
   We plan to utilize Heroku to host our node.js server.
 
