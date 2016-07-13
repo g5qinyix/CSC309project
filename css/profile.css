@@ -206,6 +206,7 @@ input{
 }
 
 .others_life{
+	overflow: auto;
     float:left;
     display: block;
     width: 76%;
@@ -215,6 +216,17 @@ input{
     margin: 5% 1% auto;;
     text-align: left;
     background: white;
+}
+
+.rate{
+	float:left;
+    width: 20%;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 5% 1% auto;;
+    text-align: left;
+
+	
 }
 
 h4{
