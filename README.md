@@ -7,22 +7,25 @@ Creating a web application that allows gamers to offer and receive mentorship fo
 
 **Description of web application**:
 
-(BeMaster) is a web application that facilitates the interaction between those who wish to improve his or her skillset at a particular game (student/mentee) and those who are willing to offer his or her area of expertise in the same game (coach/mentor). A coach can choose to coach many different games and can decide to offer online mentoring (i.e. watching the user play and informing him/her of his/her mistakes over Skype or Teamviewer), or they can offer offline mentoring: meeting up with mentees face-to-face at an internet cafe to play together in real life. (InsertNameHere) also provides the added security of payments being dealt (for online for offline meet-ups), rather than players needing to pay at the physical location. 
+BeMaster is a web application that facilitates the interaction between those who wish to improve his or her skillset at a particular game (student/mentee) and those who are willing to offer his or her area of expertise in the same game (coach/mentor). A coach can choose to coach many different games and can decide to offer online mentoring (i.e. watching the user play and informing him/her of his/her mistakes over Skype or Teamviewer), or they can offer offline mentoring: meeting up with mentees face-to-face at an internet cafe to play together in real life. BeMaster also provides the added security of payments being dealt (for online for offline meet-ups), rather than players needing to pay at the physical location. 
 
 
 **Why this web application is important**:
 
-In current day, online gaming has evolved to something beyond a mere hobby. The introduction of competitive online gaming has not only paved the road for gamers to be able to earn a living by doing what they love: playing online games, but also bolstered motivation for casual players to improve their skills. On top of this, online gaming communities worldwide have increased in numbers, with many new players demanding coaching services; mentors can meet this increasing demand through coaching via (InsertNameHere).
+In current day, online gaming has evolved to something beyond a mere hobby. The introduction of competitive online gaming has not only paved the road for gamers to be able to earn a living by doing what they love: playing online games, but also bolstered motivation for casual players to improve their skills. On top of this, online gaming communities worldwide have increased in numbers, with many new players demanding coaching services; mentors can meet this increasing demand through coaching via BeMaster.
 
 Skilled players are attracted to the prospect of becoming a mentor as it not only allows them to earn money, but also provides them the opportunity to positively shape and grow the online gaming community that they are a member of. New players will be attracted to coaching as they are presented with the opportunity to learn the game faster and to avoid the unforgiving learning curve that many modern day online games are notorious for having. Existing, casual/less-skilled players who are tired of being stuck at the same rank/elo will want a better player observing their gameplay to catch on mistakes so they can improve.  
 
 
 **How it works**:
 
-After registering on (InsertNameHere), the user has the option of applying as coach. As a coach, his/her user profile will be displayed to all users on the website as someone who is proficient at a specificly listed game(s) and is offering his services at a price of his/her choosing (by dollars per hour), or at no cost if the coach decides to offer training out of the goodness of his/her heart. As a mentee/student, one can select the game he or she desires training for, select a suitable coach, pay (if there is a price that the coach wants), and send a message to the coach to decide on a time and date to hold the training. After the training, the mentee has the option of leaving a rating on the mentor's profile. Likewise, the mentor can leave a rating on the mentee's profile. 
+After registering on BeMaster, the user has the option of applying as coach. As a coach, his/her user profile will be displayed to all users on the website as someone who is proficient at a specificly listed game(s) and is offering his services at a price of his/her choosing (by dollars per hour), or at no cost if the coach decides to offer training out of the goodness of his/her heart. As a mentee/student, one can select the game he or she desires training for, select a suitable coach, pay (if there is a price that the coach wants), and send a message to the coach to decide on a time and date to hold the training. After the training, the mentee has the option of leaving a rating on the mentor's profile. Likewise, the mentor can leave a rating on the mentee's profile. 
 
 
 **Features & Implementation Details (plan)**:
+- Hosting:
+  We plan to utilize .... 
+
 - High level overview of the architecture:
   
   We plan to use the MVC architectural pattern for our web application because it is relatively effective and simple in understanding how data is stored, obtained, changed, and transported within the context of our web application. It provides a greater level of organization as it can classify different components of the web application.
@@ -35,7 +38,7 @@ After registering on (InsertNameHere), the user has the option of applying as co
 
 - Database: 
 
-  We plan to use (InsertDatabaseName) as our database. It will store user authorization details (username and password) as well as profile information of the user (Name, Games, coach or not, profile picture, ratings and reviews).
+  We plan to use MongoDB as our database. It will store user authorization details (username and password) as well as profile information of the user (Name, Games, coach or not, profile picture, ratings and reviews).
 
 - Sign up:
 
