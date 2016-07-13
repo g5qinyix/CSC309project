@@ -160,7 +160,7 @@ input{
     overflow: auto;
 }
 
-#post_button{
+.post_button{
 	margin: 2%;
 	float:right;
     background: #6441A5;
@@ -315,4 +315,32 @@ h4{
     margin: 5% 1% auto;
     text-align: left;
     background: white;
+}
+
+/* Chatbox on chatpage */
+#chatbox{
+	float:left;
+	display: block;
+	width: 76%;
+	background: white;
+	text-align: center;
+	box-sizing: border-box;
+	margin: 5% 1% auto;
+    padding: 3%;
+    text-align: left;
+    background: white;
+	overflow: auto;
+	font-family: sans-serif;
+	/*position:relative;*/
+}
+#chatboxMessages{
+	overflow: auto;
+}
+#messageDisplay{
+	border: 1px solid black;
+	padding: 10px;
+}
+#messageBox{
+	width: 70%;
+	margin: 0 auto;
 }
