@@ -1,8 +1,11 @@
-# CSC309project
+# BeMaster
+Link to GitHub Repository: https://github.com/g5qinyix/CSC309project
+
+**Please view the homepage.html file for links to all the html files.**
 
 **Topic**:
 
-Creating a web application that allows gamers to offer and receive mentorship for the popular online games League of Legends, Dota2, Overwatch, CS:GO.
+Creating a web application that allows gamers to offer and receive mentorship for the popular online games League of Legends, Dota2, Overwatch, and CS:GO.
 
 
 **Description of web application**:
@@ -19,12 +22,13 @@ Skilled players are attracted to the prospect of becoming a mentor as it not onl
 
 **How it works**:
 
-After registering on BeMaster, the user has the option of applying as coach. As a coach, his/her user profile will be displayed to all users on the website as someone who is proficient at a specificly listed game(s) and is offering his services at a price of his/her choosing (by dollars per hour), or at no cost if the coach decides to offer training out of the goodness of his/her heart. As a mentee/student, one can select the game he or she desires training for, select a suitable coach, pay (if there is a price that the coach wants), and send a message to the coach to decide on a time and date to hold the training. After the training, the mentee has the option of leaving a rating on the mentor's profile. Likewise, the mentor can leave a rating on the mentee's profile. 
+After registering on BeMaster, the user has the option of applying as coach. As a coach, his/her user profile will be displayed to all users on the website as someone who is proficient at a specificly listed game(s) and is offering his services at a price of his/her choosing (by dollars per hour), or at no cost if the coach decides to offer training out of the goodness of his/her heart. As a mentee/student, one can select the game he or she desires training for, select a suitable coach, pay (if there is a price), and send a message to the coach to decide on a time and date to hold the training. After the training, the mentee has the option of leaving a rating on the mentor's profile. Likewise, the mentor can leave a rating on the mentee's profile. 
 
 
 **Features & Implementation Details (plan)**:
+
 - Hosting:
-  We plan to utilize .... 
+  We plan to utilize Heroku to host our node.js server.
 
 - High level overview of the architecture:
   
@@ -53,7 +57,7 @@ After registering on BeMaster, the user has the option of applying as coach. As 
   - Coach and Student:
     Both have the ability to change their password, profile information, etc. These changes will be saved in the database. The profiles also have reviews that evaluates the effectiveness of a coach or how well a student behaved.
   - Coach:
-    Have the added feature of a badge that identifies them as a coach. They also have time listings for when they are available for coaching.
+    Have the added feature of a badge/title that identifies them as a coach. They also have time listings for when they are available for coaching.
 
 - Rating/Review System:
   Mentees, after going through the tutoring session, can give a review/rating (i.e. rating out of 5 and a few sentences) to the mentor. This will be displayed on the mentor's profile. The mentor has the option of replying to any comments/reviews from the mentee. The reviews are stored in the database and are loaded upon profile loading. 
