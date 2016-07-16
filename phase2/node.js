@@ -12,9 +12,19 @@ var url = 'mongodb://localhost:27017/mydb';
 
 var express = require('express');
 var app = express();
+var expressValidator = require('express-validator')
+var bodyParser = require('body-parser')
 
 //static file css and scripts served for html
 app.use(express.static('public'));
+
+// The request body is received on GET or POST.
+// A middleware that just simplifies things a bit.
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+app.use(expressValidator()); // This line must be immediately after express.bodyParser()!
 
 
 //homepage
