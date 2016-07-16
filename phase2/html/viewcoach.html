@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/profile.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="jquery-2.2.1.js"></script>
+    <script type="text/javascript" src="coachprofile.js"></script>
+	<title>Profile</title>
+</head>
+<body>
+	<header>
+		<nav>
+			<ul id = "nav">
+				<li class="home"><a href="#panel-home">BeMaster</a></li>
+				<li><a href="login.html">Log In</a></li>
+				<li><a href="#panel-in">Games</a>
+                    <ul>
+                        <li><a href="lol.html">League of Legends</a></li>
+                        <li><a href="overwatch.html">Overwatch</a></li>
+                        <li><a href="dota2.html">Dota2</a></li>
+                        <li><a href="csgo.html">CS:GO</a></li>
+                    </ul>
+                </li>
+				<li><a href="search.html">Find a Coach</a></li>
+		
+			</ul>
+		</nav>
+	</header>
+	<div class="main_content">
+		<section class="information">
+			<div class = "profile">
+				<div class = "photo">
+					<img src="../images/person.gif" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+				</div>
+				<div class="g_information">
+					<h2>Sylar</h2>
+					<p> I am a League of Legend coach.</p>
+					<div class="location">
+						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
+						toronto
+					</div>
+				</div>
+				<div class="messager" onclick="location.href='message.html'">
+					Send a message
+				</div>
+				<div class="messager">
+					Follow
+				</div>
+				
+				
+			</div>
+
+			<div class="service">
+				<h3 class = "title">Service</h3>
+				<div class="types" onclick="location.href='rating.html'">
+					<div class = "game_pic">
+						<img src="../images/LoL_logo.png" style="width: 50px; height: 50px">
+						<br>
+						<img src="../images/rating.png" class = "rating">
+					</div>
+					<div class = "description">
+						<p>League of Legends</p>
+						<p>Online</p>
+						<p>Price:10$/h</p>
+					</div>
+				</div>
+				<div class="types" onclick="location.href='rating.html'">
+					<div class = "game_pic">
+						<img src="../images/overwatch_logo.png" style="width: 50px; height: 50px">
+						<br>
+						<img src="../images/rating.png" class = "rating">
+					</div>
+					<div class = "description">
+						<p>Overwatch</p>
+						<p>Online</p>
+						<p>Price:5$/h</p>
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<section class="others_life">
+			<div id = "posts">
+				<div class = "small_photo">
+					<img src="../images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
+				</div>
+				<div class="content">
+					<div class = "ID">
+						<p class = "ID">Sylar</p>
+					</div>
+					<p>My client passed the placement!!!</p>
+					<div class="pic section">
+						<img src="../images/placement.jpg" class = "post_img">
+					</div>
+				</div>
+				<img src="../images/reply_icon.png" style="width: 20px; height: 20px" onclick="location.href='comment.html'">
+			</div>
+		</section>
+		<section class="rate">
+			
+			<form>
+				<span style="font-size:22px;font-weight:bold">Rate your Coach</span>
+				<select style="width:110px;font-size:20px;font-weight:bold; margin:30px 30px auto;">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+				</select>
+				
+				<button>Submit</button>
+			
+			</form>
+			
+		</section>
+	</div>
+</html>
