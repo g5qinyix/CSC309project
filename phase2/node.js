@@ -12,8 +12,9 @@ var url = 'mongodb://localhost:27017/mydb';
 
 var express = require('express');
 var app = express();
-var expressValidator = require('express-validator')
-var bodyParser = require('body-parser')
+var expressValidator = require('express-validator');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 //static file css and scripts served for html
 app.use(express.static('public'));
