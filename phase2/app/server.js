@@ -33,7 +33,7 @@ app.configure(function() {
 
 });
 
-//static file css/scripts
+//serve static file css/scripts
 app.use(express.static('public'));
 
 // routes ======================================================================

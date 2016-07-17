@@ -2,42 +2,64 @@
 <!doctype html>
 <html>
 <head>
-	<title>Node Authentication</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-	<style>
-		body 		{ padding-top:80px; word-wrap:break-word; }
-	</style>
+	<link rel="stylesheet" href="/css/profile.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Profile</title>
 </head>
 <body>
-<div class="container">
-
-	<div class="page-header text-center">
-		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
-		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
-	</div>
-
-	<div class="row">
-
-		<!-- LOCAL INFORMATION -->
-		<div class="col-sm-6">
-			<div class="well">
-				<h3><span class="fa fa-user"></span> Local</h3>
-
-					<p>
-						<strong>id</strong>: <%= user._id %><br>
-						<strong>email</strong>: <%= user.local.email %><br>
-						<strong>nickname</strong>: <%= user.local.nickname%> <br>
-						<strong>lanaguage</strong>: <%= user.local.language%> <br>
-						<strong>location</strong>: <%= user.local.location%> <br>
-						
-					</p>
-
+	<header>
+		<nav>
+			<ul id = "nav">
+				<li class="home"><a href="#panel-home">BeMaster</a></li>
+				<li><a href="/logout">Log Out</a></li>
+				<li><a href="#panel-in">Games</a>
+                    <ul>
+                        <li><a href="/lol">League of Legends</a></li>
+                        <li><a href="/overwatch">Overwatch</a></li>
+                        <li><a href="/dota2">Dota2</a></li>
+                        <li><a href="/csgo">CS:GO</a></li>
+                    </ul>
+                </li>
+				<li><a href="/search">Find a Coach</a></li>
+				<li><a href="/follow">Follow</a>
+				<li><a href="/message">Message</a>
+			</ul>
+		</nav>
+	</header>
+	<div class="main_content">
+		<section class="information">
+			<div class = "profile">
+				<div class = "photo">
+					<img src="../images/person.gif" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+				</div>
+				<div class="g_information">
+					<h2><%= user.local.nickname %></h2>
+					<p> Hi, I am <%= user.local.nickname %>.</p>
+					<div class="location">
+						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
+						<%= user.local.location %>
+                        <%= user.local.language %>
+					</div>
+				</div>
+				<div class="messager" onclick="location.href='/edituser.html'">
+					Edit my profile
+				</div>
 			</div>
-		</div>
 
+			<div class="service">
+				<h3 class = "title">Games</h3>
+				<div class="types">
+					<div class = "game_pic">
+						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>League of Legends</p>
+					
+					</div>
+				</div>
+		
+			</div>
+		</section>
 	</div>
-
-</div>
-</body>
 </html>
