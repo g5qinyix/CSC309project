@@ -1,0 +1,46 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Coach Form</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+	<h2>Fill out the coach form</h2>
+  <div class="form">
+    <!-- show any messages that come back with authentication -->
+	<% if (message.length > 0) { %>
+		<div class="alert"><%= message %></div>
+	<% } %>
+    <form class="login-form" action="/coachsignup" method="post">
+	  <span>Email</span>
+	  <input type="email" name="email" placeholder="123@mail.com" required/>
+	  <span>Password</span>
+      <input type="password" name="password" placeholder="password" required/>
+	  <span>Nickname</span>                                               
+      <input type="text" name="nickname" placeholder="smith" required/>
+	  <span>Location</span>                                                                                             
+      <input type="text" name="location" placeholder="Toronto" required/>
+	   <span>You want to be a mentor of</span>                                               
+      <select name="game">
+		<option>League of Legends</option>
+		<option>Dota2</option>
+        <option>CS:go</option>
+        <option>Overwatch</option>
+	  </select>
+	   <span>Your rate $/hour</span> 
+	   <input type=number name="rate" placeholder="$">
+	
+	  <button type="submit">Signup</button>
+	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>

@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="../css/profile.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script type="text/javascript" src="jquery-2.2.1.js"></script>
-    <script type="text/javascript" src="coachprofile.js"></script>
+    <script type="text/javascript" src="viewcoach.js"></script>
 	<title>Profile</title>
 </head>
 <body>
@@ -93,25 +93,15 @@
 						<img src="../images/placement.jpg" class = "post_img">
 					</div>
 				</div>
-				<img src="../images/reply_icon.png" style="width: 20px; height: 20px" onclick="location.href='comment.html'">
+				<img id="reply" src="../images/reply_icon.png" style="width: 20px; height: 20px">
+			</div>
+			<div class="reply_box">
+				<input type="text" placeholder="write something!" class = "reply"></input>
+				<button type="button" id="post_button">add comments!</button>	
 			</div>
 		</section>
-		<section class="rate">
-			
-			<form>
-				<span style="font-size:22px;font-weight:bold">Rate your Coach</span>
-				<select style="width:110px;font-size:20px;font-weight:bold; margin:30px 30px auto;">
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
-					<option>5</option>
-				</select>
-				
-				<button>Submit</button>
-			
-			</form>
-			
-		</section>
 	</div>
+	<script type="text/javascript" src="jquery-2.2.1.js"></script>
+    <script type="text/javascript" src="viewcoach.js"></script>
+	</body>
 </html>

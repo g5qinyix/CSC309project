@@ -1,0 +1,198 @@
+body{
+    display: block;
+    margin: 0px;
+    font-family: sans-serif;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    background: #f0f0f5;
+}
+
+#nav {
+    display:inline-block;
+    width:100%;
+    margin:0px auto;
+    padding:0;
+    background:white;
+    box-shadow:0 2px 2px rgba(0,0,0, .2);
+    position: fixed;
+    height: 7%;
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    */
+    /*box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    */
+}
+#nav li {
+    margin:10px;
+    float:left;
+    position:relative;
+    list-style:none;
+}
+#nav a {
+    font-weight:bold;
+    color:rgb(100, 65, 165);
+    text-decoration:none;
+    display:block;
+    padding:8px 20px;
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    text-shadow:0 2px 2px rgba(0,0,0, .7);
+    */
+}
+
+/* selected menu element */
+#nav .current a, #nav li:hover > a {
+    background:#6441A5;
+    color:white;
+    border-top:1px solid #f8f8f8;
+    /*
+    box-shadow:0 2px 2px rgba(0,0,0, .7); 
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .7);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .7);
+    text-shadow:0 2px 2px rgba(255,255,255, 0.7);
+    */
+}
+
+/* sublevels */
+#nav ul li:hover a, #nav li:hover li a {
+    background:rgb(32,32,32);
+    border:none;
+    color:white;
+}
+#nav ul li a:hover {
+    background:rgb(32,32,32);
+    color:white;
+
+}
+
+#nav ul li:first-child > a {
+    -moz-border-radius-topleft:10px; 
+    -moz-border-radius-topright:10px;
+    -webkit-border-top-left-radius:10px;
+    -webkit-border-top-right-radius:10px;
+}
+#nav ul li:last-child > a {
+    -moz-border-radius-bottomleft:10px; 
+    -moz-border-radius-bottomright:10px;
+    -webkit-border-bottom-left-radius:10px;
+    -webkit-border-bottom-right-radius:10px;
+}
+
+/* drop down */
+#nav li:hover > ul {
+    opacity:1;
+    visibility:visible;
+}
+#nav ul {
+    opacity:0;
+    visibility:hidden;
+    padding:0;
+    width:175px;
+    position:absolute;
+    background:white;
+    border:1px solid #7788aa;
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .5);
+
+    -moz-transition:opacity .25s linear, visibility .1s linear .1s;
+    -webkit-transition:opacity .25s linear, visibility .1s linear .1s;
+    -o-transition:opacity .25s linear, visibility .1s linear .1s;
+    transition:opacity .25s linear, visibility .1s linear .1s;
+}
+#nav ul li {
+    float:none;
+    margin:0;
+}
+#nav ul a {
+    font-weight:normal;
+}
+#nav ul ul {
+    left:160px;
+    top:0px;
+}
+
+#photo_bar{
+    padding-top: 60px;
+    padding-left: 2%;
+    overflow: auto;
+    height: auto;
+    background: rgb(100, 65, 165);
+
+}
+
+#name{
+    display: inline-block;
+    color: white;
+}
+
+.img-responsive{
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+#photo{
+    float: left;
+    display: inline-block;
+    margin-right: 2%;
+    height: 2.5em;
+    line-height: 2.5em;
+}
+
+.starRating:not(old) {
+    display: inline-block;
+    width: 8.5em;
+    height: 1.5em;
+    overflow: hidden;
+    vertical-align: sub;
+}
+.starRating:not(old) > input {
+    margin-right: -100%;
+    opacity: 0;
+}
+.starRating:not(old) > label {
+    display: block;
+    float: right;
+    position: relative;
+    background: url('star-off.svg');
+    background-size: contain;
+}
+.starRating:not(old) > label:before {
+    content: '';
+    display: block;
+    width: 1.5em;
+    height: 1.5em;
+    background: url('star-on.svg');
+    background-size: contain;
+    opacity: 0;
+    transition: opacity 0.2s linear;
+}
+.starRating:not(old) > label:hover:before, .starRating:not(old) > label:hover ~ label:before, .starRating:not(:hover) >:checked ~ label:before {
+    opacity: 1;
+}
+
+section{
+    margin: 2%;
+    background: white;
+}
+
+#img_game{
+    text-align: center;
+    padding-bottom: 1%;
+}
+
+#comments{
+    padding:2%;
+    text-align: center;
+}
