@@ -64,7 +64,7 @@ module.exports = function(passport) {
                 newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.occupation = 'student';
-
+    
                 
                 // save the user
                 newUser.save(function(err) {
@@ -141,7 +141,7 @@ module.exports = function(passport) {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our form
+    function(req, email, password, done) { // callback with email and password from our for
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
@@ -160,6 +160,37 @@ module.exports = function(passport) {
 
             // all is well, return successful user
             return done(null, user);
+        });
+
+    }));
+    
+    
+    // =========================================================================
+    // EDIT File =============================================================
+    // =========================================================================
+    // we are using named strategies since we have one for login and one for signup
+    // by default, if there was no name, it would just be called 'local'
+    passport.use('edit-user', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    
+    function(req, email, done) { // callback with email and password from our form
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        User.findOne({ 'local.email' :  req.session.user.local.email }, function(err, user) {
+            user.local.password = user.generateHash(req.param('password'));
+            user.local.nickname = req.param('nickname');
+            user.local.location = req.param('location');
+            
+            user.save(function(err){
+                if (err){
+                    console.log('Error in Saving user: '+err);
+                    throw err;
+              }
+              console.log('User Registration succesful');
+              return done(null, user);
+            });
         });
 
     }));

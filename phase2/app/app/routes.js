@@ -1,4 +1,9 @@
 // app/routes.js
+
+
+
+var User       		= require('../app/models/user');
+
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -65,6 +70,39 @@ module.exports = function(app, passport) {
 		failureFlash : true // allow flash messages
 	}));
 
+	
+	
+	// =====================================
+	// edit profile ==============================
+	// =====================================
+	//
+	
+	//show the edit form
+	app.get('/editstudent', isLoggedIn,  function(req, res){
+		res.render('editstudent.ejs' ,{
+			user: req.user
+		});
+	});
+	
+	
+	// process the studentsignup form
+	app.post('/editstudent', function(req, res){
+		var email = req.user.local.email;
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+			user.local.password = user.generateHash(req.param('password'));
+			user.local.location = req.param('location');
+			user.local.nickname = req.param('nickname');
+			user.save();
+		});
+													
+			
+	});
+	
+
+	
+
+	
+	
 	
 	// =====================================
 	// PROFILE SECTION =========================
