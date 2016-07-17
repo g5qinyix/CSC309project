@@ -181,7 +181,7 @@ header{
   font-size: 15px;
 }
 
-.form input[type=submit] {
+.form button{
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
@@ -205,6 +205,10 @@ header{
   text-decoration: none;
 }
 
+.alert{
+  color: red;
+  text-decoration: none;
+}
 
 
 /*Sign up*/
@@ -257,8 +261,6 @@ form {
 
 
 
-
-
 /*personal profile*/
 .head{
 	margin-top: 100px;
@@ -267,8 +269,6 @@ form {
 	height: 300px;
 	border: 1px solid black;
 }
-
-
 
 .info{
 	position:fixed;

@@ -1,0 +1,36 @@
+<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>login</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+	
+    
+<div class="login-page">
+  <div class="form">
+    
+    <!-- show any messages that come back with authentication -->
+	<% if (message.length > 0) { %>
+		<div class="alert"><%= message %></div>
+	<% } %>
+
+	<!-- LOGIN FORM -->
+    <form class="login-form" action="/login" method="post">
+      <input id="loginname" type="text" name="email" placeholder="username"/>
+      <input id="loginpassword" type="password" name="password" placeholder="password"/>
+       
+	  <button type="submit">Login</button>
+	 
+      <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+      
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>
