@@ -1,0 +1,43 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edit</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+	<h2>Setting</h2>
+  <div class="form">
+    <!-- show any messages that come back with authentication -->
+    <form class="login-form" action="/editcoach" method="post">
+	  <span>Your email</span>
+	  <p><%= user.local.email %> </p>
+	  <span>Your new Password</span>
+      <input type="password" name="password" placeholder="password" required/>
+	  <span>You new Nickname</span>                                               
+      <input type="text" name="nickname" placeholder="smith" required/>
+	  <span>Your new Location</span>                                                                                             
+      <input type="text" name="location" placeholder="Toronto" required/>
+	   <span>You want to be a mentor of</span>                                               
+      <select name="game">
+		<option>League of Legends</option>
+		<option>Dota2</option>
+        <option>CS:go</option>
+        <option>Overwatch</option>
+	  </select>
+	   <span>Your rate $/hour</span> 
+	   <input type=number name="rate" placeholder="$">
+	
+	  <button type="submit">Submit</button>
+	  <p class="message">Return to homepage  <a href="/login">enter</a></p>
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>

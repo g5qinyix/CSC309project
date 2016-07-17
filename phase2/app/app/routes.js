@@ -77,7 +77,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	//
 	
-	//show the edit form
+	//show the student edit form
 	app.get('/editstudent', isLoggedIn,  function(req, res){
 		res.render('editstudent.ejs' ,{
 			user: req.user
@@ -85,18 +85,60 @@ module.exports = function(app, passport) {
 	});
 	
 	
-	// process the studentsignup form
+	// process the studentedit form
 	app.post('/editstudent', function(req, res){
 		var email = req.user.local.email;
+		
+		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
 			user.local.password = user.generateHash(req.param('password'));
 			user.local.location = req.param('location');
 			user.local.nickname = req.param('nickname');
 			user.save();
-		});
-													
-			
+			//update session
+			req.login(user, function(err) {
+				if (err) return next(err)
+				else{
+					res.redirect('/profile');
+				}
+			});
+		});														
 	});
+	
+	
+	
+	//show the coach edit form
+	app.get('/editcoach', isLoggedIn,  function(req, res){
+		res.render('editcoach.ejs' ,{
+			user: req.user
+		});
+	});
+	
+	
+	
+	
+	// process coach edit form
+	app.post('/editcoach', function(req, res){
+		var email = req.user.local.email;
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+			user.local.password = user.generateHash(req.param('password'));
+			user.local.location = req.param('location');
+			user.local.nickname = req.param('nickname');
+			user.local.game = req.param('game');
+			user.local.rate = req.param('rate');
+			user.save();
+			//update session
+			req.login(user, function(err) {
+				if (err) return next(err)
+				else{
+					res.redirect('/profile');
+				}
+			});
+		});														
+	});
+	
+	
 	
 
 	
@@ -109,10 +151,21 @@ module.exports = function(app, passport) {
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
-	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
+	app.get('/profile', isLoggedIn, function(req, res){
+		//handle student
+		if (req.user.local.occupation == "student") {
+            res.render('studentprofile.ejs', {
 			user : req.user // get the user out of session and pass to template
-		});
+			});
+        }
+		//handle coach
+		else{
+			res.render('coachprofile.ejs', {
+			user : req.user // get the user out of session and pass to template
+			});
+			
+		}
+		
 	});
 	
 	
