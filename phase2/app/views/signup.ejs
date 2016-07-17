@@ -4,33 +4,20 @@
 <head>
 	<link rel="stylesheet" href="../css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>signup</title>
+	<title>Sign up</title>
 </head>
 <body>
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2>Create your personal account</h2>
-  <div class="form">
-    <!-- show any messages that come back with authentication -->
-	<% if (message.length > 0) { %>
-		<div class="alert"><%= message %></div>
-	<% } %>
-    <form class="login-form" action="/signup" method="post">
-      <span>Enter an e-mail</span>
-      <input type="email" name="email" placeholder="123@mail.com" required/>
-	  <span>Password</span>
-      <input type="password" name="password" placeholder="password" required/>
-	  <span>Nickname</span>                                               
-      <input type="text" name="nickname" placeholder="smith" required/>
-	  <span>Language</span>                                               
-      <input type="text" name="language" placeholder="Chinese" required/>
-	  <span>Location</span>                                               
-      <input type="text" name="location" placeholder="Toronto" required/>
+	<h2>Choose</h2>
 
-	  <button type="submit">Signup</button>
-	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
-    </form>
+    <!-- show any messages that come back with authentication -->
+
+   <div class= "signbutton">
+	  <a  href='/studentsignup'>Signup as a student</a>
+      <a   href= '/coachsignup'>Signup as a coach</a>
+
   </div>
 </div>
     

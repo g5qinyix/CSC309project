@@ -29,19 +29,43 @@ module.exports = function(app, passport) {
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
+	
+	
 	app.get('/signup', function(req, res) {
 
 		// render the page and pass in any flash data if it exists
-		res.render('signup.ejs', { message: req.flash('signupMessage') });
+		res.render('signup.ejs');
 	});
-
-	// process the signup form
-	app.post('/signup', passport.authenticate('local-signup', {
+	
+	
+	//sign up for student
+	app.get('/studentsignup', function(req, res){
+		res.render('studentsignup.ejs', { message: req.flash('signupMessage') });
+	});
+	
+	app.get('/coachsignup', function(req, res){
+		res.render('coachsignup.ejs', { message: req.flash('signupMessage') });
+	});
+	
+	
+	
+	// process the studentsignup form
+	app.post('/studentsignup', passport.authenticate('local-signup-student', {
 		successRedirect : '/home', // redirect to the secure profile section
-		failureRedirect : '/signup', // redirect back to the signup page if there is an error
+		failureRedirect : '/studentsignup', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
+	}));
+	
+	
+	
+	// process the studentsignup form
+	app.post('/coachsignup', passport.authenticate('local-signup-coach', {
+		successRedirect : '/home', // redirect to the secure profile section
+		failureRedirect : '/studentsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
 
+	
 	// =====================================
 	// PROFILE SECTION =========================
 	// =====================================
@@ -69,6 +93,7 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 };
+
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
