@@ -29,6 +29,21 @@ module.exports = function(app, passport) {
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+	
+	
+	
+	// =====================================
+	// FACEBOOK ROUTES =====================
+	// =====================================
+	// route for facebook authentication and login
+	app.get('/BeMaster/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+	// handle the callback after facebook has authenticated the user
+	app.get('/BeMaster/facebook/callback',
+		passport.authenticate('facebook', {
+			successRedirect : '/home',
+			failureRedirect : '/login'
+		}));	
 
 	// =====================================
 	// SIGNUP ==============================
@@ -157,11 +172,10 @@ module.exports = function(app, passport) {
 		else{
 			res.render('coachprofile.ejs', {
 			user : req.user // get the user out of session and pass to template
-			});
-			
-		}
-		
+			});	
+		}	
 	});
+	
 	
 	// =====================================
 	// Games ==============================
@@ -197,6 +211,9 @@ module.exports = function(app, passport) {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
+	
+
+
 
 	
 	// =====================================
@@ -207,6 +224,7 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 };
+
 
 
 // route middleware to make sure
