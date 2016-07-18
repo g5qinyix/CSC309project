@@ -13,12 +13,21 @@ header{
 #nav {
     display:inline-block;
     width:100%;
-    margin:0px auto;
+	top:0px;
+    margin:auto;
     padding:0;
-    background:rgba(255，255，255, 1);
+    background:white;
     box-shadow:0 2px 2px rgba(0,0,0, .2);
-
-    
+    position: fixed;
+    /*
+    border-radius:10px; 
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    */
+    /*box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -moz-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow:0 2px 2px rgba(0,0,0, .5);
+    */
 }
 #nav li {
     margin:10px;
@@ -26,10 +35,9 @@ header{
     position:relative;
     list-style:none;
 }
-
 #nav a {
     font-weight:bold;
-    color:color:rgb(178,102,255);
+    color:rgb(100, 65, 165);
     text-decoration:none;
     display:block;
     padding:8px 20px;
@@ -43,8 +51,8 @@ header{
 
 /* selected menu element */
 #nav .current a, #nav li:hover > a {
-    background:white;
-    color:rgb(178,102,255);
+    background:#6441A5;
+    color:white;
     border-top:1px solid #f8f8f8;
     /*
     box-shadow:0 2px 2px rgba(0,0,0, .7); 
@@ -53,7 +61,6 @@ header{
     text-shadow:0 2px 2px rgba(255,255,255, 0.7);
     */
 }
-
 
 /* sublevels */
 #nav ul li:hover a, #nav li:hover li a {
@@ -64,8 +71,21 @@ header{
 #nav ul li a:hover {
     background:rgb(32,32,32);
     color:white;
+
 }
 
+#nav ul li:first-child > a {
+    -moz-border-radius-topleft:10px; 
+    -moz-border-radius-topright:10px;
+    -webkit-border-top-left-radius:10px;
+    -webkit-border-top-right-radius:10px;
+}
+#nav ul li:last-child > a {
+    -moz-border-radius-bottomleft:10px; 
+    -moz-border-radius-bottomright:10px;
+    -webkit-border-bottom-left-radius:10px;
+    -webkit-border-bottom-right-radius:10px;
+}
 
 /* drop down */
 #nav li:hover > ul {
@@ -103,7 +123,6 @@ header{
     left:160px;
     top:0px;
 }
-
 
 
 main {
