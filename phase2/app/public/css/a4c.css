@@ -213,7 +213,7 @@ header{
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   cursor: pointer;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .form .message {
@@ -236,7 +236,7 @@ header{
 .form span{
   font-family: "Roboto", sans-serif;
   font-weight: bold;
-  color: #000000;
+  color: rgb(100, 65, 165);;
   font-size: 15px;
 }
 
