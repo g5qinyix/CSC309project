@@ -17,12 +17,20 @@
     <form class="login-form" action="/editstudent" method="post">
       <span>Your e-mail:</span>
       <p><%= user.local.email %> </p>
-	  <span>You new Password</span>
+	  <span>Your new Password</span>
       <input type="password" name="password" placeholder="password" required/>
-	  <span>You new Nickname</span>                                               
+	  <span>Your new Nickname</span>                                               
       <input type="text" name="nickname" placeholder="smith" required/>
-	  <span>You new Location</span>                                               
+	  <span>Your new Location</span>                                               
       <input type="text" name="location" placeholder="Toronto" required/>
+	  <span>Your game</span>
+	   <select name="game">
+		<option>Dota2</option>
+		<option>League of Legends</option>
+		<option>CS:GO</option>
+		<option>Overwatch</option>
+	  </select>
+      
 	  <button type="submit">Submit</button>
 	  <p class="message">Return to homepage  <a href="/home">Enter</a></p>
     </form>

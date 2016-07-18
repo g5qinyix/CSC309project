@@ -63,7 +63,9 @@ module.exports = function(passport) {
 	            // parse the url
                 newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
+                newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
+               
     
                 
                 // save the user

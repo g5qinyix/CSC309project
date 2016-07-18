@@ -93,6 +93,7 @@ module.exports = function(app, passport) {
 			user.local.password = user.generateHash(req.param('password'));
 			user.local.location = req.param('location');
 			user.local.nickname = req.param('nickname');
+			user.local.game = req.param('game');
 			user.save();
 			//update session
 			req.login(user, function(err) {
