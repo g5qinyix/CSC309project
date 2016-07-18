@@ -205,7 +205,7 @@ header{
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: rgb(100, 65, 165);
   width: 100%;
   border: 0;
   padding: 15px;
@@ -213,6 +213,7 @@ header{
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .form .message {
@@ -221,7 +222,7 @@ header{
   font-size: 12px;
 }
 .form .message a {
-  color: #4CAF50;
+  color:rgb(100, 65, 165);;
   text-decoration: none;
 }
 
@@ -235,7 +236,7 @@ header{
 .form span{
   font-family: "Roboto", sans-serif;
   font-weight: bold;
-  color: #000000;
+  color: rgb(100, 65, 165);;
   font-size: 15px;
 }
 
@@ -251,22 +252,6 @@ header{
 }
 
 
-
-
-.signbutton {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  cursor: pointer;
-	
-}
 
 
 div.login-page h2{

@@ -2,7 +2,7 @@
 
 
 
-var User       		= require('../app/models/user');
+var User = require('../app/models/user');
 
 module.exports = function(app, passport) {
 
@@ -84,7 +84,6 @@ module.exports = function(app, passport) {
 		});
 	});
 	
-	
 	// process the studentedit form
 	app.post('/editstudent', function(req, res){
 		var email = req.user.local.email;
@@ -105,17 +104,12 @@ module.exports = function(app, passport) {
 		});														
 	});
 	
-	
-	
 	//show the coach edit form
 	app.get('/editcoach', isLoggedIn,  function(req, res){
 		res.render('editcoach.ejs' ,{
 			user: req.user
 		});
 	});
-	
-	
-	
 	
 	// process coach edit form
 	app.post('/editcoach', function(req, res){
@@ -166,6 +160,33 @@ module.exports = function(app, passport) {
 			
 		}
 		
+	});
+	
+	// =====================================
+	// Games ==============================
+	// =====================================
+	app.get('/lol', function(req, res) {
+	res.render('lol.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+	
+	app.get('/dota2', function(req, res) {
+	res.render('dota2.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+	
+	app.get('/csgo', function(req, res) {
+	res.render('csgo.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+	
+	app.get('/overwatch', function(req, res) {
+	res.render('overwatch.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
 	});
 	
 	

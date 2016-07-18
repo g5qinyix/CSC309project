@@ -163,7 +163,7 @@ input{
 .post_button{
 	margin: 2%;
 	float:right;
-    background: #6441A5;
+    background:rgb(100, 65, 165);;
     color: white;
     border:none;
     border-radius:10px;
