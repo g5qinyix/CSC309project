@@ -37,7 +37,7 @@
 					<p> Hi, I am <%= user.local.nickname %>.</p>
 					<div class="location">
 						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
-				
+						<p><%= user.local.location %></p>
 					</div>
 				</div>
 				<div class="messager" onclick="location.href='/editcoach'">
@@ -46,7 +46,21 @@
 			</div>
 
 			<div class="service">
-				<h3 class = "title">Games</h3>
+				<h3 class = "title">Games: online</h3>
+				<div class="types" onclick="location.href='/rating'">
+					<div class = "game_pic">
+						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>League of Legends</p>
+					
+					</div>
+				</div>
+		
+			</div>
+			<div class="service">
+				<h3 class = "title">Games: offline</h3>
 				<div class="types">
 					<div class = "game_pic">
 						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
@@ -58,6 +72,12 @@
 					</div>
 				</div>
 		
+			</div>
+		</section>
+		<section class="my_life">
+			<div id = "my_posts">
+				<input type="text" placeholder="write something!"></input>
+				<button type="button" class="post_button">Post!</button>
 			</div>
 		</section>
 	</div>
