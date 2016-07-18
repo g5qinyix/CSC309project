@@ -205,7 +205,7 @@ header{
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: rgb(100, 65, 165);
   width: 100%;
   border: 0;
   padding: 15px;
@@ -221,7 +221,7 @@ header{
   font-size: 12px;
 }
 .form .message a {
-  color: #4CAF50;
+  color:rgb(100, 65, 165);;
   text-decoration: none;
 }
 
@@ -257,7 +257,7 @@ header{
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: rgb(100, 65, 165);
   width: 100%;
   border: 0;
   padding: 15px;
