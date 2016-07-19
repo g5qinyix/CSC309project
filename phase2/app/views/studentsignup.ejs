@@ -10,8 +10,8 @@
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2>Create your account</h2>
-  <div class="form">
+	<h2 style="color:rgb(100, 65, 165);margin-bottom:0px">Create your account</h2>
+  <div style="margin-top:0px" class="form">
     <!-- show any messages that come back with authentication -->
 	<% if (message.length > 0) { %>
 		<div class="alert"><%= message %></div>
@@ -25,8 +25,15 @@
       <input type="text" name="nickname" placeholder="smith" required/>
 	  <span>Location</span>                                               
       <input type="text" name="location" placeholder="Toronto" required/>
+	  <span>Your favourite Game</span>                                               
+      <select name="game">
+		<option>Dota2</option>
+		<option>League of Legends</option>
+		<option>CS:GO</option>
+		<option>Overwatch</option>
+	  </select>
 	  <span>Your Photo</span>                                               
-      <input type="file" name="photo" required/>   
+      <input type="file" name="photo"/>   
 
 	  <button type="submit">Signup</button>
 	  <p class="message">Already have an account?   <a href="/login">Login</a></p>

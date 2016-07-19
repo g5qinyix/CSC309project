@@ -10,7 +10,7 @@
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2>Fill out the coach form</h2>
+	<h2 style="color:rgb(100, 65, 165)">Fill out the coach form</h2>
   <div class="form">
     <!-- show any messages that come back with authentication -->
 	<% if (message.length > 0) { %>
@@ -35,7 +35,7 @@
 	   <span>Your rate $/hour</span> 
 	   <input type=number name="rate" placeholder="$">
 	   <span>Your Photo</span>                                               
-      <input type="file" name="photo" required/>   
+      <input type="file" name="photo"/>   
 	
 	  <button type="submit">Signup</button>
 	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
