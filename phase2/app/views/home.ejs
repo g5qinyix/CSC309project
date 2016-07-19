@@ -10,20 +10,20 @@
 	<header>
 		<nav>
 			<ul id = "nav"> 
-				<li class="home"><a href='/home' >BeMaster!</a></li>
-				<li><a href="/logout">Log Out</a></li>
+				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:80px;height:40px"></a></li>  				
 				<li><a>Games</a>
-                    <ul>
-                        <li><a href='/lol'>League of Legends</a></li>
-                        <li><a href="/overwatch">Overwatch</a></li>
-                        <li><a href="/dota2">Dota2</a></li>
-                        <li><a href="/csgo">CS:GO</a></li>
+                    <ul id="subnav">
+						<li><a href='/game/lol'>League of Legends</a></li>
+                        <li><a href="/game/overwatch">Overwatch</a></li>
+                        <li><a href="/game/dota2">Dota2</a></li>
+                        <li><a href="/game/csgo">CS:GO</a></li>
                     </ul>
                 </li>
 				<li><a href="/search">Find a Coach</a></li>
-                <li><a href="/profile">Hi <%= user.local.nickname %></a></li>
+				<li class="usersection"><a href="/logout">Log Out</a></li>
+				<li class="username"><a href="/profile"> Hi <%= user.local.nickname %></a></li>
 			</ul>
-		</nav>
+		</nav>   
 	</header>
 	<section class="wrapper">
 		<!--the title-->

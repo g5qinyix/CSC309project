@@ -10,19 +10,21 @@
 	<header>
 		<nav>
 			<ul id = "nav">
-				<li class="home"><a href="/home">BeMaster</a></li>
-				<li><a href="/logout">Log Out</a></li>
+				<li class="logo"><a href="/home"><img src="/images/logo.png" style="width:80px;height:40px"></a></li>
+			
 				<li><a>Games</a>
-                    <ul>
-                        <li><a href="/lol">League of Legends</a></li>
-                        <li><a href="/overwatch">Overwatch</a></li>
-                        <li><a href="/dota2">Dota2</a></li>
-                        <li><a href="/csgo">CS:GO</a></li>
+                    <ul id="subnav">
+                        <li><a href='/game/lol'>League of Legends</a></li>
+                        <li><a href="/game/overwatch">Overwatch</a></li>
+                        <li><a href="/game/dota2">Dota2</a></li>
+                        <li><a href="/game/csgo">CS:GO</a></li>
                     </ul>
                 </li>
 				<li><a href="/search">Find a Coach</a></li>
 				<li><a href="/follow">Follow</a>
 				<li><a href="/message">Message</a>
+				<li><a class="usersection" href ="/logout">Log Out</a></li>
+	
 			</ul>
 		</nav>
 	</header>
@@ -34,11 +36,14 @@
 				</div>
 				<div class="g_information">
 					<h2><%= user.local.nickname %></h2>
-					<p> Hi, I am <%= user.local.nickname %>.</p>
+					<p> <span style="font-weight:bold">Welcome </span> <%= user.local.nickname %> !</p>
+					<p> <span style="font-weight:bold">Your Account: </span> <%= user.local.email %>.</p>
+					<p> <span style="font-weight:bold">Your teaching game:</span><%= user.local.game %></p>
+					<p> <span style="font-weight:bold">Rate:</span>$<%= user.local.rate %></p>
 					<div class="location">
 						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
-				
 					</div>
+					<p> <%= user.local.location %>.</p>
 				</div>
 				<div class="messager" onclick="location.href='/editcoach'">
 					Edit my profile
