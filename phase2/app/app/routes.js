@@ -146,10 +146,18 @@ module.exports = function(app, passport) {
 		
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
-			user.local.password = user.generateHash(req.param('password'));
-			user.local.location = req.param('location');
-			user.local.nickname = req.param('nickname');
-			user.local.game = req.param('game');
+            if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
+            if ( req.param('nickname') != '') {
+                user.local.nickname = req.param('nickname');
+            }
+            if ( req.param('game') != '') {
+                user.local.game = req.param('game');
+            }
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -173,11 +181,21 @@ module.exports = function(app, passport) {
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
-			user.local.password = user.generateHash(req.param('password'));
-			user.local.location = req.param('location');
-			user.local.nickname = req.param('nickname');
-			user.local.game = req.param('game');
-			user.local.rate = req.param('rate');
+			if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
+            if ( req.param('nickname') != '') {
+                user.local.nickname = req.param('nickname');
+            }
+            if ( req.param('game') != '') {
+                user.local.game = req.param('game');
+            }
+            if (req.param('rate')) {
+                user.local.rate = req.param('rate');
+            }
 			user.save();
 			//update session
 			req.login(user, function(err) {
