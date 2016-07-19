@@ -33,6 +33,7 @@ module.exports = function(app, passport) {
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+
 	
 	
 		
@@ -70,7 +71,15 @@ module.exports = function(app, passport) {
 	//sign up for coach
 	app.get('/coachsignup', function(req, res){
 		res.render('coachsignup.ejs', { message: req.flash('signupMessage') });
-	});	
+
+	});
+    
+
+    
+	app.get('/rating', function(req, res){
+		res.render('rating.ejs');
+	})
+
 	
 	// process the studentsignup form
 	app.post('/studentsignup', passport.authenticate('local-signup-student', {
@@ -82,7 +91,7 @@ module.exports = function(app, passport) {
 	// process the coachsignup form
 	app.post('/coachsignup', passport.authenticate('local-signup-coach', {
 		successRedirect : '/home', // redirect to the secure profile section
-		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
+		failureRedirect : '/studentsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
 
@@ -108,6 +117,7 @@ module.exports = function(app, passport) {
 		}	
 	});
 	
+
 	
 	// Returned to homepage
 	app.get('/home', isLoggedIn, function(req, res) {
@@ -122,6 +132,7 @@ module.exports = function(app, passport) {
 	// EDIT PROFILE==============================
 	// =====================================
 	//
+
 	//show the student edit form
 	app.get('/editstudent', isLoggedIn,  function(req, res){
 		res.render('editstudent.ejs' ,{
@@ -135,18 +146,10 @@ module.exports = function(app, passport) {
 		
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
-			if (req.param('password') != '') {
-                user.local.password = user.generateHash(req.param('password'));
-            }
-			if (req.param('location') != '') {
-				user.local.location = req.param('location');
-            }
-			if (req.param('nickname') != '') {
-				user.local.nickname = req.param('nickname');
-            }
-			if (req.param('game') != '') {
-                user.local.game= req.param('game');
-            }
+			user.local.password = user.generateHash(req.param('password'));
+			user.local.location = req.param('location');
+			user.local.nickname = req.param('nickname');
+			user.local.game = req.param('game');
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -170,21 +173,11 @@ module.exports = function(app, passport) {
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
-			if (req.param('password') != '') {
-                user.local.password = user.generateHash(req.param('password'));
-            }
-			if (req.param('location') != '') {
-				user.local.location = req.param('location');
-            }
-			if (req.param('nickname') != '') {
-				user.local.nickname = req.param('nickname');
-            }
-			if (req.param('game') != '') {
-                user.local.nickname = req.param('game');
-            }
-			if (req.param('rate') != '') {
-                user.local.rate = req.param('rate');
-            }		
+			user.local.password = user.generateHash(req.param('password'));
+			user.local.location = req.param('location');
+			user.local.nickname = req.param('nickname');
+			user.local.game = req.param('game');
+			user.local.rate = req.param('rate');
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -200,6 +193,29 @@ module.exports = function(app, passport) {
 	
 	// =====================================
 	// GAMES ==============================
+	// =====================================
+
+	// we will want this protected so you have to be logged in to visit
+	// we will use route middleware to verify this (the isLoggedIn function)
+	app.get('/profile', isLoggedIn, function(req, res){
+		//handle student
+		if (req.user.local.occupation == "student") {
+            res.render('studentprofile.ejs', {
+			user : req.user // get the user out of session and pass to template
+			});
+        }
+		//handle coach
+		else{
+			res.render('coachprofile.ejs', {
+			user : req.user // get the user out of session and pass to template
+			});
+			
+		}
+		
+	});
+	
+	// =====================================
+	// Games ==============================
 	// =====================================
 	app.get('/game/lol', function(req, res) {
 	res.render('lol.ejs', {
@@ -226,7 +242,14 @@ module.exports = function(app, passport) {
 	});
 	
 	
-	
+
+	//Returned to homepage
+	app.get('/home', isLoggedIn, function(req, res) {
+	res.render('home.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+
 
 	// =====================================
 	// LOGOUT ==============================
@@ -236,7 +259,6 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 };
-
 
 
 // route middleware to make sure
