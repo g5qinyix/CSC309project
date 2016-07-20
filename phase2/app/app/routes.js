@@ -205,12 +205,12 @@ module.exports = function(app, passport) {
 		var gameName = req.param('gamename');
 		var cost = req.param('cost');
 		console.log(gameName);
-		User.findOne({'local.game' : gameName }, function(err, coach) {
+		User.find({'local.game' : gameName, 'local.occupation': 'coach' }, function(err, coaches) {
 		  if (err) return next(err)
 		  else {
-			console.log(coach);
+			console.log(coaches);
 		    res.render('searchresult.ejs', {
-			coach: coach,
+			coaches: coaches,
 			user: req.user
 		    });
 		  }	

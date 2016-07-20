@@ -68,67 +68,15 @@
 		<th>Cost</th>
 	  </tr>
 	  
-	 
-	      <tr  onclick="location.href='/users/ <%= coach._id %>'">
+	   <% coaches.forEach(function(coach) { %>
+	      <tr>
 			<td><%= coach.local.nickname %></td>
 			<td><%= coach.local.location %></td>
 			<td><%= coach.local.rate %></td>
 			<td><%= coach.local.cost %></td>
 		  </tr>
-	  
+	  <% }); %>
 	
-	  
-	  <!--
-	  <tr>
-		<td><a href="/Frankenstain">Frankenstain</a></td>
-		<td>England</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>$50</td>
-	  </tr>
-	  <tr>
-		<td><a href="/Dracula">Dracula</a></td>
-		<td>USA</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>$50</td>
-	  </tr>
-	  <tr>
-		<td><a href="/SherlockHolmes">Sherlock Holmes</a></td>
-		<td>EU</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>$40</td>
-	  </tr>
-	  <tr>
-		<td><a href="/Jack">Jack</a></td>
-		<td>Canada</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>free</td>
-	  </tr>
-	  <tr>
-		<td><a href="/Tianlun">Tianlun</a></td>
-		<td>Canada</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>free</td>
-	  </tr>
-	  <tr>
-		<td><a href="/Albert">Albert</a></td>
-		<td>Canada</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>free</td>
-	  </tr>
-	  <tr>
-		<td><a href="/Albert">WeiJun</a></td>
-		<td>Canada</td>
-		<td>English</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>free</td>
-	  </tr>
-	  -->
 	</table>
 	
 	</main>
