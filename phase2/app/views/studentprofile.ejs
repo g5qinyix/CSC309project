@@ -48,6 +48,7 @@
 					<p> <span style="font-weight:bold">Welcome </span> <%= user.local.nickname %> !</p>
 					<p> <span style="font-weight:bold">Your Account: </span> <%= user.local.email %>.</p>
 					<div class="location">
+						
 						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
 					</div>
 					<p> <%= user.local.location %>.</p>
@@ -60,16 +61,46 @@
 			<div class="service">
 				<h3 class = "title">Games</h3>
 				<div class="types">
+					<% if (user.local.game == 'CS:GO') { %>
+					<div class = "game_pic">
+						<img src="images/cs.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>CS:GO</p>
+					</div>
+					<% } %>
+					<% if (user.local.game == 'Overwatch') { %>
+					<div class = "game_pic">
+						<img src="images/overwatch_logo.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>Overwatch</p>
+					</div>
+					<% } %>
+					<% if (user.local.game == 'Dota2') { %>
+					<div class = "game_pic">
+						<img src="images/dota2.jpg" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>Dota2</p>
+					</div>
+					<% } %>
+					<% if (user.local.game == 'League of Legends') { %>
 					<div class = "game_pic">
 						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
 						<br>
 					</div>	
 					<div class = "description">
-						<p>League of Legends</p>
-					
+						<p>Dota2</p>
 					</div>
+					<% } %>	
+					
+					
+					
 				</div>
-		
 			</div>
 		</section>
 	</div>

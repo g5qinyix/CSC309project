@@ -267,8 +267,7 @@ module.exports = function(app, passport) {
 		var gameName = req.param('gamename');
 		var cost = req.param('cost');
 		console.log(gameName);
-		User.find({'local.game' : gameName, 'local.occupation':'coach', 'local.cost':
-                  { $gt: value1, $lt: value2 } }, function(err, coach) {
+		User.find({'local.game' : gameName, 'local.occupation':'coach'}, function(err, coach) {
 		  if (err) return next(err)
 		  else {
 		    res.render('searchresult.ejs', {
