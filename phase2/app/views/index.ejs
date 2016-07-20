@@ -10,7 +10,7 @@
 	<header>
 		<nav>
 			<ul id = "nav"> 
-				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:80px;height:40px"></a></li>
+				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:100px;height:40px"></a></li>
 				<li><a>Games</a>
                     <ul id="subnav">
 						<li><a href='/game/lol'>League of Legends</a></li>
@@ -26,228 +26,78 @@
 		</nav>
 	</header>
 	<section class="wrapper">
+	
 		<!--the title-->
+
 		<section class="banner" id="panel-home">
 			<div class="inner">
 				<h1>BeMaster!</h1>
 			</div>
 		</section>
+
 	   <section class="section">
-            <a href="#"><h3> League of Legends</h3><a>
-            <br>
-            <div class="col-md-3">
+            <a href="#"><h3> Dota2</h3><a>
+            <br>  		
+		    <% users.forEach(function(user) { %>
+			<% if (user.local.game == 'Dota2') { %>
+			<div class="col-md-3">
                 <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
+                "../images/dota2_user.jpg">		
+				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
             </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
+			<% } %>
+			<% }); %>
+            	
         </section>
+	   
         <section class="section">
             <a href="#"><h3>Overwatch</h3><a>
             <br>
-            <div class="col-md-3">
+			<% users.forEach(function(user) { %>
+			<% if (user.local.game == 'Overwatch') { %>
+			<div class="col-md-3">
                 <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
+                "../images/overwatch_user.png">		
+				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
             </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
+			<% } %>
+			<% }); %>
+            
         </section>
-        <section class="section">
-            <a href="#"><h3> Dota2</h3><a>
-            <br>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
-        </section>
+		
+		
         <section class="section">
             <a href="#"><h3> CS:GO</h3><a>
             <br>
-            <div class="col-md-3">
+			<% users.forEach(function(user) { %>
+			<% if (user.local.game == 'CS:go') { %>
+			<div class="col-md-3">
                 <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
+                "../images/csgo_user.jpeg">		
+				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
             </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
+			<% } %>
+			<% }); %>
+            
         </section>
+		
+		
+        <section class="section">
+            <a href="#"><h3> League of Legends</h3><a>
+            <br>
+			<% users.forEach(function(user) { %>
+			<% if (user.local.game == 'League of Legends') { %>
+			<div class="col-md-3">
+                <img class="img-responsive" src=
+                "../images/lol_user.jpg">		
+				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
+            </div>
+			<% } %>
+			<% }); %>
+            
+        </section>
+		
+		
     </section>
 </body>	
 </html>

@@ -10,7 +10,7 @@
 	<header>
 		<nav>
 			<ul id = "nav"> 
-				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:80px;height:40px"></a></li>  				
+				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:100px;height:40px"></a></li>  				
 				<li><a>Games</a>
                     <ul id="subnav">
 						<li><a href='/game/lol'>League of Legends</a></li>
@@ -21,7 +21,7 @@
                 </li>
 				<li><a href="/search">Find a Coach</a></li>
 				<li class="usersection"><a href="/logout">Log Out</a></li>
-				<li class="username"><a href="/profile"> Hi <%= user.local.nickname%></a></li>
+				<li class="username"><a href="/profile"> Hi <%=users.user.local.nickname%></a></li>
 			</ul>
 		</nav>   
 	</header>
@@ -33,220 +33,19 @@
 			</div>
 		</section>
 	   <section class="section">
-            <a href="#"><h3> League of Legends</h3><a>
+            <a href="#"><h3><%=users.user.local.game%></h3><a>
             <br>
-            <div class="col-md-3">
+            <section class="section">
+          <% users.coachlist.forEach(function(user) { %>
+			<div class="col-md-3">
                 <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
+                "../images/person.gif">		
+				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
             </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
-        </section>
-        <section class="section">
-            <a href="#"><h3>Overwatch</h3><a>
-            <br>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
-        </section>
-        <section class="section">
-            <a href="#"><h3> Dota2</h3><a>
-            <br>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
-        </section>
-        <section class="section">
-            <a href="#"><h3> CS:GO</h3><a>
-            <br>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>Noah</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-               "../images/person.gif">
-                <h2>Liam</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>Mason</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded" src=
-                "../images/person.gif">
-                <h2>XXX</h2>
-            </div>
-            <div class="col-md-3">
-                <img class="img-responsive" src=
-                "../images/person.gif">
-                <h2>A title</h2>
-            </div>
+			<% }); %>
+             		
+		
+			</section>
         </section>
     </section>
 </body>	
