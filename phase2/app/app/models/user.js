@@ -13,7 +13,8 @@ var userSchema = mongoose.Schema({
         location     : String,
         occupation   : String,
         game         : String,
-        rate         : String     
+        rate         : String,
+        cost         : String
     },
     
     facebook         : {
