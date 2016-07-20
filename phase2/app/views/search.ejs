@@ -1,0 +1,125 @@
+<!-- views/search.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/search.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>BeMaster</title>
+</head>
+<body>
+	<header>
+		<nav>
+			<ul id = "nav"> 
+				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:80px;height:40px"></a></li>  				
+				<li><a>Games</a>
+                    <ul id="subnav">
+						<li><a href='/game/lol'>League of Legends</a></li>
+                        <li><a href="/game/overwatch">Overwatch</a></li>
+                        <li><a href="/game/dota2">Dota2</a></li>
+                        <li><a href="/game/csgo">CS:GO</a></li>
+                    </ul>
+                </li>
+				<li><a href="/search">Find a Coach</a></li>
+				<li class="usersection"><a href="/logout">Log Out</a></li>
+				<li class="username"><a href="/profile"> Hi <%= user.local.nickname%></a></li>
+			</ul>
+		</nav>   
+	</header>
+    
+	<main>
+    <h2>Search for coaches</h2>
+		
+	<form action="/search" method="post">
+		<div class="form_element">
+			<label id="gamename">
+				<span class="label">Please select a game:</span>
+				<select name="gamename">
+					<option>League of Legends</option>
+					<option>Overwatch</option>
+					<option>Dota2</option>
+					<option>CS:GO</option>
+				</select>
+			</label>
+		</div>
+		
+		<div class="form_element">
+			<label id="cost">
+				<span class="label">Please select cost rate:</span>
+				<select name="cost">
+					<option>Free</option>
+					<option>$1-$5</option>
+					<option>$6-$10</option>
+					<option>$11-$20</option>
+					<option>$21-$30</option>
+					<option>>$30</option>
+					<option>all</option>
+				  </select>
+			</label>
+		</div>
+		  
+		<input id="searchButton" type="submit" value="Search">
+	</form>
+
+	<table id="search-result">
+	  <tr>
+		<th>Coach</th>
+		<th>Location</th>
+		<th>Language</th>
+		<th>Rating</th>
+		<th>Cost</th>
+	  </tr>
+	  <tr>
+		<td><a href="/Frankenstain">Frankenstain</a></td>
+		<td>England</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>$50</td>
+	  </tr>
+	  <tr>
+		<td><a href="/Dracula">Dracula</a></td>
+		<td>USA</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>$50</td>
+	  </tr>
+	  <tr>
+		<td><a href="/SherlockHolmes">Sherlock Holmes</a></td>
+		<td>EU</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>$40</td>
+	  </tr>
+	  <tr>
+		<td><a href="/Jack">Jack</a></td>
+		<td>Canada</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>free</td>
+	  </tr>
+	  <tr>
+		<td><a href="/Tianlun">Tianlun</a></td>
+		<td>Canada</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>free</td>
+	  </tr>
+	  <tr>
+		<td><a href="/Albert">Albert</a></td>
+		<td>Canada</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>free</td>
+	  </tr>
+	  <tr>
+		<td><a href="/Albert">WeiJun</a></td>
+		<td>Canada</td>
+		<td>English</td>
+		<td><img src="../images/rating.png" class = "rating"></td>
+		<td>free</td>
+	  </tr>
+	</table>
+	
+	</main>
+  
+</body>
+</html>
