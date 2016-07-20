@@ -5,14 +5,15 @@
 var User = require('../app/models/user');
 
 module.exports = function(app, passport) {
-    
-	
-	
 	// =====================================
 	// HOME PAGE (every clients can access this) ========
 	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index.ejs'); // load the index.ejs file
+        User.find({ "local.occupation": "coach"},function(err, users){
+            res.render("index.ejs", {
+                users : users
+            })
+        });  
 	});
     
 	
@@ -91,11 +92,10 @@ module.exports = function(app, passport) {
 	// process the coachsignup form
 	app.post('/coachsignup', passport.authenticate('local-signup-coach', {
 		successRedirect : '/home', // redirect to the secure profile section
-		failureRedirect : '/studentsignup', // redirect back to the signup page if there is an error
+		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
 
-	
 	
 	// =====================================
 	// PROFILE SECTION =========================
@@ -121,9 +121,19 @@ module.exports = function(app, passport) {
 	
 	// Returned to homepage
 	app.get('/home', isLoggedIn, function(req, res) {
-	res.render('home.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
+        users = {};
+        users['user'] = req.user;
+        console.log(users.user);
+        User.find({ "local.occupation": "coach", "local.game":req.user.local.game},function(err, user){
+            if (err) {
+                return next(err);
+                //code
+            }
+            users['coachlist'] = user;
+            res.render("home.ejs", {
+                users : users
+            });
+        });
 	});
 	
 	
@@ -146,6 +156,10 @@ module.exports = function(app, passport) {
 		
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
+            if (err) {
+                return next(err);
+                //code
+            }
             if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
@@ -181,6 +195,10 @@ module.exports = function(app, passport) {
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
+            if (err) {
+                return next(err);
+                //code
+            }
 			if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
@@ -206,32 +224,9 @@ module.exports = function(app, passport) {
 			});
 		});														
 	});
-
 	
-	
-	// =====================================
-	// GAMES ==============================
-	// =====================================
-
-	// we will want this protected so you have to be logged in to visit
-	// we will use route middleware to verify this (the isLoggedIn function)
-	app.get('/profile', isLoggedIn, function(req, res){
-		//handle student
-		if (req.user.local.occupation == "student") {
-            res.render('studentprofile.ejs', {
-			user : req.user // get the user out of session and pass to template
-			});
-        }
-		//handle coach
-		else{
-			res.render('coachprofile.ejs', {
-			user : req.user // get the user out of session and pass to template
-			});
-			
-		}
-		
-	});
-	
+	    
+    
 	// =====================================
 	// Games ==============================
 	// =====================================
@@ -254,19 +249,12 @@ module.exports = function(app, passport) {
 	});
 	
 	app.get('/game/overwatch', function(req, res) {
-	res.render('overwatch.ejs', {
+        res.render('overwatch.ejs', {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
-	
-	
-
-	//Returned to homepage
-	app.get('/home', isLoggedIn, function(req, res) {
-	res.render('home.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
-	});
+    
+    
 
 
 	// =====================================
@@ -276,16 +264,36 @@ module.exports = function(app, passport) {
 		req.logout();
 		res.redirect('/');
 	});
+    
+    
+    
+    
+    
+    // =====================================
+	// view a user with userid==========================
+	// =====================================
+    app.get('/users/*', function(req, res) {
+        var url = req.url;
+        var id = url.substring();
+        cos
+        //find this user from database
+        res.render('viewcoach.ejs',{
+            user:req.user
+        })
+        
+    });
+       
 };
 
-
+   
+    
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
 		return next();
-
+    else
 	// if they aren't redirect them to the home page
 	res.redirect('/');
 }

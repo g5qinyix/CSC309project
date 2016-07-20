@@ -119,7 +119,7 @@ module.exports = function(passport) {
                 newUser.local.location = req.param('location');
                 newUser.local.occupation = 'coach';
                 newUser.local.game = req.param('game');
-                newUser.local.rate = req.param('rate');
+                newUser.local.cost = req.param('cost');
                 // save the user
                 newUser.save(function(err) {
                     if (err)
