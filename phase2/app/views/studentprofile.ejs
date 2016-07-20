@@ -30,7 +30,18 @@
 		<section class="information">
 			<div class = "profile">
 				<div class = "photo">
-					<img src="/images/csgo_user.jpeg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<% if (user.local.game == 'CS:GO') { %>
+					<img src="../images/csgo_user.jpeg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
+					<% if (user.local.game == 'Overwatch') { %>
+					<img src="../images/overwatch.png" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
+					<% if (user.local.game == 'League of Legends') { %>
+					<img src="../images/lol_user.jpg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
+					<% if (user.local.game == 'Dota2') { %>
+					<img src="../images/dota2_user.jpg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>	
 				</div>
 				<div class="g_information">
 					<h2><%= user.local.nickname %></h2>

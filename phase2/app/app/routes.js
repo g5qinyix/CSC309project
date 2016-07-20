@@ -19,6 +19,7 @@ module.exports = function(app, passport) {
         });  
 	});
 
+    
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -36,12 +37,12 @@ module.exports = function(app, passport) {
 		failureFlash : true // allow flash messages
 	}));
 
+    
+    
 	// =====================================
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
-	
-	
 	app.get('/signup', function(req, res) {
 
 		// render the page and pass in any flash data if it exists
@@ -57,8 +58,6 @@ module.exports = function(app, passport) {
 	app.get('/coachsignup', function(req, res){
 		res.render('coachsignup.ejs', { message: req.flash('signupMessage') });
 	});
-	
-	
 	
 	// process the studentsignup form
 	app.post('/studentsignup', passport.authenticate('local-signup-student', {
@@ -77,6 +76,7 @@ module.exports = function(app, passport) {
 	}));
 
 	
+    
     
 	// =====================================
 	// PROFILE SECTION =========================
@@ -117,6 +117,7 @@ module.exports = function(app, passport) {
 	
 	
 	
+    
 	// =====================================
 	// EDIT PROFILE=========================
 	// =====================================
@@ -202,7 +203,6 @@ module.exports = function(app, passport) {
             if (req.param('rate')) {
                 user.local.rate = req.param('rate');
             }
-
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -230,17 +230,20 @@ module.exports = function(app, passport) {
     
     
     // =====================================
-	// view a user with userid==========================
+	// student view coach information=======
 	// =====================================
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
-        var id = url.substring();
-        cos
-        //find this user from database
-        res.render('viewcoach.ejs',{
-            user:req.user
-        })
-        
+        var id = url.substring(7);
+        //find this user from database    
+        User.findOne({ '_id' :  id }, function(err, user) {
+            if (err) {
+                return next(err);
+            }
+            res.render('view coach', {
+                coach : coach
+            })    
+        });     
     });
        
 
@@ -257,16 +260,15 @@ module.exports = function(app, passport) {
 			user: req.user
 		});
 	});
-	
-
-    
+	   
 	// process the search form
 	app.post('/search', function(req, res){
 		var email = req.user.local.email;
 		var gameName = req.param('gamename');
 		var cost = req.param('cost');
 		console.log(gameName);
-		User.find({'local.game' : gameName, 'local.occupation':'coach' }, function(err, coach) {
+		User.find({'local.game' : gameName, 'local.occupation':'coach', 'local.cost':
+                  { $gt: value1, $lt: value2 } }, function(err, coach) {
 		  if (err) return next(err)
 		  else {
 		    res.render('searchresult.ejs', {

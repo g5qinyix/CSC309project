@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-	<link rel="stylesheet" href="css/search.css">
+	<link rel="stylesheet" href="/css/search.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BeMaster</title>
 </head>
@@ -44,16 +44,16 @@
 		
 		<div class="form_element">
 			<label id="cost">
-				<span class="label">Please select cost rate:</span>
+				<span class="label">Please select cost rate $/hour:</span>
 				<select name="cost">
 					<option>Free</option>
-					<option>$1-$5</option>
+					<option>$1-5$</option>
 					<option>$6-$10</option>
 					<option>$11-$20</option>
 					<option>$21-$30</option>
 					<option>>$30</option>
 					<option>all</option>
-				  </select>
+				</select>
 			</label>
 		</div>
 		  
@@ -65,12 +65,12 @@
 		<th>Coach</th>
 		<th>Location</th>
 		<th>Rate</th>
-		<th>Cost</th>
+		<th>Cost $/hr</th>
 	</tr>
 	  
 	    <% coaches.forEach(function(coach) { %>
 		<tr>
-			<td><%= coach.local.nickname %></td>
+			<td><a><%= coach.local.nickname %></a></td>
 			<td><%= coach.local.location %></td>
 			<td><%= coach.local.rate %></td>
 			<td><%= coach.local.cost %></td>
