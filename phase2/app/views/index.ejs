@@ -28,29 +28,33 @@
 		</section>
 
 	   <section class="section">
-            <a href="#"><h3> Dota2</h3><a>
+            <a style="text-decoration:none" href="#"><h3> Dota2</h3><a>
             <br>  		
 		    <% users.forEach(function(user) { %>
 			<% if (user.local.game == 'Dota2') { %>
 			<div class="col-md-3">
                 <img class="img-responsive" src=
                 "../images/dota2_user.jpg">		
-				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
+				<a style="text-decoration:none;font-family:Comic Sans MS,Gadget,sans-serif;font-size:20px;
+				color:rgb(100, 65, 165)"
+				   href="/users/<%= user._id %>"><%=user.local.nickname%></a>
             </div>
 			<% } %>
 			<% }); %>
             	
         </section>
-	   
+ 
         <section class="section">
-            <a href="#"><h3>Overwatch</h3><a>
+            <a style="text-decoration:none" href="#"><h3>Overwatch</h3><a>
             <br>
 			<% users.forEach(function(user) { %>
 			<% if (user.local.game == 'Overwatch') { %>
 			<div class="col-md-3">
                 <img class="img-responsive" src=
                 "../images/overwatch_user.png">		
-				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
+				<a style="text-decoration:none;font-family:Comic Sans MS,Gadget,sans-serif;font-size:20px;
+				color:rgb(100, 65, 165)"
+				   href="/users/<%=user._id %>"><%=user.local.nickname%></a>
             </div>
 			<% } %>
 			<% }); %>
@@ -59,14 +63,16 @@
 		
 		
         <section class="section">
-            <a href="#"><h3> CS:GO</h3><a>
+            <a style="text-decoration:none" href="#"><h3> CS:GO</h3><a>
             <br>
 			<% users.forEach(function(user) { %>
-			<% if (user.local.game == 'CS:go') { %>
+			<% if (user.local.game == 'CS:GO') { %>
 			<div class="col-md-3">
                 <img class="img-responsive" src=
                 "../images/csgo_user.jpeg">		
-				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
+				<a style="text-decoration:none;font-family:Comic Sans MS,Gadget,sans-serif;font-size:20px;
+				color:rgb(100, 65, 165)"
+				   href="/users/<%= user._id %>"><%=user.local.nickname%></a>
             </div>
 			<% } %>
 			<% }); %>
@@ -75,14 +81,16 @@
 		
 		
         <section class="section">
-            <a href="#"><h3> League of Legends</h3><a>
+            <a style="text-decoration:none" href="#"><h3> League of Legends</h3><a>
             <br>
 			<% users.forEach(function(user) { %>
 			<% if (user.local.game == 'League of Legends') { %>
 			<div class="col-md-3">
                 <img class="img-responsive" src=
                 "../images/lol_user.jpg">		
-				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
+				<a style="text-decoration:none;font-family:Comic Sans MS,Gadget,sans-serif;font-size:20px;
+				color:rgb(100, 65, 165)"
+				   href="/users/<%= user._id %>"><%=user.local.nickname%></a>
             </div>
 			<% } %>
 			<% }); %>

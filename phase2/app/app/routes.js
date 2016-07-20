@@ -36,6 +36,26 @@ module.exports = function(app, passport) {
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+    
+    
+    
+    // =====================================
+	// Facebook login ==============================
+	// =====================================
+	// =====================================
+	// FACEBOOK ROUTES =====================
+	// =====================================
+	// route for facebook authentication and login
+	app.get('/BeMaster/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+	// handle the callback after facebook has authenticated the user
+	app.get('/BeMaster/facebook/callback',
+		passport.authenticate('facebook', {
+			successRedirect : '/profile',
+			failureRedirect : '/login'
+		}));
+
+    
 
     
     
@@ -85,11 +105,16 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res){
 		//handle student
+        
 		if (req.user.local.occupation == "student") {
-            res.render('studentprofile.ejs', {
-			user : req.user // get the user out of session and pass to template
-			});
+            User.find({'local.game': req.user.local.game, 'local.occupation': 'coach'}, function(err, users){
+                res.render('studentprofile.ejs', {
+                    coaches: users,
+                    user : req.user 
+                    });	
+            });
         }
+        
 		//handle coach
 		else{
 			res.render('coachprofile.ejs', {
@@ -240,9 +265,7 @@ module.exports = function(app, passport) {
             if (err) {
                 return next(err);
             }
-            res.render('view coach', {
-                coach : coach
-            })    
+          
         });     
     });
        
@@ -280,7 +303,7 @@ module.exports = function(app, passport) {
 
 };
 
-   
+
     
 // route middleware to make sure
 function isLoggedIn(req, res, next) {

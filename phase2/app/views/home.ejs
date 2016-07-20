@@ -30,9 +30,23 @@
             <section class="section">
           <% users.coachlist.forEach(function(user) { %>
 			<div class="col-md-3">
+				<% if (user.local.game == 'League of Legends') { %>
                 <img class="img-responsive" src=
-                "../images/person.gif">		
-				<h2><a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
+                "../images/lol_user.jpg">
+				<% } %>
+				<% if (user.local.game == 'Dota2') { %>
+                <img class="img-responsive" src=
+                "../images/dota2_user.jpg">
+				<% } %>
+				<% if (user.local.game == 'Overwatch') { %>
+                <img class="img-responsive" src=
+                "../images/overwatch_user.png">
+				<% } %>
+				<% if (user.local.game == 'CS:GO') { %>
+                <img class="img-responsive" src=
+                "../images/csgo_user.jpeg">
+				<% } %>	
+				<a href="/users/<%= user._id %>"><%=user.local.nickname %></a></h2>
             </div>
 			<% }); %>
              		

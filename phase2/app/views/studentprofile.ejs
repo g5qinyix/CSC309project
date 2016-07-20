@@ -11,14 +11,6 @@
 		<nav>
 			<ul id = "nav">
 				<li class="logo"><a href="/home"><img src="/images/logo.png" style="width:100px;height:40px"></a></li>
-				<li><a href="#panel-in">Games</a>
-                    <ul id="subnav">
-						<li><a href='/game/lol'>League of Legends</a></li>
-                        <li><a href="/game/overwatch">Overwatch</a></li>
-                        <li><a href="/game/dota2">Dota2</a></li>
-                        <li><a href="/game/csgo">CS:GO</a></li>
-                    </ul>
-                </li>
 				<li><a href="/search">Find a Coach</a></li>
 				<li><a href="/follow">Follow</a>
 				<li><a href="/message">Message</a>
@@ -30,17 +22,20 @@
 		<section class="information">
 			<div class = "profile">
 				<div class = "photo">
+					<% if (user.local.game == null) { %>
+					<img src="../images/person.gif" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
 					<% if (user.local.game == 'CS:GO') { %>
-					<img src="../images/csgo_user.jpeg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<img src="../images/csgo_user.jpeg" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
 					<% } %>
 					<% if (user.local.game == 'Overwatch') { %>
-					<img src="../images/overwatch.png" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<img src="../images/overwatch_user.png" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
 					<% } %>
 					<% if (user.local.game == 'League of Legends') { %>
-					<img src="../images/lol_user.jpg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<img src="../images/lol_user.jpg" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
 					<% } %>
 					<% if (user.local.game == 'Dota2') { %>
-					<img src="../images/dota2_user.jpg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<img src="../images/dota2_user.jpg" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
 					<% } %>	
 				</div>
 				<div class="g_information">
@@ -51,7 +46,11 @@
 						
 						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
 					</div>
+					
+					<% if (user.local.location != null) { %>
 					<p> <%= user.local.location %>.</p>
+					<% } %>
+					
 				</div>
 				<div class="messager" onclick="location.href='/editstudent'">
 					Edit my profile
@@ -63,7 +62,7 @@
 				<div class="types">
 					<% if (user.local.game == 'CS:GO') { %>
 					<div class = "game_pic">
-						<img src="images/cs.png" style="width: 50px; height: 50px">
+						<img src="/images/cs.png" style="width: 50px; height: 50px">
 						<br>
 					</div>	
 					<div class = "description">
@@ -72,7 +71,7 @@
 					<% } %>
 					<% if (user.local.game == 'Overwatch') { %>
 					<div class = "game_pic">
-						<img src="images/overwatch_logo.png" style="width: 50px; height: 50px">
+						<img src="images/overwatch.jpg" style="width: 50px; height: 50px">
 						<br>
 					</div>	
 					<div class = "description">
@@ -90,18 +89,50 @@
 					<% } %>
 					<% if (user.local.game == 'League of Legends') { %>
 					<div class = "game_pic">
-						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
+						<img src="images/lol.png" style="width: 50px; height: 50px">
 						<br>
 					</div>	
 					<div class = "description">
 						<p>Dota2</p>
 					</div>
-					<% } %>	
-					
-					
-					
-				</div>
-			</div>
+					<% } %>									
+				</div>	
+			</div>	
+		</section>
+		<section class="others_life">
+			<section class="section">
+		<% if (user.local.game != null) { %>	
+			<h3 style="font-size:20px;color:rgb(100, 65, 165)">
+			Top <%=user.local.game%> Coaches For you:</h3>
+            <br>
+			<% coaches.forEach(function(coach) { %>
+			<div class="col-md-3">
+				<% if (coach.local.game == 'League of Legends') { %>
+                <img class="img-responsive-coach" src=
+                "../images/lol_user.jpg">
+				<% } %>
+				<% if (coach.local.game == 'Overwatch') { %>
+                <img class="img-responsive-coach" src=
+                "../images/overwatch_user.png">
+				<% } %>
+				<% if (coach.local.game == 'CS:GO') { %>
+                <img class="img-responsive-coach" src=
+                "../images/csgo_user.jpeg">
+				<% } %>
+				<% if (coach.local.game == 'Dota2') { %>
+                <img class="img-responsive-coach" src=
+                "../images/dota2_user.jpg">
+				<% } %>
+				<a style="text-decoration:none;font-family:Comic Sans MS,Gadget,sans-serif;font-size:20px;
+				color:rgb(100, 65, 165)"
+				href="/users/<%= coach._id %>"><%=coach.local.nickname%>: $<%=coach.local.cost%>/hour</a>
+			
+            </div>
+			<% }); %>
+		<% } %>
+         </section>
+			
+			
 		</section>
 	</div>
 </html>
