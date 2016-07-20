@@ -232,7 +232,7 @@ module.exports = function(app, passport) {
     // =====================================
 	// view a user with userid==========================
 	// =====================================
-    app.get('/users/*', function(req, res) {
+    app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring();
         cos
@@ -252,25 +252,25 @@ module.exports = function(app, passport) {
 	
 	//show the search form
 	
-	app.get('/search', isLoggedIn,function(req, res){
+	app.get('/search', checkLogin,function(req, res){
 		res.render('search.ejs' ,{
 			user: req.user
 		});
 	});
 	
-	
+
+    
 	// process the search form
 	app.post('/search', function(req, res){
 		var email = req.user.local.email;
 		var gameName = req.param('gamename');
 		var cost = req.param('cost');
 		console.log(gameName);
-		User.findOne({'local.game' : gameName }, function(err, coach) {
+		User.find({'local.game' : gameName, 'local.occupation':'coach' }, function(err, coach) {
 		  if (err) return next(err)
 		  else {
-			console.log(coach);
 		    res.render('searchresult.ejs', {
-			coach: coach,
+			coaches: coach,
 			user: req.user
 		    });
 		  }	
@@ -286,8 +286,13 @@ function isLoggedIn(req, res, next) {
 
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
-		return next();
-    else
-	// if they aren't redirect them to the home page
+		return next();// if they aren't redirect them to the home page
 	res.redirect('/');
+}
+
+
+function checkLogin(req, res, next) {
+   if (req.isAuthenticated())
+        return next();
+    res.redirect('/login');
 }
