@@ -73,13 +73,9 @@ body{
     text-decoration:none;
     display:block;
     padding:8px 14px;
-    /*
-    border-radius:10px; 
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    text-shadow:0 2px 2px rgba(0,0,0, .7);
-    */
 }
+
+
 
 /* selected menu element */
 #nav .current a, #nav li:hover > a {
@@ -256,7 +252,7 @@ input{
     text-align: center;
 }
 
-.img-responsive{
+.img-responsive-user{
     max-width: 100%;
     height: auto;
     border-radius: 50%;
@@ -282,7 +278,7 @@ input{
     background: white;
     text-align: center;
     box-sizing: border-box;
-    margin: 1% 1% auto;;
+    margin: 6% 1% auto;;
     text-align: left;
     background: white;
 }
@@ -413,3 +409,35 @@ h4{
 	width: 70%;
 	margin: 0 auto;
 }
+
+
+/*show recomendation for student */
+.section {
+  position: relative;
+  padding-left: 10%;
+  padding-right: 10%;
+  overflow: auto;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+
+
+.col-md-3{
+	position: relative;
+  	min-height: 1px;
+ 	padding-left: 2%;
+  	padding-right: 2%;
+  	width: 20%;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+}
+
+.img-responsive-coach{
+	display: block;
+	max-width: 100%;
+	height: auto;
+    border-radius: 50%;
+}
+

@@ -11,15 +11,6 @@
 		<nav>
 			<ul id = "nav">
 				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:100px;height:40px"></a></li>
-			
-				<li><a>Games</a>
-                    <ul id="subnav">
-                        <li><a href='/game/lol'>League of Legends</a></li>
-                        <li><a href="/game/overwatch">Overwatch</a></li>
-                        <li><a href="/game/dota2">Dota2</a></li>
-                        <li><a href="/game/csgo">CS:GO</a></li>
-                    </ul>
-                </li>
 				<li><a href="/search">Find a Coach</a></li>
 				<li><a href="/follow">Follow</a>
 				<li><a href="/message">Message</a>
@@ -32,14 +23,24 @@
 		<section class="information">
 			<div class = "profile">
 				<div class = "photo">
-					<img src="../images/csgo_user.jpeg" class="img-responsive" alt="Who is that" style="width:150px;height:150px;">
+					<% if (user.local.game == 'CS:GO') { %>
+					<img src="../images/csgo_user.jpeg" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
+					<% if (user.local.game == 'Overwatch') { %>
+					<img src="../images/overwatch_user.png" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
+					<% if (user.local.game == 'League of Legends') { %>
+					<img src="../images/lol_user.jpg" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
+					<% if (user.local.game == 'Dota2') { %>
+					<img src="../images/dota2_user.jpg" class="img-responsive-user" alt="Who is that" style="width:150px;height:150px;">
+					<% } %>
 				</div>
 				<div class="g_information">
 					<h2><%= user.local.nickname %></h2>
 					<p> <span style="font-weight:bold">Welcome </span> <%= user.local.nickname %> !</p>
 					<p> <span style="font-weight:bold">Your Account: </span> <%= user.local.email %>.</p>
-					<p> <span style="font-weight:bold">Your teaching game:</span><%= user.local.game %></p>
-					<p> <span style="font-weight:bold">Rate:</span>$<%= user.local.rate %></p>
+					<p> <span style="font-weight:bold">Your Cost: </span>$<%= user.local.cost %></p>
 					<div class="location">
 						<img src="../images/adress-logo.png" class="address" style="width:20px;height:20px;">
 					</div>
@@ -49,18 +50,46 @@
 					Edit my profile
 				</div>
 			</div>
-
+            
 			<div class="service">
 				<h3 class = "title">Games</h3>
 				<div class="types">
+					<% if (user.local.game == 'CS:GO') { %>
+					<div class = "game_pic">
+						<img src="images/cs.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>CS:GO</p>
+					</div>
+					<% } %>
+					<% if (user.local.game == 'Overwatch') { %>
+					<div class = "game_pic">
+						<img src="images/overwatch_logo.png" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>Overwatch</p>
+					</div>
+					<% } %>
+					<% if (user.local.game == 'Dota2') { %>
+					<div class = "game_pic">
+						<img src="images/dota2.jpg" style="width: 50px; height: 50px">
+						<br>
+					</div>	
+					<div class = "description">
+						<p>Dota2</p>
+					</div>
+					<% } %>
+					<% if (user.local.game == 'League of Legends') { %>
 					<div class = "game_pic">
 						<img src="images/LoL_logo.png" style="width: 50px; height: 50px">
 						<br>
 					</div>	
 					<div class = "description">
-						<p>League of Legends</p>
-					
+						<p>Dota2</p>
 					</div>
+					<% } %>	
 				</div>
 		
 			</div>

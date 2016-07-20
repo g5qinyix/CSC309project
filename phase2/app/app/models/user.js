@@ -14,7 +14,8 @@ var userSchema = mongoose.Schema({
         occupation   : String,
         game         : String,
         rate         : String,
-        cost         : String
+        cost         : String,
+        follow       : []
 
     },
     
@@ -25,10 +26,6 @@ var userSchema = mongoose.Schema({
         name         : String
     }
 });
-
-
-
-
 
 // methods ======================
 // generating a hash
