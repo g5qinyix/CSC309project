@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
     
     
     // =====================================
-	// Facebook login ==============================
+	// Facebook login ======================
 	// =====================================
 	// =====================================
 	// FACEBOOK ROUTES =====================
@@ -100,7 +100,7 @@ module.exports = function(app, passport) {
     
     
 	// =====================================
-	// PROFILE SECTION =========================
+	// PROFILE SECTION =====================
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
@@ -281,28 +281,61 @@ module.exports = function(app, passport) {
 	
 	app.get('/search', checkLogin,function(req, res){
 		res.render('search.ejs' ,{
-			user: req.user
-		});
+			user: req.user,
+			coaches: null,
+			gameName: null,
+			cost: null
+		})
 	});
 	   
 	// process the search form
 	app.post('/search', function(req, res){
-		var email = req.user.local.email;
 		var gameName = req.param('gamename');
 		var cost = req.param('cost');
-		console.log(gameName);
-		User.find({'local.game' : gameName, 'local.occupation':'coach'}, function(err, coach) {
+		var lowlimit;
+		var highlimit;
+		
+		switch(true){
+  			case cost == 'free':
+				lowlimit = 0;
+				highlimit = 0;
+				break;
+			case cost == '$1-$10':
+				lowlimit = 1;
+				highlimit = 10;
+				break;
+			case cost == '$11-$20':
+				lowlimit = 11;
+				highlimit = 20;
+				break;
+			case cost == '$21-$30':
+				lowlimit = 21;
+				highlimit = 30;
+				break;
+			case cost == '>$30':
+				lowlimit = 31;
+				highlimit = 99;
+				break;
+			case cost == 'all':
+				lowlimit = 0;
+				highlimit = 99;
+		}
+        console.log(lowlimit);
+		console.log(highlimit);
+		User.find({'local.game' : gameName,
+				  'local.occupation':'coach',
+				  'local.cost': { $gt: lowlimit, $lt: highlimit} }, function(err, coaches) {
 		  if (err) return next(err)
 		  else {
-		    res.render('searchresult.ejs', {
-			coaches: coach,
-			user: req.user
+		    res.render('search.ejs', {
+			coaches: coaches,
+			user: req.user,
+			gameName: gameName,
+			cost: cost
 		    });
 		  }	
-		});							
+		});						
 	});
-    
-    
     
          
 	// =====================================
@@ -402,14 +435,11 @@ module.exports = function(app, passport) {
             res.render('ejs',{
                 conservations:conservations
             });
-        });   
-     
+        });    
     });
-    
 };
 
 
-    
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 

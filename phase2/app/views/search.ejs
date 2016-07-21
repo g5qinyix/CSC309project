@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-	<link rel="stylesheet" href="css/search.css">
+	<link rel="stylesheet" href="/css/search.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BeMaster</title>
 </head>
@@ -21,7 +21,11 @@
                 </li>
 				<li><a href="/search">Find a Coach</a></li>
 				<li class="usersection"><a href="/logout">Log Out</a></li>
-				<li class="username"><a href="/profile"> Hi <%= user.local.nickname%></a></li>
+				<li class="username"><a href="/profile"> Hi
+				<% if (user) { %>
+				<%= user.local.nickname%>
+				<% } %>
+				</a></li>
 			</ul>
 		</nav>   
 	</header>
@@ -38,48 +42,58 @@
 					<option>Overwatch</option>
 					<option>Dota2</option>
 					<option>CS:GO</option>
+					<% if (gameName != null) { %>
+					<option selected="selected"><%=gameName%></option>
+					<% } %>
 				</select>
 			</label>
 		</div>
 		
 		<div class="form_element">
 			<label id="cost">
-				<span class="label">Please select cost rate:</span>
+				<span class="label">Please select cost rate $/hour:</span>
 				<select name="cost">
-					<option>Free</option>
-					<option>$1-$5</option>
-					<option>$6-$10</option>
+					<option>free</option>
+					<option>$1-$10</option>
 					<option>$11-$20</option>
 					<option>$21-$30</option>
 					<option>>$30</option>
 					<option>all</option>
-				  </select>
+					<% if (cost != null) { %>
+					<option selected="selected"><%=cost%></option>
+					<% } %>
+				</select>
 			</label>
 		</div>
 		  
 		<input id="searchButton" type="submit" value="Search">
 	</form>
+	
+	<% if (gameName) { %>
+	  <h2>Search result for game: <%= gameName %></h2>
+	<% } %>
+	<% if (cost) { %>
+	  <h3>cost range: <%= cost %></h3>
+	<% } %>
 
 	<table id="search-result">
 	  <tr>
 		<th>Coach</th>
 		<th>Location</th>
-		<th>Rating</th>
+		<th>Rate</th>
 		<th>Cost $/hr</th>
-	  </tr>
-	  <tr>
-		<td><a href="/Frankenstain">Frankenstain</a></td>
-		<td>England</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>$50</td>
-	  </tr>
-	  <tr>
-		<td><a href="/Dracula">Dracula</a></td>
-		<td>USA</td>
-		<td><img src="../images/rating.png" class = "rating"></td>
-		<td>$50</td>
-	  </tr>
-	  
+	</tr>
+	  <% if (coaches) { %>
+	    <% coaches.forEach(function(coach) { %>
+	      <tr>
+			<td><%= coach.local.nickname %></td>
+			<td><%= coach.local.location %></td>
+			<td><%= coach.local.rate %></td>
+			<td><%= coach.local.cost %></td>
+		  </tr>
+	    <% }); %>
+	  <% } %>
+
 	</table>
 	
 	</main>
