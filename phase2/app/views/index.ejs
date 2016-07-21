@@ -4,7 +4,12 @@
 <head>
 	<link rel="stylesheet" href="css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<% if (user == null) { %>
 	<title>BeMaster</title>
+	<% } %>
+	<% if (user != null) { %>
+	<title><%=user.local.nickname%></title>
+	<% } %>
 </head>
 <body>
 	<header>
@@ -12,8 +17,14 @@
 			<ul id = "nav"> 
 				<li class="logo"><a href="/home"><img src="images/logo.png" style="width:100px;height:40px"></a></li>
 				<li><a href="/search">Find a Coach</a></li>
+				<% if (user == null) { %>
 				<li class="usersection"><a href="/signup">Sign Up</a></li>
 				<li class="usersection"><a href="/login">Log In</a></li>
+				<% } %>
+				<% if (user != null) { %>
+				<li class="usersection"><a href="/logout">Log Out</a></li>
+				<li class="username"><a href="/profile"> Hi <%=user.local.nickname%></a></li>
+				<% } %>
 			</ul>
 		</nav>
 	</header>

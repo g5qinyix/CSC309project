@@ -1,12 +1,12 @@
 // app/routes.js
 
 
-
+// import schema for user, comment and message
 var User       		= require('../app/models/user');
+var Comment         = require('../app/models/comment');
+var Message         = require('../app/models/message');
 
 module.exports = function(app, passport) {
-
-
 
 	// =====================================
 	// HOME PAGE (with login links) ========
@@ -14,7 +14,8 @@ module.exports = function(app, passport) {
 	app.get('/', function(req, res) {
         User.find({ "local.occupation": "coach"},function(err, users){
             res.render("index.ejs", {
-                users : users
+                users : users,
+                user: null
             })
         });  
 	});
@@ -104,8 +105,8 @@ module.exports = function(app, passport) {
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res){
-		//handle student
         
+		//handle student  
 		if (req.user.local.occupation == "student") {
             User.find({'local.game': req.user.local.game, 'local.occupation': 'coach'}, function(err, users){
                 res.render('studentprofile.ejs', {
@@ -117,27 +118,27 @@ module.exports = function(app, passport) {
         
 		//handle coach
 		else{
-			res.render('coachprofile.ejs', {
-			user : req.user // get the user out of session and pass to template
-			});	
+            // Coach can view comments to him on profile
+            // get comments from database
+            Comment.find({'userid': req.user._id}, function(err, comments){
+                	res.render('coachprofile.ejs', {
+                        user : req.user,
+                        comments : comments 
+                    });	
+            }); 
 		}	
 	});
 		
+    
+    
 	// Returned to homepage
 	app.get('/home', isLoggedIn, function(req, res) {
-        users = {};
-        users['user'] = req.user;
-        console.log(users.user);
-        User.find({ "local.occupation": "coach", "local.game":req.user.local.game},function(err, user){
-            if (err) {
-                return next(err);
-                //code
-            }
-            users['coachlist'] = user;
-            res.render("home.ejs", {
-                users : users
-            });
-        });
+        User.find({ "local.occupation": "coach"},function(err, users){
+            res.render("index.ejs", {
+                users : users,
+                user: req.user
+            })
+        }); 
 	});
 	
 	
@@ -225,8 +226,8 @@ module.exports = function(app, passport) {
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
-            if (req.param('rate')) {
-                user.local.rate = req.param('rate');
+            if (req.param('cost') != '' ) {
+                user.local.cost = req.param('cost');
             }
 			user.save();
 			//update session
@@ -300,7 +301,111 @@ module.exports = function(app, passport) {
 		  }	
 		});							
 	});
-
+    
+    
+    
+         
+	// =====================================
+	// Comment and rateing system ======================
+	// =====================================
+    
+    // users add comments to coach
+	app.post('/comment/*', isLoggedIn, function(req, res){
+        //get the id of coach to be commented
+        var url = req.url;
+        var coachid = url.substring(9);
+        var content = req.param("comment");
+        var newComment  = new Comment();
+        var date = new Date();
+        newComment.coachid = coachid;
+        newComment.comment.studentid = req.user._id;
+        newComment.comment.name = req.user.local.nickname;
+        newComment.comment.content = content;
+        newComment.comment.date = date.getTime();
+        newComment.save();    
+    });
+    
+    
+    
+    // =====================================
+	// Follow system ======================
+	// =====================================  
+    //student follows a coach
+    app.get('/follow/*', isLoggedIn, function(req, res){
+        var url = req.url;
+        var coachid = url.substring(8);
+        User.findOne({'_id': req.user._id }, function(err, user){
+            if (err) {
+                //code
+            }
+            user.local.follow.push(coachid);
+            user.save();
+        });
+    });
+    
+    //student view follow list 
+    app.get('/viewfollow',isLoggedIn, function(req, res){
+        User.find({'_id': req.user._id}, function(err, coaches){
+            //TODO
+            //TODO
+        });
+        
+    });
+    
+    
+    
+    
+    // =====================================
+	// Message system ======================
+	// =====================================
+    
+    //send a message to a user
+    app.post('/message/*', isLoggedIn, function(req,res){
+        var url = req.url;
+        var receiverid = url.substring(9);
+        var date = new Date();
+        var newMessage = new Message();
+        newMessage.sender.id = req.user._id;
+        newMessage.receiver.id = receiverid;
+        newMessage.sender.content = req.param("content");
+        newMessage.receiver.content = req.param("content");
+        newMessage.sender.date=date.getTime();
+        newMessage.receiver.date=date.getTime();
+        newMessage.receiver.status=0;
+        newMessage.save();   
+    });
+    //user view contacter list
+    app.get('/viewmessage', isLoggedIn, function(req, res){
+         Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+            Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                for(i=0; i<senders.length; i++){
+                    if (receivers.indexOf(senders[i]) == -1) {
+                        receivers.push(senders[i]);
+                    }
+                }
+                res.render('ejs', {
+                    receivers: receivers
+                });
+            });
+        });
+    });
+    
+    
+    
+    //user view conservations with one contacter
+    app.get('/viewmessage/*', isLoggedIn, function(req, res){
+         var url = req.url;
+         var contact = url.substring(13);
+         Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
+                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
+                      }).exec(function(err, conservations){
+            res.render('ejs',{
+                conservations:conservations
+            });
+        });   
+     
+    });
+    
 };
 
 

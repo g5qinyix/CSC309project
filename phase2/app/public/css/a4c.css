@@ -10,7 +10,6 @@ body{
 
 /*homepage*/
 .section {
-  position: relative;
   padding-left: 10%;
   padding-right: 10%;
   overflow: auto;
@@ -29,7 +28,6 @@ body{
 .banner .inner{
 	text-align: center;
 	margin: 0 auto;
-	position: relative;
 }
 
 .banner .inner h1{
@@ -236,7 +234,6 @@ header{
 
 
 .col-md-3{
-	position: relative;
   	min-height: 1px;
  	padding-left: 2%;
   	padding-right: 2%;
@@ -250,7 +247,7 @@ header{
 	display: block;
 	max-width: 100%;
 	height: auto;
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 
