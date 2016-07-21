@@ -1,0 +1,180 @@
+@keyframes myfirst
+{
+	0% {background: rgb(240, 115, 92);}
+	12.5% {background: rgb(240, 115, 92);}
+	25% {background: rgb(246, 241, 154);}
+	37.5% {background: rgb(246, 241, 154);}
+	50% {background: rgb(144, 216, 209);}
+	62.5% {background: rgb(144, 216, 209);}
+	75% {background: rgb(135, 212, 136);}
+	87.5% {background: rgb(135, 212, 136);}
+	100% {background: rgb(240, 115, 92);}
+}
+
+
+
+
+
+
+
+body{
+	display: block;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+}
+
+header{
+	height: 0px;
+}
+
+nav{
+	width: 100%;
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+	background-color: transparent;
+	opacity: 0.95;
+	z-index: 999;
+	padding-top: 2%;
+}
+
+a{
+	color:#555;
+	word-break: break-all;
+}
+
+nav ul{
+	list-style: none;
+	margin: 0;
+}
+
+nav ul li{
+	display: inline-block;
+	line-height: 40px;
+	float:right;
+	text-align: center;
+}
+
+nav ul li a{
+	line-height: 40px;
+	text-decoration: none;
+	display: inline-block;
+	height: 40px;
+	color: black;
+}
+
+nav ul li img{
+	width: 30%;
+}
+
+nav ul li.logo{
+	float: left;
+}
+
+.logo{
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+
+.logo a{
+	color: black;
+}
+
+.logo a:hover{
+	color:white;	
+}
+
+
+.drop-down{
+	display:none;
+}
+
+#drop_down{
+	display: none;
+}
+
+#banner{
+	animation: myfirst 40s infinite;
+	-moz-animation: myfirst 40s infinite;	/* Firefox */
+	-webkit-animation: myfirst 40s infinite;	/* Safari 和 Chrome */
+	-o-animation: myfirst 40s infinite;	
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+    font-weight: 700;
+    font-size: 70px;
+	padding-top:10%;
+    letter-spacing: -2px;
+    text-decoration: none;
+    padding-bottom: 3px;
+}
+
+#banner img{
+	width: 40%;
+}
+
+#functions{
+	float: left;
+	margin-top: 20%;
+	margin-left: 2%;
+	margin-right: 2%;
+	width: 26%;
+}
+
+#functions div{
+	margin-top:5%;
+}
+
+hr{
+	color:black;
+}
+
+#functions div:hover{
+	color : white;
+	cursor: pointer;
+}
+
+#games{
+	display:none;
+	text-align: center;
+	height: auto;
+	overflow: auto;
+}
+
+.img-responsive{
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-radius: 50%;
+	margin: 0 auto;
+	border-style:solid;
+	border-width: 3px;
+	width: 200px;
+}
+
+.col-md-3{
+	position: relative;
+  	min-height: 1px;
+ 	padding-left: 2%;
+	padding-top: 2%;
+  	padding-right: 2%;
+  	width: 50%;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+}
+
+.img-responsive:hover{
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-radius: 50%;
+	margin: 0 auto;
+	border-style:solid;
+	border-width: 3px;
+	width: 200px;
+	box-shadow: #666 0px 0px 10px; 
+}
+
+#about{
+	display:none;
+	text-align: center;
+}
