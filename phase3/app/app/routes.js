@@ -11,13 +11,10 @@ module.exports = function(app, passport) {
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
-	app.get('/', function(req, res) {
-        User.find({ "local.occupation": "coach"},function(err, users){
-            res.render("index", {
-                users : users,
-                user: null
-            })
-        });  
+	app.get('/', function(req, res) {  
+            res.render("home.ejs",{
+                user: null      
+            }); 
 	});
 
     
@@ -26,7 +23,6 @@ module.exports = function(app, passport) {
 	// =====================================
 	// show the login form
 	app.get('/login', function(req, res) {
-		
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	});
@@ -52,7 +48,7 @@ module.exports = function(app, passport) {
 	// handle the callback after facebook has authenticated the user
 	app.get('/BeMaster/facebook/callback',
 		passport.authenticate('facebook', {
-			successRedirect : '/profile',
+			successRedirect : '/home',
 			failureRedirect : '/login'
 		}));
 
@@ -69,8 +65,7 @@ module.exports = function(app, passport) {
 		// render the page and pass in any flash data if it exists
 		res.render('signup.ejs');
 	});
-	
-	
+		
 	//sign up for student
 	app.get('/studentsignup', function(req, res){
 		res.render('studentsignup.ejs', { message: req.flash('signupMessage') });
@@ -87,8 +82,6 @@ module.exports = function(app, passport) {
 		failureFlash : true // allow flash messages
 	}));
 	
-	
-	
 	// process the studentsignup form
 	app.post('/coachsignup', passport.authenticate('local-signup-coach', {
 		successRedirect : '/home', // redirect to the secure profile section
@@ -97,6 +90,163 @@ module.exports = function(app, passport) {
 	}));
 
 	
+    
+    
+    // =====================================
+	// Game pages =====================
+	// =====================================
+    app.get('/games/*', function(req, res){
+        var url = req.url;
+        var game = url.substring(7);
+        var Game;
+
+        if (game=='lol') {
+                Game='League of Legends'
+        }
+        if (game=='dota2') {
+                Game='Dota2'
+        
+        }
+        if (game=='csgo') {
+                Game='CS:GO'
+
+        }
+        
+        if (game=='overwatch') {
+                Game='Overwatch'
+         
+        }
+  
+        if (req.isAuthenticated()){
+                User.find({'local.occupation':'coach', 'local.game': Game,
+                   'local.email': {$ne: req.user.local.email } },function(err, coaches){
+                        res.render('game.ejs',{
+                        coaches: coaches,
+                        user: req.user,
+                        gameName: game,
+                        coachtype: null,
+                        cost : null
+                        });
+                   });
+        }
+        else{
+                User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
+                res.render('game.ejs', {
+                        coaches: coaches,
+                        user: null,
+                        gameName: game,
+                        coachtype: null,
+                        cost : null
+                        });
+                });
+        }
+    });
+    
+    
+    
+    
+    
+    // =====================================
+	// SEARCH COACHES ======================
+	// =====================================	   
+	// process the search form
+	app.post('/search', function(req, res){
+		var gameName = req.param('gamename');
+        var Game;
+		var cost = req.param('cost');
+        var coachtype =req.param('coachtype');
+		var lowlimit;
+		var highlimit;
+        
+		if (gameName=='lol') {
+                Game='League of Legends';
+        }
+        if (gameName=='dota2') {
+                 Game='Dota2';
+        
+        }
+        if (gameName=='csgo') {
+                Game='CS:GO';
+
+        }
+        
+        if (gameName=='overwatch') {
+                Game='Overwatch';  
+        }
+        
+		switch(true){
+  			case cost == 'Free':
+				lowlimit = -1;
+				highlimit = 1;
+				break;
+			case cost == '$1-$10':
+				lowlimit = 0;
+				highlimit = 11;
+				break;
+			case cost == '$11-$20':
+				lowlimit = 10;
+				highlimit = 21;
+				break;
+			case cost == '$21-$30':
+				lowlimit = 20;
+				highlimit = 31;
+				break;
+			case cost == '>$30':
+				lowlimit = 30;
+				highlimit = 100;
+				break;
+			case cost == 'All':
+				lowlimit = 0;
+				highlimit = 100;    
+		}
+        
+        if (req.isAuthenticated()){
+                User.find({'local.game' : Game,
+				   'local.occupation':'coach',
+				   'local.cost': { $gt: lowlimit, $lt: highlimit},
+                   'local.email': {$ne: req.user.local.email} }, function(err, coaches) {
+                  
+                        if (err){       
+                         console.log("some error");
+                        }    
+                        else {
+                               res.render('game.ejs', {
+                                coaches: coaches,
+                                user: req.user,
+                                //search part
+                                gameName: gameName,
+                                coachtype: coachtype,
+                                cost : cost
+                                });
+                        }
+                   })
+         }
+         else{
+                User.find({'local.game' : Game,
+				   'local.occupation':'coach',
+				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
+                        if (err){       
+                         console.log("some error");
+                        }
+                        else{
+                                res.render('game.ejs', {
+                                coaches: coaches,
+                                user: null,
+                                //search part
+                                gameName: gameName,
+                                coachtype: coachtype,
+                                cost : cost
+                                });
+                        }
+                   });
+                }
+     
+        });
+    
+    
+
+    
+    
     
     
 	// =====================================
@@ -109,7 +259,7 @@ module.exports = function(app, passport) {
 		//handle student  
 		if (req.user.local.occupation == "student") {
             User.find({'local.game': req.user.local.game, 'local.occupation': 'coach'}, function(err, users){
-                res.render('studentprofile.ejs', {
+                res.render('profile.ejs', {
                     coaches: users,
                     user : req.user 
                     });	
@@ -120,8 +270,8 @@ module.exports = function(app, passport) {
 		else{
             // Coach can view comments to him on profile
             // get comments from database
-            Comment.find({'userid': req.user._id}, function(err, comments){
-                	res.render('coachprofile.ejs', {
+            Comment.find({'coachid': req.user._id}, function(err, comments){
+                	res.render('profile.ejs', {
                         user : req.user,
                         comments : comments 
                     });	
@@ -130,15 +280,12 @@ module.exports = function(app, passport) {
 	});
 		
     
-    
 	// Returned to homepage
 	app.get('/home', isLoggedIn, function(req, res) {
-        User.find({ "local.occupation": "coach"},function(err, users){
-            res.render("index.ejs", {
-                users : users,
+            res.render("home.ejs", {
                 user: req.user
-            })
-        }); 
+            });
+   
 	});
 	
 	
@@ -148,7 +295,6 @@ module.exports = function(app, passport) {
 	// EDIT PROFILE=========================
 	// =====================================
 	//
-	
 	//show the student edit form
 	app.get('/editstudent', isLoggedIn,  function(req, res){
 		res.render('editstudent.ejs' ,{
@@ -201,9 +347,7 @@ module.exports = function(app, passport) {
 		});
 	});
 	
-	
-	
-	
+    
 	// process coach edit form
 	app.post('/editcoach', function(req, res){
 		var email = req.user.local.email;
@@ -247,6 +391,7 @@ module.exports = function(app, passport) {
 
 
 	
+    
 	// =====================================
 	// LOGOUT ==============================
 	// =====================================
@@ -266,81 +411,18 @@ module.exports = function(app, passport) {
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring(7);
+        console.log(id);
         //find this user from database    
         User.findOne({ '_id' :  id }, function(err, user) {
             if (err) {
                 return next(err);
-            }
-          
+            }   
         });     
     });
        
 
 	
-	
-	// =====================================
-	// SEARCH COACHES ======================
-	// =====================================
-	
-	//show the search form
-	
-	app.get('/search', checkLogin,function(req, res){
-		res.render('search.ejs' ,{
-			user: req.user,
-			coaches: null,
-			gameName: null,
-			cost: null
-		})
-	});
-	   
-	// process the search form
-	app.post('/search', function(req, res){
-		var gameName = req.param('gamename');
-		var cost = req.param('cost');
-		var lowlimit;
-		var highlimit;
-		
-		switch(true){
-  			case cost == 'free':
-				lowlimit = 0;
-				highlimit = 0;
-				break;
-			case cost == '$1-$10':
-				lowlimit = 1;
-				highlimit = 10;
-				break;
-			case cost == '$11-$20':
-				lowlimit = 11;
-				highlimit = 20;
-				break;
-			case cost == '$21-$30':
-				lowlimit = 21;
-				highlimit = 30;
-				break;
-			case cost == '>$30':
-				lowlimit = 30;
-				highlimit = 99;
-				break;
-			case cost == 'all':
-				lowlimit = 0;
-				highlimit = 99;
-		}
-        console.log(lowlimit);
-		console.log(highlimit);
-		User.find({'local.game' : gameName,
-				  'local.occupation':'coach',
-				  'local.cost': { $gte: lowlimit, $lte: highlimit} }, function(err, coaches) {
-		  if (err) return next(err)
-		  else {
-		    res.render('search.ejs', {
-			coaches: coaches,
-			user: req.user,
-			gameName: gameName,
-			cost: cost
-		    });
-		  }	
-		});						
-	});
+
     
          
 	// =====================================
@@ -359,7 +441,7 @@ module.exports = function(app, passport) {
         newComment.comment.studentid = req.user._id;
         newComment.comment.name = req.user.local.nickname;
         newComment.comment.content = content;
-        newComment.comment.date = date.getTime();
+        newComment.comment.date = date;
         newComment.save();    
     });
     
@@ -386,8 +468,7 @@ module.exports = function(app, passport) {
         User.find({'_id': req.user._id}, function(err, coaches){
             //TODO
             //TODO
-        });
-        
+        });   
     });
     
     
@@ -407,9 +488,8 @@ module.exports = function(app, passport) {
         newMessage.receiver.id = receiverid;
         newMessage.sender.content = req.param("content");
         newMessage.receiver.content = req.param("content");
-        newMessage.sender.date=date.getTime();
-        newMessage.receiver.date=date.getTime();
         newMessage.receiver.status=0;
+        newMessage.date = date.getTime();
         newMessage.save();   
     });
     //user view contacter list
@@ -436,13 +516,14 @@ module.exports = function(app, passport) {
          var contact = url.substring(13);
          Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                      }).exec(function(err, conservations){
+                      }).sort({'date': -1}).exec(function(err, conservations){
             res.render('ejs',{
                 conservations:conservations
             });
         });    
     });
 };
+
 
 
 // route middleware to make sure

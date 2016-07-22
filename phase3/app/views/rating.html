@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="../public/css/rating.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="jquery-2.2.1.js"></script>
+    <script type="text/javascript" src="viewcoach.js"></script>
+	<title>Profile</title>
+</head>
+<body>
+	<header>
+		<nav>
+			<ul id = "nav">
+				<li class="home"><a href="#panel-home">BeMaster</a></li>
+				<li><a href="login.html">Log In</a></li>
+				<li><a href="#panel-in">Games</a>
+                    <ul>
+                        <li><a href="lol.html">League of Legends</a></li>
+                        <li><a href="overwatch.html">Overwatch</a></li>
+                        <li><a href="dota2.html">Dota2</a></li>
+                        <li><a href="csgo.html">CS:GO</a></li>
+                    </ul>
+                </li>
+				<li><a href="search.html">Find a Coach</a></li>
+			</ul>
+		</nav>
+	</header>
+	<div id="photo_bar">
+		<div id = "photo">
+			<img src="../images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
+		</div>
+		<div id = "name">
+			<h2>XXXX</h2>
+		</div>
+	</div>
+	<section id="img_game">
+		<img src="../images/dota2.jpg" style="width:100%;">
+		<h2>XXXX:offline</h2>
+		<h3>Price: 10$/h</h3>
+	</section>
+	<section id="comments">
+		<h2>Comments</h2>
+		<span class="starRating">
+		    <input id="rating5_6" type="radio" name="rating6" value="5" checked>
+		    <label for="rating5_6">5</label>
+		    <input id="rating4_6" type="radio" name="rating6" value="4">
+		    <label for="rating4_6">4</label>
+		    <input id="rating3_6" type="radio" name="rating6" value="3">
+		    <label for="rating3_6">3</label>
+		    <input id="rating2_6" type="radio" name="rating6" value="2">
+		    <label for="rating2_6">2</label>
+		    <input id="rating1_6" type="radio" name="rating6" value="1">
+		    <label for="rating1_6">1</label>
+		</span>
+	</section>
+</body>
+</html>

@@ -4,47 +4,38 @@
 <head>
 	<link rel="stylesheet" href="../css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Coach Form</title>
+	<title>Student Form</title>
 </head>
 <body>
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2 style="color:rgb(100, 65, 165)">Fill out the coach form</h2>
-  <div class="form">
+	<h2 style="color:rgb(100, 65, 165);margin-bottom:0px">Create your account</h2>
+  <div style="margin-top:0px" class="form">
     <!-- show any messages that come back with authentication -->
 	<% if (message.length > 0) { %>
 		<div class="alert"><%= message %></div>
 	<% } %>
-    <form class="login-form" action="/coachsignup" method="post">
-	  <span>Email</span>
-	  <input type="email" name="email" placeholder="123@mail.com" required/>
+    <form class="login-form" action="/studentsignup" method="post">
+      <span>Enter an e-mail</span>
+      <input type="email" name="email" placeholder="123@mail.com" required/>
 	  <span>Password</span>
       <input type="password" name="password" placeholder="password" required/>
 	  <span>Nickname</span>                                               
       <input type="text" name="nickname" placeholder="smith" required/>
-	  <span>Location</span>                                                                                             
+	  <span>Location</span>                                               
       <input type="text" name="location" placeholder="Toronto" required/>
+	  <span>Your favourite Game</span>
 	  
-      <span>You can offer</span>  
-	  <select type="multiple" name="coachtype">
-		<option>Offline</option>
-		<option>Online</option>
-	 </select>
-	  
-	  <span>You want to be a mentor of</span>                                               
       <select name="game">
-		<option>League of Legends</option>
 		<option>Dota2</option>
-        <option>CS:GO</option>
-        <option>Overwatch</option>
+		<option>League of Legends</option>
+		<option>CS:GO</option>
+		<option>Overwatch</option>
 	  </select>
 	  
-	   <span>Your cost $/hour</span> 
-	   <input type=number name="cost" placeholder="$">
-	   <span>Your Photo</span>                                               
+	  <span>Your Photo</span>                                               
       <input type="file" name="photo"/>   
-	
 	  <button type="submit">Signup</button>
 	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
     </form>

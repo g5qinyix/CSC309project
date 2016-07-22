@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>BeMaster</title>
+	<link href="css/test.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li class="logo"><a href="/home">BeMaster</a></li>
+				<li><img src="/images/close-envelope.png" onmouseover='src="images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<% if (user == null) { %>
+				<li><img src="/images/user.png" onmouseover='src="/images/user1.png"' onmouseout='src="/images/user.png"' onclick="location.href='/login';"></li>
+				<% } %>
+				<% if (user != null) { %>
+				<li style="margin-top:0px" ><a href='/profile'>Hi <%= user.local.nickname%></a></li>
+				<% } %>
+			</ul>
+		</nav>
+	</header>
+	<section id="banner">
+		<section id = "functions">
+			<div id = "coach_button">
+				Find a Coach
+			</div>
+			<hr>
+			<div id="about_button">
+				About
+			</div>
+		</section>
+		<img src="images/gamepad-cloud.png">
+	</section>
+	<section id = "games">
+		<h1>Select a Game</h1>
+		<div class="col-md-3">
+            <img class="img-responsive" src=
+	        "/images/csgo_logo.png" onclick="location.href='/games/csgo';">
+        </div>
+        <div class="col-md-3">
+            <img class="img-responsive" src=
+				 "/images/lol_logo.png" onclick="location.href='/games/lol';">
+        </div>
+		<div class="col-md-3">
+            <img class="img-responsive" src=
+				 "/images/dota2_logo.png" onclick="location.href='/games/dota2';">
+        </div>
+		<div class="col-md-3">
+            <img class="img-responsive" src=
+				 "/images/overwatch_logo.png" onclick="location.href='/games/overwatch';">
+        </div>
+	</section>
+	<section id="about">
+		<h2>If you are a newbee:</h2>
+		<p>you can find many experienced people to help you get a higher level in games or you can let someone to play with your offline</p>
+		<br>
+		<h2>If you are good at gaming:</h2>
+		<p>This is the platform to share your skills</p>
+	</section>
+	<script type="text/javascript" src="/script/jquery-2.2.1.js"></script>
+	<script type="text/javascript" src="/script/home.js"></script>
+</body>
+</html>
+
+
+		

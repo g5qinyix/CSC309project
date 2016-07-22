@@ -13,12 +13,16 @@ var userSchema = mongoose.Schema({
         location     : String,
         occupation   : String,
         game         : String,
-        rate         : String,
-        cost         : String,
-        follow       :[String],
+        rate         : {
+            grade: Number,
+            list: [Number]
+        },
+        cost         : Number,
+        follow       : [String],
         coachtype    : String
+
     },
-  
+    
     facebook         : {
         id           : String,
         token        : String,

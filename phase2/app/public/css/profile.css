@@ -413,7 +413,7 @@ h4{
 
 /*show recomendation for student */
 .section {
-  position: relative;
+
   padding-left: 10%;
   padding-right: 10%;
   overflow: auto;
@@ -424,7 +424,6 @@ h4{
 
 
 .col-md-3{
-	position: relative;
   	min-height: 1px;
  	padding-left: 2%;
   	padding-right: 2%;
