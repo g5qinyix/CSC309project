@@ -27,13 +27,13 @@
       <input type="text" name="location" placeholder="Toronto" required/>
 	  
       <span>You can offer</span>  
-	  <select type="multiple" name="coachtype">
+	  <select type="multiple" name="coachtype" required>
 		<option>Offline</option>
 		<option>Online</option>
 	 </select>
 	  
 	  <span>You want to be a mentor of</span>                                               
-      <select name="game">
+      <select name="game" required>
 		<option>League of Legends</option>
 		<option>Dota2</option>
         <option>CS:GO</option>
@@ -41,9 +41,7 @@
 	  </select>
 	  
 	   <span>Your cost $/hour</span> 
-	   <input type=number name="cost" placeholder="$">
-	   <span>Your Photo</span>                                               
-      <input type="file" name="photo"/>   
+	   <input type=number name="cost" placeholder="$" required>
 	
 	  <button type="submit">Signup</button>
 	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
