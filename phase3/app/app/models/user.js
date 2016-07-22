@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
         occupation   : String,
         game         : String,
         rate         : String,
-        cost         : String,
+        cost         : Number,
         follow       :[String],
         coachtype    : String
 

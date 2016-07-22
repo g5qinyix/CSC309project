@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>League of Legends</title>
+	<link href="/css/lol.css" rel="stylesheet" type="text/css" />
+
+	<!--<script type="text/javascript" src="lol.js"></script>-->
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li class="logo"><a href="/users">BeMaster</a></li>
+				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+                <% if (user == null) { %>
+				<li><img src="/images/user.png" onmouseover='src="/images/user1.png"' onmouseout='src="/images/user.png"' onclick="location.href='/login';"></li>
+				<% } %>
+				<% if (user != null) { %>
+				<li style="margin-top:0px" ><a href='/profile'>Hi <%= user.local.nickname%></a></li>
+				<% } %>
+				<li><img src="/images/upwards-arrow.png" onmouseover='src="images/upwards-arrow1.png"' onmouseout='src="images/upwards-arrow.png"' id="upwards"></li>
+			</ul>
+		</nav>
+	</header>
+	<section id="nav">
+		<div class="games">
+			<a href='/games/lol'><p class="text">League of Legends</p></a>
+			<img class="img" src="/images/csgo_logo.png">
+		</div>
+		<div class="games">
+			<a href='/games/overwatch'><p class="text">Overwatch</p></a>
+			<img class="img" src="/images/dota2_logo.png">
+		</div>
+		<div class="games">
+			<a href='/games/dota2'><p class="text">Dota2</p></a>
+		    <img class="img" src="/images/lol_logo.png">
+		</div>
+		<div class="games">
+			<a href='/games/csgo'><p class="text">CS: GO</p></a>
+           <img class="img" src="/images/overwatch_logo.png">
+		</div>
+	</section>
+	<section id="list_coach">
+		<form action='/search' method="post">
+		<% if (gameName == 'lol') { %>
+		<h2>Coaches for League of Legends</h2>
+		<% } %>
+		<% if (gameName == 'csgo') { %>
+		<h2>Coaches for CS:GO</h2>
+		<% } %>
+		<% if (gameName == 'dota2'){%>
+		<h2>Coaches for Dota2</h2>
+		<% } %>
+		<% if (gameName == 'overwatch'){%>
+		<h2>Coaches for Overwatch</h2>
+		<% } %>
+		<input type="hidden" name="gamename" value="<%=gameName%>">
+		Online or Offline:
+		<select name='coachtype'>
+			<option>online</option>
+			<option>offline</option>
+			<% if (coachtype != null) { %>
+			<option selected="selected"><%=coachtype%></option>
+            <% } %>	
+		</select>
+		<br>
+		Cost Rate:
+		<select name='cost'>
+			<option>Free</option>
+			<option>$1-$10</option>
+			<option>$11-$20</option>
+			<option>$21-$30</option>
+			<option>>$30</option>
+			<option>All</option>
+			<% if (cost != null) { %>
+			<option selected='selected'><%=cost%></option>
+            <% } %>
+		</select>
+		<button type='submit'>Submit</button>
+		</form>
+		<br>
+		<br>
+		
+		<div id="container_mobile">
+			<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+						<div class="block">
+				<img class="img-responsive" src=
+			        "person1.jpg" onclick="location.href='/#';">
+			    <p>name</p>
+			    <p>Rank:</p>
+			    <p>Price:</p>
+			</div>
+		</div>
+		
+		<% coaches.forEach(function(coach) { %>
+		<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+			<div class="flipper">
+				<div class="col-md-3">
+		            <img class="img-responsive" src=
+			        "/images/person1.jpg">
+			        <p><%=coach.local.nickname%></p>
+				
+		        </div>
+		        <a href="/users/<%=coach._id%>"><div class="back-1">
+		        	<p>Rating:<%=coach.local.rate %></p>
+		        	<p>Price: $<%=coach.local.cost %>/hour</p>
+		        </div></a>
+	        </div>
+        </div>
+        <% }); %>	
+		
+	</section>
+	
+	<script type="text/javascript" src="/script/jquery-2.2.1.js"></script>
+	<script type="text/javascript" src="/script/nav_control.js"></script>
+</body>
+</html>
