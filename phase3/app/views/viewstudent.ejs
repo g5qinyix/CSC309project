@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><%=student.local.nickname%></title>
+	<link href="/css/profile.css" rel="stylesheet" type="text/css" />
+	<!--<script type="text/javascript" src="lol.js"></script>-->
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li class="logo"><a href="/home">BeMaster</a></li>
+				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<li><a href='/profile'><%=user.local.nickname%></a></li>
+				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
+			</ul>
+		</nav>
+	</header>
+	<section class = "information">
+		<div class = "profile">
+			<div class = "photo">
+			 	<img src="/images/person1.jpg">
+			</div>
+			<div class="g_information">
+				<h2><%=student.local.nickname%></h2>
+				<p>I am <%=student.local.game%> student</p>
+			</div>
+			<div id="message" onclick="location.href='/editcoach'">
+				<img src="/images/conversation.png">
+			</div>
+			
+		</div>
+	</section>
+	<section id="service">
+		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
+			<div class="flipper">
+				<div class="col-md-3-1">
+		            <img class="img-responsive" src=
+			        "/images/csgo_logo.png">
+		        </div>
+	        </div>
+        </div>
+    </section>
+    	
+</body>
+</html>

@@ -2,11 +2,12 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>BeMaster</title>
+	<title>Profile</title>
 	<link href="/css/profile.css" rel="stylesheet" type="text/css" />
 	<!--<script type="text/javascript" src="lol.js"></script>-->
 </head>
 <body>
+    
 	<header>
 		<nav>
 			<ul>
@@ -17,24 +18,23 @@
 			</ul>
 		</nav>
 	</header>
+    
 	<section class = "information">
 		<div class = "profile">
 			<div class = "photo">
 			 	<img src="/images/person1.jpg">
 			</div>
 			<div class="g_information">
-				<h2>Name</h2>
-				<p>I am <%=user.local.nickname%></p>
+				<h2><%=user.local.nickname%></h2>
+				<p>Your account: <%=user.local.email%></p>
 			</div>
 			<div id="edit" onclick="location.href='/editcoach'">
 				<img src="/images/edit.png">
 			</div>
-			<div id="message" onclick="location.href='/editcoach'">
-				<img src="/images/conversation.png">
-			</div>
-			
+	
 		</div>
 	</section>
+    
 	<section id="service">
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
@@ -42,40 +42,9 @@
 		            <img class="img-responsive" src=
 			        "/images/csgo_logo.png">
 		        </div>
-		        <div class="back-1">
-		        	<p>Rating: <%=user.local.rate.grade%></p>
-		        	<p>Price: <%=user.local.cost%></p>
-		        </div>
 	        </div>
         </div>
-  
-  
     </section>
-	<section class="others_life">
-		<h2>You comments</h2>
-		<% comments.forEach(function(comment) { %>
-		<div id = "posts">
-			<div class = "small_photo">
-					<img src="/images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
-			</div>
-			<div class="content">
-				<div class = "ID">
-					<a href="/users/<%=comment.comment.studentid%>"><p class = "ID"><%=comment.comment.nickname %></p></a>
-				</div>
-				<p><%=comment.comment.content%></p>
-			</div>
-			 <p><%=comment.comment.date%></p>
-		</div>
-		<% }); %>	
-	</section>
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
