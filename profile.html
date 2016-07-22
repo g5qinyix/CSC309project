@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>BeMaster</title>
+	<link href="profile.css" rel="stylesheet" type="text/css" />
+	<!--<script type="text/javascript" src="lol.js"></script>-->
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li class="logo"><a href="#panel-home">BeMaster</a></li>
+				<li><img src="close-envelope.png" onmouseover='src="close-envelope1.png"' onmouseout='src="close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<li><img src="user.png" onmouseover='src="user1.png"' onmouseout='src="user.png"' onclick="location.href='/#';"></li>
+				<li><img src="upwards-arrow.png" onmouseover='src="upwards-arrow1.png"' onmouseout='src="upwards-arrow.png"' id="upwards"></li>
+			</ul>
+		</nav>
+	</header>
+	<section class = "information">
+		<div class = "profile">
+			<div class = "photo">
+			 	<img src="person1.jpg">
+			</div>
+			<div class="g_information">
+				<h2>Name</h2>
+				<p>I am Tony</p>
+			</div>
+			<div id="edit" onclick="location.href='/editcoach'">
+				<img src="edit.png">
+			</div>
+			<div id="message" onclick="location.href='/editcoach'">
+				<img src="conversation.png">
+			</div>
+			
+		</div>
+	</section>
+	<section id="service">
+		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
+			<div class="flipper">
+				<div class="col-md-3-1">
+		            <img class="img-responsive" src=
+			        "csgo_logo.png">
+		        </div>
+		        <div class="back-1">
+		        	<p>Rating:</p>
+		        	<p>Price:</p>
+		        </div>
+	        </div>
+        </div>
+        		<div class="flip-container-2" ontouchstart="this.classList.toggle('hover');">
+			<div class="flipper">
+				<div class="col-md-3-2">
+		            <img class="img-responsive" src=
+			        "lol_logo.png">
+		        </div>
+		        <div class="back-2">
+		        	<p>Rating:</p>
+		        	<p>Price:</p>
+		        </div>
+	        </div>
+        </div>
+        		<div class="flip-container-3" ontouchstart="this.classList.toggle('hover');">
+			<div class="flipper">
+				<div class="col-md-3-3">
+		            <img class="img-responsive" src=
+			        "dota2_logo.png">
+		        </div>
+		        <div class="back-3">
+		        	<p>Rating:</p>
+		        	<p>Price:</p>
+		        </div>
+	        </div>
+        </div>
+        		<div class="flip-container-4" ontouchstart="this.classList.toggle('hover');">
+			<div class="flipper">
+				<div class="col-md-3-4">
+		            <img class="img-responsive" src=
+			        "overwatch_logo.png" id ="overwatch">
+		        </div>
+		        <div class="back-4">
+		        	<p>Rating:</p>
+		        	<p>Price:</p>
+		        </div>
+	        </div>
+        </div>
+    </section>
+	<section class="others_life">
+		<div id = "posts">
+			<div class = "small_photo">
+				<img src="../images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
+			</div>
+			<div class="content">
+				<div class = "ID">
+					<p class = "ID">Sylar</p>
+				</div>
+				<p>My client passed the placement!!!</p>
+				<div class="pic section">
+					<img src="../images/placement.jpg" class = "post_img">
+				</div>
+			</div>
+			<img id="reply" src="../images/reply_icon.png" style="width: 20px; height: 20px">
+		</div>
+		<div class="reply_box">
+			<input type="text" placeholder="write something!" class = "reply"></input>
+			<button type="button" id="post_button">add comments!</button>	
+		</div>
+	</section>
