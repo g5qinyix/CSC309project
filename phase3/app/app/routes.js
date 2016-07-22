@@ -194,7 +194,7 @@ module.exports = function(app, passport) {
 				highlimit = 100;
 				break;
 			case cost == 'All':
-				lowlimit = 0;
+				lowlimit = -1;
 				highlimit = 100;    
 		}
         
