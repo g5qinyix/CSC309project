@@ -53,9 +53,6 @@ module.exports = function(app, passport) {
 		}));
 
     
-
-    
-    
 	// =====================================
 	// SIGNUP ==============================
 	// =====================================
@@ -285,7 +282,6 @@ module.exports = function(app, passport) {
             res.render("home.ejs", {
                 user: req.user
             });
-   
 	});
 	
 	
