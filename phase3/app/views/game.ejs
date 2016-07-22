@@ -91,7 +91,7 @@
 		
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
-			<div class="block">
+			<a href="/users/<%=coach._id%>"><div class="block">
 				<img class="img-responsive" src=
 			        "/images/person1.jpg" onclick="location.href='/#';">
 			    <p><%=coach.local.nickname%></p>
@@ -102,7 +102,7 @@
 		        	<p>Rating: <%=coach.local.rate.grade%></p>
 				    <% } %>
 			    	<p>Price: $<%=coach.local.cost %>/hour</p>
-			</div>
+			</div></a>
 			<% }); %>		
 		</div>
 		

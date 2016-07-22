@@ -13,8 +13,8 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/', function(req, res) {  
             res.render("home.ejs",{
-                user: null      
-            }); 
+                user: null
+                }); 
 	});
 
     
@@ -113,10 +113,10 @@ module.exports = function(app, passport) {
                 Game='Overwatch'
          
         }
-  
         if (req.isAuthenticated()){
                 User.find({'local.occupation':'coach', 'local.game': Game,
                    'local.email': {$ne: req.user.local.email } },function(err, coaches){
+                       
                         res.render('game.ejs',{
                         coaches: coaches,
                         user: req.user,
@@ -126,9 +126,10 @@ module.exports = function(app, passport) {
                         });
                    });
         }
-        else{
+        else{   
                 User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
-                res.render('game.ejs', {
+                        console.log(coaches);
+                res.render('game.ejs', {   
                         coaches: coaches,
                         user: null,
                         gameName: game,
@@ -255,12 +256,10 @@ module.exports = function(app, passport) {
         
 		//handle student  
 		if (req.user.local.occupation == "student") {
-            User.find({'local.game': req.user.local.game, 'local.occupation': 'coach'}, function(err, users){
-                res.render('profile.ejs', {
-                    coaches: users,
-                    user : req.user 
-                    });	
-            });
+                res.render('studentprofile.ejs', {
+                           user : req.user
+                           });
+         
         }
         
 		//handle coach
@@ -268,7 +267,7 @@ module.exports = function(app, passport) {
             // Coach can view comments to him on profile
             // get comments from database
             Comment.find({'coachid': req.user._id}, function(err, comments){
-                	res.render('profile.ejs', {
+                	res.render('coachprofile.ejs', {
                         user : req.user,
                         comments : comments 
                     });	
@@ -363,7 +362,7 @@ module.exports = function(app, passport) {
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
-            if ( req.param('game') != '') {
+            if ( req.param('game') != '' ) {
                 user.local.game = req.param('game');
             }
             if (req.param('cost') != '' ) {
@@ -371,7 +370,7 @@ module.exports = function(app, passport) {
             }
             
             if ( req.param('coachtype') != '') {
-                user.local.game = req.param('coachtype');
+                user.local.coachtype = req.param('coachtype');
             }
             
 			user.save();
@@ -394,7 +393,7 @@ module.exports = function(app, passport) {
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
-	});
+        });
 
     
     
@@ -402,43 +401,71 @@ module.exports = function(app, passport) {
     
     
     // =====================================
-	// student view coach information=======
+	// view user information===============
 	// =====================================
+    // including coach and student
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring(7);
-        console.log(id);
+        
         //find this user from database    
         User.findOne({ '_id' :  id }, function(err, user) {
-            if (err) {
-                return next(err);
-            }   
-        });     
+                 if (err) {
+                        console.log(err);
+                        }
+                
+                
+                //this user is a student      
+                if (user.local.occupation =="student") {
+                        res.render('viewstudent.ejs', {
+                                student : user,
+                                user : req.user
+                        });
+                        
+                }
+                
+                //this student is a coach
+                else{
+                        //find all comments about this coach
+                        Comment.find({'coachid': id}, function(err, comments){
+                                if (err) {
+                                        console.log(err);
+                                        }
+                                res.render('viewcoach.ejs',{
+                                        user: req.user,
+                                        coach:user,
+                                        comments: comments
+                                });
+                        });
+                }
+        });
     });
-       
+
+
 
 	
 
     
          
 	// =====================================
-	// Comment and rateing system ======================
+	// Comment and rating system ======================
 	// =====================================
     
     // users add comments to coach
-	app.post('/comment/*', isLoggedIn, function(req, res){
+	app.post('/comments/*', isLoggedIn, function(req, res){
         //get the id of coach to be commented
         var url = req.url;
-        var coachid = url.substring(9);
+        var coachid = url.substring(10);
         var content = req.param("comment");
         var newComment  = new Comment();
         var date = new Date();
         newComment.coachid = coachid;
         newComment.comment.studentid = req.user._id;
-        newComment.comment.name = req.user.local.nickname;
+        newComment.comment.nickname = req.user.local.nickname;
         newComment.comment.content = content;
         newComment.comment.date = date;
-        newComment.save();    
+        newComment.save();
+        res.redirect('/users/'+coachid);
     });
     
     
@@ -518,7 +545,9 @@ module.exports = function(app, passport) {
             });
         });    
     });
-};
+
+
+}
 
 
 
