@@ -1,0 +1,377 @@
+body{
+	display: block;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+	background: #ececec;
+}
+
+header{
+	height: 70px;
+}
+
+nav{
+	width: 100%;
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+	background-color: #ececec;
+	opacity: 0.95;
+	z-index: 999;
+	padding-top: 1%;
+	position: fixed;
+}
+
+#upwards{
+	display: none;
+}
+
+a{
+	color:#555;
+	word-break: break-all;
+}
+
+nav ul{
+	list-style: none;
+	margin: 0;
+}
+
+nav ul li{
+	display: inline-block;
+	line-height: 40px;
+	float:right;
+	text-align: center;
+}
+
+nav ul li a{
+	line-height: 40px;
+	text-decoration: none;
+	display: inline-block;
+	height: 40px;
+	color: black;
+}
+
+nav ul li img{
+	width: 30%;
+}
+
+nav ul li.logo{
+	float: left;
+}
+
+.logo{
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+
+.logo a{
+	color: black;
+}
+
+.logo a:hover{
+	color:white;	
+}
+
+
+.drop-down{
+	display:none;
+}
+.img {
+	display: none;
+}
+#drop_down{
+	display: none;
+}
+
+.information{
+	display: block;
+	text-align: center;
+	float: left;
+	width: 42.5%;
+	box-sizing: border-box;
+	height: auto;
+	padding-bottom: 5%;
+	background: white;
+	margin:5%;
+	margin-right:2.5%;
+}
+
+.information img{
+	width: 50%;
+}
+
+.g_information{
+    padding:3%;
+    text-align: center;
+    margin: 3%;
+}
+
+.photo{
+    margin:0 auto;
+    text-align: center;
+}
+.profile{
+	padding: 3%;
+}
+
+#talk{
+	padding-top: 3%;
+	display: block;
+	text-align: center;
+	float: left;
+	width: 22.5%;
+	box-sizing: border-box;
+	height: auto;
+	padding-bottom: 5%;
+	background: rgb(240, 115, 92);
+	margin: 2.5%;
+	margin-top: 5%;
+}
+
+#service{
+	overflow: auto;
+	margin-top:2.5%;
+}
+
+.flip-container {
+	perspective: 1000;
+	position: relative;
+  	min-height: 1px;
+  	width: 21vw;
+	height: 21vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    margin:1%;
+    margin-top: 5%;
+}
+
+.flip-container-1 {
+	perspective: 1000;
+	position: relative;
+  	min-height: 1px;
+  	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    margin:1%;
+    margin-top:5%;
+}
+
+.flip-container-2{
+	perspective: 1000;
+	position: relative;
+  	min-height: 1px;
+  	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    margin:1%;
+    margin-top:5%;
+}
+
+.flip-container-3{
+	perspective: 1000;
+	position: relative;
+  	min-height: 1px;
+  	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    margin:1%;
+}
+
+.flip-container-4{
+	perspective: 1000;
+	position: relative;
+  	min-height: 1px;
+  	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    margin:1%;
+}
+
+.col-md-3-1, .col-md-3-2, .col-md-3-3, .col-md-3-4 img{
+	width: 50%;
+}
+/* flip the pane when hovered */
+.flip-container-1:hover .flipper, .flip-container-1.hover .flipper {
+		transform: rotateY(180deg);
+}
+
+.flip-container-2:hover .flipper, .flip-container-2.hover .flipper {
+		transform: rotateY(180deg);
+}
+.flip-container-3:hover .flipper, .flip-container-3.hover .flipper {
+		transform: rotateY(180deg);
+}
+.flip-container-4:hover .flipper, .flip-container-4.hover .flipper {
+		transform: rotateY(180deg);
+}
+/* flip speed goes here */
+.flipper {
+	transition: 0.1s;
+	transform-style: preserve-3d;
+	width: 21.5vw;
+	height: 21.5vw;
+	cursor: pointer;
+}
+
+/* hide back of pane during swap */
+.col-md-3-1, .col-md-3-2, .col-md-3-3, .col-md-3-4, .back-1, .back-2, .back-3, .back-4 {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.col-md-3-1 {
+	z-index: 2;
+	width: 21.5vw;
+	height: 21.5vw;
+	background: rgb(240, 115, 92);
+	box-sizing: border-box;
+	padding-top: 10%;
+}
+
+.col-md-3-2 {
+	z-index: 2;
+	width: 21.5vw;
+	height: 21.5vw;
+	background: rgb(246, 241, 154);
+	box-sizing: border-box;
+	padding-top: 10%;
+}
+
+.col-md-3-3 {
+	z-index: 2;
+	width: 21.5vw;
+	height: 21.5vw;
+	background: rgb(144, 216, 209);
+	box-sizing: border-box;
+	padding-top: 10%;
+}
+
+.col-md-3-4 {
+	z-index: 2;
+	width: 21.5vw;
+	height: 21.5vw;
+	background: rgb(135, 212, 136);
+	box-sizing: border-box;
+	padding-top: 20%;
+}
+
+
+/* back, initially hidden pane */
+.back-1 {
+	transform: rotateY(180deg);
+	position: relative;
+  	min-height: 1px;
+	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    color:white;
+    background: rgb(240, 115, 92);
+}
+
+.back-2 {
+	transform: rotateY(180deg);
+	position: relative;
+  	min-height: 1px;
+	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    color:white;
+    background: rgb(246, 241, 154);
+}
+
+
+.back-3 {
+	transform: rotateY(180deg);
+	position: relative;
+  	min-height: 1px;
+	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    color:white;
+    background: rgb(144, 216, 209);
+}
+
+.back-4 {
+	transform: rotateY(180deg);
+	position: relative;
+  	min-height: 1px;
+	width: 21.5vw;
+	height: 21.5vw;
+  	float: left;
+  	box-sizing: border-box;
+    text-align: center;
+    color:white;
+    background: rgb(135, 212, 136);
+}
+#edit{
+	padding-right: 5%;
+	padding-left: 30%;
+	float: left;
+}
+#edit img{
+	width: 50%;
+	cursor: pointer;
+}
+#message{
+	float: left;
+}
+#message img{
+	width: 50%;
+	cursor:pointer;
+}
+
+.others_life{
+	overflow: auto;
+    display: block;
+    width: 100%;
+    background: white;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 5% 1% auto;;
+    text-align: left;
+    background: white;
+}
+
+#posts{
+    padding:2%;
+    overflow: auto;
+}
+
+.post_button{
+	margin: 2%;
+	float:right;
+    background: #6441A5;
+    color: white;
+    border:none;
+    border-radius:10px;
+}
+
+.content{
+    float: left;
+    margin: 1%;
+    width: 88%;
+}
+
+.reply_box{
+    padding:3%;
+    padding-bottom: 0;
+    overflow:auto;
+}

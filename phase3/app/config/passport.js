@@ -69,9 +69,6 @@ module.exports = function(passport) {
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
-               
-    
-                
                 // save the user
                 newUser.save(function(err) {
                     if (err)
@@ -121,7 +118,8 @@ module.exports = function(passport) {
                 newUser.local.coachtype = req.param('coachtype');
                 newUser.local.game = req.param('game');
                 newUser.local.cost = req.param('cost');
-                newUser.local.rate = 'N/A';
+                newUser.local.rate.grade = 0;
+                newUser.local.rate.list= [];
                 newUser.local.coachtype = req.param("coachtype");
                 // save the user
                 newUser.save(function(err) {

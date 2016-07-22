@@ -179,7 +179,14 @@
 				
 		        </div>
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
-		        	<p>Rating:<%=coach.local.rate %></p>
+				
+					<% if (coach.local.rate.grade == 0) { %>
+		        	<p>Rating:N/A</p>
+				    <% } %>
+					<% if (coach.local.rate.grade != 0) { %>
+		        	<p>Rating: <%=coach.local.rate.grade%></p>
+				    <% } %>
+					
 		        	<p>Price: $<%=coach.local.cost %>/hour</p>
 		        </div></a>
 	        </div>

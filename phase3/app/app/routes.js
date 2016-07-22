@@ -95,10 +95,11 @@ module.exports = function(app, passport) {
     // =====================================
 	// Game pages =====================
 	// =====================================
-    app.get('/games/*', function(req,res){
+    app.get('/games/*', function(req, res){
         var url = req.url;
         var game = url.substring(7);
         var Game;
+
         if (game=='lol') {
                 Game='League of Legends'
         }
@@ -115,18 +116,21 @@ module.exports = function(app, passport) {
                 Game='Overwatch'
          
         }
-        
-        User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
-                if (req.isAuthenticated()){
-                res.render('game.ejs',{
+  
+        if (req.isAuthenticated()){
+                User.find({'local.occupation':'coach', 'local.game': Game,
+                   'local.email': {$ne: req.user.local.email } },function(err, coaches){
+                        res.render('game.ejs',{
                         coaches: coaches,
                         user: req.user,
                         gameName: game,
                         coachtype: null,
                         cost : null
                         });
-                }
-                else{
+                   });
+        }
+        else{
+                User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
                 res.render('game.ejs', {
                         coaches: coaches,
                         user: null,
@@ -134,8 +138,8 @@ module.exports = function(app, passport) {
                         coachtype: null,
                         cost : null
                         });
-                }
-        });
+                });
+        }
     });
     
     
@@ -196,36 +200,47 @@ module.exports = function(app, passport) {
 				highlimit = 100;    
 		}
         
-		User.find({'local.game' : Game,
+        if (req.isAuthenticated()){
+                User.find({'local.game' : Game,
 				   'local.occupation':'coach',
-				   'local.cost': { $gt: lowlimit, $lt: highlimit} }, function(err, coaches) {
+				   'local.cost': { $gt: lowlimit, $lt: highlimit},
+                   'local.email': {$ne: req.user.local.email} }, function(err, coaches) {
+                  
                         if (err){       
                          console.log("some error");
                         }    
                         else {
-                                console.log(coaches);
-                                if (req.isAuthenticated()){
-                                        res.render('game.ejs', {
-                                                coaches: coaches,
-                                                user: req.user,
-                                                //search part
-                                                gameName: gameName,
-                                                coachtype: coachtype,
-                                                cost : cost
-                                                });
-                                        }
-                                else{
-                                        res.render('game.ejs', {
-                                                coaches: coaches,
-                                                user: null,
-                                                //search part
-                                                gameName: gameName,
-                                                coachtype: coachtype,
-                                                cost : cost
-                                                });
-                                        }
-                                }
-                        });
+                               res.render('game.ejs', {
+                                coaches: coaches,
+                                user: req.user,
+                                //search part
+                                gameName: gameName,
+                                coachtype: coachtype,
+                                cost : cost
+                                });
+                        }
+                   })
+         }
+         else{
+                User.find({'local.game' : Game,
+				   'local.occupation':'coach',
+				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
+                        if (err){       
+                         console.log("some error");
+                        }
+                        else{
+                                res.render('game.ejs', {
+                                coaches: coaches,
+                                user: null,
+                                //search part
+                                gameName: gameName,
+                                coachtype: coachtype,
+                                cost : cost
+                                });
+                        }
+                   });
+                }
+     
         });
     
     
@@ -244,7 +259,7 @@ module.exports = function(app, passport) {
 		//handle student  
 		if (req.user.local.occupation == "student") {
             User.find({'local.game': req.user.local.game, 'local.occupation': 'coach'}, function(err, users){
-                res.render('studentprofile.ejs', {
+                res.render('profile.ejs', {
                     coaches: users,
                     user : req.user 
                     });	
@@ -255,8 +270,8 @@ module.exports = function(app, passport) {
 		else{
             // Coach can view comments to him on profile
             // get comments from database
-            Comment.find({'userid': req.user._id}, function(err, comments){
-                	res.render('coachprofile.ejs', {
+            Comment.find({'coachid': req.user._id}, function(err, comments){
+                	res.render('profile.ejs', {
                         user : req.user,
                         comments : comments 
                     });	
@@ -426,7 +441,7 @@ module.exports = function(app, passport) {
         newComment.comment.studentid = req.user._id;
         newComment.comment.name = req.user.local.nickname;
         newComment.comment.content = content;
-        newComment.comment.date = date.getTime();
+        newComment.comment.date = date;
         newComment.save();    
     });
     
