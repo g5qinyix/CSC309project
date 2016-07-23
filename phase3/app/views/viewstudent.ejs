@@ -4,7 +4,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><%=student.local.nickname%></title>
 	<link href="/css/profile.css" rel="stylesheet" type="text/css" />
-	<!--<script type="text/javascript" src="lol.js"></script>-->
+	<script type="text/javascript" src="/script/jquery-2.2.4.min.js"></script>
+	<script type="text/javascript" src ="/script/profile.js"></script>
+
 </head>
 <body>
 	<header>
@@ -22,13 +24,25 @@
 			<div class = "photo">
 			 	<img src="/images/person1.jpg">
 			</div>
+			
 			<div class="g_information">
 				<h2><%=student.local.nickname%></h2>
 				<p>I am <%=student.local.game%> student</p>
 			</div>
-			<div id="message" onclick="location.href='/editcoach'">
+			
+			<a id="sendmessage"><div id="message" >
 				<img src="/images/conversation.png">
+			</div></a>
+			
+			
+			<div id='showmessage' style="display:none">
+				<form action="/message/<%=student._id%>" method="post">
+				<textarea cols="3" name="content" placeholder="Message" rows="2" autofocus required>
+				</textarea>
+				<button type="submit">Send</button>	
+				</form>
 			</div>
+			
 			
 		</div>
 	</section>

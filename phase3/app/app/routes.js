@@ -24,6 +24,8 @@ module.exports = function(app, passport) {
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	});
+    
+    
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
@@ -493,6 +495,7 @@ module.exports = function(app, passport) {
     
     
     
+    
     // =====================================
 	// Message system ======================
 	// =====================================
@@ -511,9 +514,29 @@ module.exports = function(app, passport) {
         newMessage.sender.content = req.param("content");
         newMessage.receiver.content = req.param("content");
         newMessage.receiver.status=0;
-        newMessage.date = date.getTime();
-        newMessage.save();   
+        newMessage.date = date;
+        newMessage.save();
+        res.redirect('/users/'+receiverid);
     });
+    
+    
+    //repley in a conservation
+    app.post('/repley/*', isLoggedIn, function(req,res){
+        var url = req.url;
+        var receiverid = url.substring(8);
+        var date = new Date();
+        var newMessage = new Message();
+        newMessage.sender.id = req.user._id;
+        newMessage.receiver.id = receiverid;
+        newMessage.sender.content = req.param("repley");
+        newMessage.receiver.content = req.param("repley");
+        newMessage.receiver.status=0;
+        newMessage.date = date;
+        newMessage.save();
+        
+        res.redirect('/viewmessage/'+receiverid);
+    });
+    
     
     
     //user view contacter list
@@ -525,30 +548,30 @@ module.exports = function(app, passport) {
                         receivers.push(senders[i]);
                         }
                 }
+                
                 User.find({ '_id': { $in: receivers } }, function(err, users){
                         res.render('message.ejs', {
+                                targetid: null,
                                 contacters: users,
                                 user: req.user,
                                 conservations: null
-                });
-                        
-                });
-                
-                
+                                });
+                        });
             });
         });
     });
     
     
-    
     //user view conservations with one contacter
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
-         var contact = url.substring(13);
+         var contactid = url.substring(13);
          Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                      }).sort({'date': -1}).exec(function(err, conservations){
+                      }).sort({'date': 1}).exec(function(err, conservations){
+                console.log(conservations);
             res.render('message.ejs',{
+                targetid:  contactid,
                 conservations:conservations,
                 user: req.user,
                 contacters :null
@@ -556,9 +579,7 @@ module.exports = function(app, passport) {
         });    
     });
 
-
 }
-
 
 
 // route middleware to make sure

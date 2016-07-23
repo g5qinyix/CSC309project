@@ -16,22 +16,25 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
-				<li><img src="images/close-envelope.png" onmouseover='src="images/close-envelope1.png"' onmouseout='src="images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-				<li style="margin-top:0px" ><a href='/profile'>Hi <%= user.local.nickname%></a></li>
-			
+				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<li><a href='/profile'>Hi <%= user.local.nickname%></a></li>
 			</ul>
 		</nav>
 	</header>
 	<section id= "chat-sys">
 		<div id = "friend-list">
-			<h1>Contact</h1>
+			<% if (contacters != null) { %>
 			<% contacters.forEach(function(contacter){ %>
+			<a href="/viewmessage/<%=contacter._id%>">
 				<div class="block">
 				<img src="images/person1.jpg" class = "photo">
 				<div class="id">
-					<a href="/viewmessage/<%=contacter._id%>"><%=contacter.local.nickname%></a>	
+					<p style="font-size:18px"><%=contacter.local.nickname%></p>
 				</div>
-			<% });%>		
+				</div>
+				</a>
+			<% });%>
+			<% } %>
 		</div>
 				
 		<div id="convo">
@@ -47,8 +50,10 @@
 				<% });%>	
 			</ul>
 			<div class="input">
-				<input></input>
-				<button>reply</button>
+				<form action="/repley/<%=targetid%>" method="post">
+				<input name="repley"></input>
+				<button type='submit'>reply</button>
+				</form>
 			</div>
 			<% } %>
 		</div>
