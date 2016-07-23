@@ -2,7 +2,7 @@
 
 
 // import schema for user, comment and message
-var User       		= require('../app/models/user');
+var User       		= require('../app/models/user'); 
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
 
@@ -545,6 +545,31 @@ module.exports = function(app, passport) {
             });
         });    
     });
+    
+    
+    
+    // =====================================
+	// ADMIN LOGIN =========================
+	// =====================================
+	// show the admin-login form
+	app.get('/admin', function(req, res) {
+		// render the page and pass in any flash data if it exists
+		res.render('adminlogin.ejs', { message: req.flash('loginMessage') });
+	});
+
+	// process the login form
+	app.post('/admin', passport.authenticate('local-login', {
+		successRedirect : '/adminhome', // redirect to the secure profile section
+		failureRedirect : '/admin', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
+	}));
+    
+    // show admin page
+	app.get('/adminhome', function(req, res) {
+		// render the page and pass in any flash data if it exists
+		res.render('admin.ejs', { message: req.flash('loginMessage') });
+	});
+    
 
 
 }
