@@ -25,10 +25,11 @@
 			<div class="g_information">
 				<h2><%=coach.local.nickname%></h2>
 				<p>I am <%=coach.local.game%> coach</p>
+				<p><%=coach.local.coachtype%> </p>
 			</div>
-			<div id="message" onclick="location.href='/editcoach'">
+			<a href="/message/<%=coach._id%>"><div id="message" >
 				<img src="/images/conversation.png">
-			</div>
+			</div></a>
 			
 		</div>
 	</section>
@@ -67,7 +68,7 @@
     
     <section class='comment'>
         <form action="/comments/<%=coach._id%>" method='post'>
-            <label>Message</label>
+            <h1>Your comment</h1>
             <textarea cols="15" name="comment" placeholder="Message" rows="10">       
             </textarea>
             <input id="submit" type="submit" value="Send Message"> 

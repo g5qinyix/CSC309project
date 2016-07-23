@@ -340,22 +340,21 @@ nav ul li.logo{
 
 
 .others_life{
+	font-size:14px;
 	overflow: auto;
     display: block;
 	height:800px;
     width: 90%;
-    background: white;
     text-align: center;
     box-sizing: border-box;
     margin: auto;
     text-align: left;
-    background: white;
-	margin-bottom:150px;
+
 	color: #689;
 }
 
 
-.others_life h1{
+h1{
 	font-size: 25px;
     padding: 20px 0px 10px 40px;
     display: block;
@@ -381,8 +380,18 @@ nav ul li.logo{
 }
 
 .comment{
-	margin-top: 20px;
-	width:40%;
-	height: 40px;
+	margin:auto;
+	margin-top: 40px;
+	width:90%;
+	margin-bottom: 250px;
+}
+
+
+
+.comment form textarea{
+	
+	width:80%;
+	height:50px;
+	
 }
 
