@@ -4,7 +4,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>BeMaster</title>
 	<link href="/css/profile.css" rel="stylesheet" type="text/css" />
-	<!--<script type="text/javascript" src="lol.js"></script>-->
+	<script type="text/javascript" src="/script/jquery-2.2.4.min.js"></script>
+	<script type="text/javascript" src ="/script/profile.js"></script>
 </head>
 <body>
 	<header>
@@ -17,19 +18,28 @@
 			</ul>
 		</nav>
 	</header>
+	
 	<section class = "information">
 		<div class = "profile">
 			<div class = "photo">
-			 	<img src="/images/person1.jpg">
+			 	<img style="border-radius:50%" src="/images/person1.jpg">
 			</div>
 			<div class="g_information">
 				<h2><%=coach.local.nickname%></h2>
 				<p>I am <%=coach.local.game%> coach</p>
 				<p><%=coach.local.coachtype%> </p>
 			</div>
-			<a href="/message/<%=coach._id%>"><div id="message" >
+			<a id="sendmessage"><div id="message" >
 				<img src="/images/conversation.png">
 			</div></a>
+			
+			<div id='showmessage' style="display:none">
+				<form action="/message/<%=coach._id%>" method="post">
+				<textarea cols="3" name="content" placeholder="message him" rows="2" autofocus required>
+				</textarea>
+				<button type="submit">Send</button>	
+				</form>
+			</div>
 			
 		</div>
 	</section>
@@ -48,10 +58,12 @@
         </div>
     </section>
     
+
 	<section class="others_life">
-		<h1>Comments</h1>
+	    <h1 id="viewcomment">View Comments</h1>
+		<div id="showcomment" style="display:none" >
 		<% comments.forEach(function(comment) { %>
-		<div id = "posts">
+		<div id="posts">
 			<div class = "small_photo">
 					<img src="/images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
 			</div>
@@ -63,25 +75,19 @@
 			</div>
 			 <p><%=comment.comment.date%></p>
 		</div>
-		<% }); %>  
+		<% }); %>
+		</div>
 	</section>
     
     <section class='comment'>
         <form action="/comments/<%=coach._id%>" method='post'>
             <h1>Your comment</h1>
-            <textarea cols="15" name="comment" placeholder="Message" rows="10">       
+            <textarea cols="3" name="comment" placeholder="Message" rows="2" required>       
             </textarea>
-            <input id="submit" type="submit" value="Send Message"> 
-
+            <button type="submit">Send Comment</button>
       </form>
     </section>
 	
-	
-	
 
-	
-	
-	
-	
 </body>
 </html>
