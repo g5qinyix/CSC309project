@@ -15,9 +15,7 @@ module.exports = function(app, passport) {
             res.render("home.ejs",{
                 user: null
                 }); 
-	});
-
-    
+	}); 
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -348,14 +346,15 @@ module.exports = function(app, passport) {
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
-
             if (err) {
                 return next(err);
                 //code
             }
+            
 			if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
+            
             if (req.param('location') != '') {
                 user.local.location = req.param('location');
             }
@@ -412,9 +411,7 @@ module.exports = function(app, passport) {
         User.findOne({ '_id' :  id }, function(err, user) {
                  if (err) {
                         console.log(err);
-                        }
-                
-                
+                        }     
                 //this user is a student      
                 if (user.local.occupation =="student") {
                         res.render('viewstudent.ejs', {
@@ -422,8 +419,7 @@ module.exports = function(app, passport) {
                                 user : req.user
                         });
                         
-                }
-                
+                } 
                 //this student is a coach
                 else{
                         //find all comments about this coach
@@ -501,6 +497,9 @@ module.exports = function(app, passport) {
 	// Message system ======================
 	// =====================================
     
+    
+    
+
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;
@@ -515,18 +514,27 @@ module.exports = function(app, passport) {
         newMessage.date = date.getTime();
         newMessage.save();   
     });
+    
+    
     //user view contacter list
-    app.get('/viewmessage', isLoggedIn, function(req, res){
+    app.get('/messaging', isLoggedIn, function(req, res){
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
-                    }
+                        }
                 }
-                res.render('ejs', {
-                    receivers: receivers
+                User.find({ '_id': { $in: receivers } }, function(err, users){
+                        res.render('message.ejs', {
+                                contacters: users,
+                                user: req.user,
+                                conservations: null
                 });
+                        
+                });
+                
+                
             });
         });
     });
@@ -540,8 +548,10 @@ module.exports = function(app, passport) {
          Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
                       }).sort({'date': -1}).exec(function(err, conservations){
-            res.render('ejs',{
-                conservations:conservations
+            res.render('message.ejs',{
+                conservations:conservations,
+                user: req.user,
+                contacters :null
             });
         });    
     });
