@@ -1,12 +1,12 @@
-<!-- views/login.ejs -->
+<!-- views/adminlogin.ejs -->
 <!doctype html>
 <html>
 <head>
 	<link rel="stylesheet" href="../css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     
-    
-	<title>login</title>
+	<title>adminlogin</title>
 </head>
 <body>
 	<!--codes for the navigation bar-->
@@ -21,19 +21,14 @@
 	<% } %>
 
 	<!-- LOGIN FORM -->
-    <form class="login-form" action="/login" method="post">
-
-      <input id="loginname" type="text" name="email" placeholder="username" autofocus/>
-
-      <input id="loginpassword" type="password" name="password" placeholder="password"/>
+    <form class="login-form" action="/admin" method="post">
+      <input id="loginname" type="text" name="email" value="admin@bemaster.com"/>
+      <input id="loginpassword" type="password" name="password" placeholder="password" autofocus/>
        
 	  <button type="submit">Login</button>
 	   
-      <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+      <p class="message">Not an administer? <a href="/login">Go to user log in</a></p>
 
-      <a href="/BeMaster/facebook"><img src="images/facebook.png" style="padding-top:20px;width:190px;height:45px">
-	  </a>
-      
     </form>
   </div>
 </div>

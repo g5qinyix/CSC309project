@@ -1,0 +1,68 @@
+<!-- views/admin.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    margin: 0px;
+}
+
+p {
+  padding: 0px 16px;
+  position: fixed;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    background-color: #f1f1f1;
+    margin-top: 40px;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<p>BeMaster administration page</p>
+<ul>
+  <li><a class="active" href="/home" target="iframe_a">BeMaster Homepage</a></li>
+  <li><a href="/login" target="iframe_a">Change Password</a></li>
+  <li><a href="/signup" target="iframe_a">Add user & their info</a></li>
+  <li><a href="/#contact" target="iframe_a">update user & their info</a></li>
+  <li><a href="/#" target="iframe_a">Delete user & their info</a></li>
+  <li><a href="/#" target="iframe_a">Delete comment</a></li>
+  <li><a href="/#" target="iframe_a">Delete message</a></li>
+  <li><a href="/#" target="iframe_a">initializing/repopulating</a></li>
+</ul>
+
+<iframe name="iframe_a" style="margin-left:25%;width:75%;padding:0px 0px;height:1000px"></iframe>
+
+  
+</div>
+
+
+
+</body>
+</html>
+
