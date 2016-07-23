@@ -559,18 +559,18 @@ module.exports = function(app, passport) {
 
 	// process the login form
 	app.post('/admin', passport.authenticate('local-login', {
-		successRedirect : '/adminhome', // redirect to the secure profile section
-		failureRedirect : '/admin', // redirect back to the signup page if there is an error
+		successRedirect : '/adminpage', // redirect to the secure admin page
+		failureRedirect : '/admin', // redirect back to the admin-login page if there is an error
 		failureFlash : true // allow flash messages
 	}));
     
     // show admin page
-	app.get('/adminhome', function(req, res) {
-		// render the page and pass in any flash data if it exists
+	app.get('/adminpage', function(req, res) {
+		// render the adminpage and pass in any flash data if it exists
 		res.render('admin.ejs', { message: req.flash('loginMessage') });
 	});
     
-
+ 
 
 }
 
