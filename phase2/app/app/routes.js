@@ -318,7 +318,7 @@ module.exports = function(app, passport) {
 				highlimit = 30;
 				break;
 			case cost == '>$30':
-				lowlimit = 31;
+				lowlimit = 30;
 				highlimit = 99;
 				break;
 			case cost == 'all':
@@ -329,7 +329,7 @@ module.exports = function(app, passport) {
 		console.log(highlimit);
 		User.find({'local.game' : gameName,
 				  'local.occupation':'coach',
-				  'local.cost': { $gt: lowlimit, $lt: highlimit} }, function(err, coaches) {
+				  'local.cost': { $gte: lowlimit, $lte: highlimit} }, function(err, coaches) {
 		  if (err) return next(err)
 		  else {
 		    res.render('search.ejs', {

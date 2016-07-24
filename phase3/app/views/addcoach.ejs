@@ -10,7 +10,7 @@
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2 style="color:rgb(100, 65, 165)">Fill out the coach form</h2>
+	<h2 style="color:rgb(100, 65, 165)">Add a coach</h2>
   <div class="form">
     <!-- show any messages that come back with authentication -->
 	<% if (message.length > 0) { %>
@@ -26,13 +26,13 @@
 	  <span>Location</span>                                                                                             
       <input type="text" name="location" placeholder="Toronto" required/>
 	  
-      <span>You can offer</span>  
+      <span>can offer</span>  
 	  <select type="multiple" name="coachtype" required>
 		<option>Offline</option>
 		<option>Online</option>
 	 </select>
 	  
-	  <span>You want to be a mentor of</span>                                               
+	  <span>to be a mentor of</span>                                               
       <select name="game" required>
 		<option>League of Legends</option>
 		<option>Dota2</option>
@@ -40,11 +40,10 @@
         <option>Overwatch</option>
 	  </select>
 	  
-	   <span>Your cost $/hour</span> 
+	   <span>cost $/hour</span> 
 	   <input type=number name="cost" placeholder="$" required>
 	
-	  <button type="submit">Signup</button>
-	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
+	  <button type="submit">Add</button>
     </form>
   </div>
 </div>

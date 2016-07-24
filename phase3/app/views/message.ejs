@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>messages</title>
+
+    <link rel="stylesheet" href="/css/message.css" media="screen" type="text/css" />
+	<script type="text/javascript" src="/script/jquery-2.2.1.js"></script>
+	<script type="text/javascript" src="/script/message.js"></script>
+
+</head>
+
+	<body>
+		
+	<header>
+		<nav>
+			<ul>
+				<li class="logo"><a href="/home">BeMaster</a></li>
+				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<li><a href='/profile'><%= user.local.nickname%></a></li>
+			</ul>
+		</nav>
+	</header>
+	
+	<section id= "chat-sys">
+		<div id = "friend-list">
+			<% if (contacters != null) { %>
+			<% contacters.forEach(function(contacter){ %>
+			<a href="/viewmessage/<%=contacter._id%>">
+				<div class="block">
+				<img src="images/person1.jpg" class = "photo">
+				<div class="id">
+					<p style="font-size:16px"><%=contacter.local.nickname%></p>
+				</div>
+				</div>
+				</a>
+			<% });%>
+			<% } %>
+		</div>	
+		<div id="convo">
+			<% if (conservations != null) { %>
+			<ul id="divExample" class="chat-thread">	
+				<% conservations.forEach(function(conservation) { %>
+				<% if (conservation.sender.id == user._id) { %>
+				<li class="source"><%=conservation.sender.content%></li>
+				<% } %>
+				<% if (conservation.receiver.id == user._id) { %>
+				<li class="target"><%=conservation.receiver.content%></li>
+				<% } %>
+				<% });%>	
+			</ul>
+			<div class="input">
+				<form action="/repley/<%=targetid%>" method="post">
+				<input name="repley" autofocus></input>
+				<button type='submit'>reply</button>
+				</form>
+			</div>
+			<% } %>
+		</div>	
+	</section>
+	
+	</body>
+</html>

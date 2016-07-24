@@ -1,4 +1,4 @@
-<!-- views/signup.ejs -->
+<!-- views/addstudent.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -10,7 +10,7 @@
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2 style="color:rgb(100, 65, 165);margin-bottom:0px">Create your account</h2>
+	<h2 style="color:rgb(100, 65, 165);margin-bottom:0px">Add a student</h2>
   <div style="margin-top:0px" class="form">
     <!-- show any messages that come back with authentication -->
 	<% if (message.length > 0) { %>
@@ -25,7 +25,7 @@
       <input type="text" name="nickname" placeholder="smith" required/>
 	  <span>Location</span>                                               
       <input type="text" name="location" placeholder="Toronto" required/>
-	  <span>Your favourite Game</span>
+	  <span>Student's favourite Game</span>
 	  
       <select name="game">
 		<option>Dota2</option>
@@ -34,10 +34,10 @@
 		<option>Overwatch</option>
 	  </select>
 	  
-	  <span>Your Photo</span>                                               
+	  <span>Student's Photo</span>                                               
       <input type="file" name="photo"/>   
-	  <button type="submit">Signup</button>
-	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
+	  <button type="submit">Add</button>
+
     </form>
   </div>
 </div>

@@ -2,7 +2,7 @@
 
 
 // import schema for user, comment and message
-var User       		= require('../app/models/user');
+var User       		= require('../app/models/user'); 
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
 
@@ -13,11 +13,9 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/', function(req, res) {  
             res.render("home.ejs",{
-                user: null      
-            }); 
-	});
-
-    
+                user: null
+                }); 
+	}); 
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -26,6 +24,8 @@ module.exports = function(app, passport) {
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	});
+    
+    
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
@@ -52,9 +52,6 @@ module.exports = function(app, passport) {
 			failureRedirect : '/login'
 		}));
 
-    
-
-    
     
 	// =====================================
 	// SIGNUP ==============================
@@ -116,10 +113,10 @@ module.exports = function(app, passport) {
                 Game='Overwatch'
          
         }
-  
         if (req.isAuthenticated()){
                 User.find({'local.occupation':'coach', 'local.game': Game,
                    'local.email': {$ne: req.user.local.email } },function(err, coaches){
+                       
                         res.render('game.ejs',{
                         coaches: coaches,
                         user: req.user,
@@ -129,9 +126,10 @@ module.exports = function(app, passport) {
                         });
                    });
         }
-        else{
+        else{   
                 User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
-                res.render('game.ejs', {
+                        console.log(coaches);
+                res.render('game.ejs', {   
                         coaches: coaches,
                         user: null,
                         gameName: game,
@@ -196,7 +194,7 @@ module.exports = function(app, passport) {
 				highlimit = 100;
 				break;
 			case cost == 'All':
-				lowlimit = 0;
+				lowlimit = -1;
 				highlimit = 100;    
 		}
         
@@ -258,12 +256,10 @@ module.exports = function(app, passport) {
         
 		//handle student  
 		if (req.user.local.occupation == "student") {
-            User.find({'local.game': req.user.local.game, 'local.occupation': 'coach'}, function(err, users){
-                res.render('profile.ejs', {
-                    coaches: users,
-                    user : req.user 
-                    });	
-            });
+                res.render('studentprofile.ejs', {
+                           user : req.user
+                           });
+         
         }
         
 		//handle coach
@@ -271,7 +267,7 @@ module.exports = function(app, passport) {
             // Coach can view comments to him on profile
             // get comments from database
             Comment.find({'coachid': req.user._id}, function(err, comments){
-                	res.render('profile.ejs', {
+                	res.render('coachprofile.ejs', {
                         user : req.user,
                         comments : comments 
                     });	
@@ -285,7 +281,6 @@ module.exports = function(app, passport) {
             res.render("home.ejs", {
                 user: req.user
             });
-   
 	});
 	
 	
@@ -353,21 +348,22 @@ module.exports = function(app, passport) {
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
-
             if (err) {
                 return next(err);
                 //code
             }
+            
 			if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
+            
             if (req.param('location') != '') {
                 user.local.location = req.param('location');
             }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
-            if ( req.param('game') != '') {
+            if ( req.param('game') != '' ) {
                 user.local.game = req.param('game');
             }
             if (req.param('cost') != '' ) {
@@ -375,16 +371,15 @@ module.exports = function(app, passport) {
             }
             
             if ( req.param('coachtype') != '') {
-                user.local.game = req.param('coachtype');
+                user.local.coachtype = req.param('coachtype');
             }
-            
 			user.save();
 			//update session
 			req.login(user, function(err) {
 				if (err) return next(err)
 				else{
 					res.redirect('/profile');
-				}
+                }
 			});
 		});														
 	});
@@ -398,7 +393,7 @@ module.exports = function(app, passport) {
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
-	});
+        });
 
     
     
@@ -406,43 +401,72 @@ module.exports = function(app, passport) {
     
     
     // =====================================
-	// student view coach information=======
+	// view user information===============
 	// =====================================
+    // including coach and student
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring(7);
-        console.log(id);
+        if (id == req.user._id) {
+                res.redirect('/profile');
+        }
+        else{
         //find this user from database    
         User.findOne({ '_id' :  id }, function(err, user) {
-            if (err) {
-                return next(err);
-            }   
-        });     
+                 if (err) {
+                        console.log(err);
+                        }     
+                //this user is a student      
+                if (user.local.occupation =="student") {
+                        res.render('viewstudent.ejs', {
+                                student : user,
+                                user : req.user
+                        });
+                        
+                } 
+                //this user is a coach
+                else{
+                        //find all comments about this coach
+                        Comment.find({'coachid': id}, function(err, comments){
+                                if (err) {
+                                        console.log(err);
+                                        }
+                                res.render('viewcoach.ejs',{
+                                        user: req.user,
+                                        coach:user,
+                                        comments: comments
+                                });
+                        });
+                }
+        });
+        }
     });
-       
+
+
 
 	
 
     
          
 	// =====================================
-	// Comment and rateing system ======================
+	// Comment and rating system ======================
 	// =====================================
     
     // users add comments to coach
-	app.post('/comment/*', isLoggedIn, function(req, res){
+	app.post('/comments/*', isLoggedIn, function(req, res){
         //get the id of coach to be commented
         var url = req.url;
-        var coachid = url.substring(9);
+        var coachid = url.substring(10);
         var content = req.param("comment");
         var newComment  = new Comment();
         var date = new Date();
         newComment.coachid = coachid;
         newComment.comment.studentid = req.user._id;
-        newComment.comment.name = req.user.local.nickname;
+        newComment.comment.nickname = req.user.local.nickname;
         newComment.comment.content = content;
         newComment.comment.date = date;
-        newComment.save();    
+        newComment.save();
+        res.redirect('/users/'+coachid);
     });
     
     
@@ -474,10 +498,14 @@ module.exports = function(app, passport) {
     
     
     
+    
     // =====================================
 	// Message system ======================
 	// =====================================
     
+    
+    
+
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;
@@ -489,41 +517,139 @@ module.exports = function(app, passport) {
         newMessage.sender.content = req.param("content");
         newMessage.receiver.content = req.param("content");
         newMessage.receiver.status=0;
-        newMessage.date = date.getTime();
-        newMessage.save();   
+        newMessage.date = date;
+        newMessage.save();
+        res.redirect('/users/'+receiverid);
     });
+    
+    
+    //repley in a conservation
+    app.post('/repley/*', isLoggedIn, function(req,res){
+        var url = req.url;
+        var receiverid = url.substring(8);
+        var date = new Date();
+        var newMessage = new Message();
+        newMessage.sender.id = req.user._id;
+        newMessage.receiver.id = receiverid;
+        newMessage.sender.content = req.param("repley");
+        newMessage.receiver.content = req.param("repley");
+        newMessage.receiver.status=0;
+        newMessage.date = date;
+        newMessage.save();
+        
+        res.redirect('/viewmessage/'+receiverid);
+    });
+    
+    
+    
     //user view contacter list
-    app.get('/viewmessage', isLoggedIn, function(req, res){
+    app.get('/messaging', isLoggedIn, function(req, res){
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
-                    }
+                        }
                 }
-                res.render('ejs', {
-                    receivers: receivers
-                });
+                
+                User.find({ '_id': { $in: receivers } }, function(err, users){
+                        
+                        res.render('message.ejs', {
+                                targetid: null,
+                                contacters: users,
+                                user: req.user,
+                                conservations: null
+                                });
+                        });
             });
         });
     });
     
     
-    
     //user view conservations with one contacter
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
-         var contact = url.substring(13);
+         var contactid = url.substring(13);
          Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                      }).sort({'date': -1}).exec(function(err, conservations){
-            res.render('ejs',{
-                conservations:conservations
+                      }).sort({'date': 1}).exec(function(err, conservations){
+                console.log(conservations);
+            res.render('message.ejs',{
+                targetid:  contactid,
+                conservations:conservations,
+                user: req.user,
+                contacters :null
             });
         });    
     });
-};
+    
+    
+    
+    
+    // =====================================
+	// ADMIN LOGIN =========================
+	// =====================================
+	// show the admin-login form
+	app.get('/admin', function(req, res) {
+		// render the page and pass in any flash data if it exists
+		res.render('adminlogin.ejs', { message: req.flash('loginMessage') });
+	});
 
+
+	// process the login form
+	app.post('/admin', passport.authenticate('admin-login', {
+		successRedirect : '/adminpage', // redirect to the secure admin page
+		failureRedirect : '/admin', // redirect back to the admin-login page if there is an error
+		failureFlash : true // allow flash messages 
+	}));
+    
+    // show admin page
+	app.get('/adminpage', isLoggedIn, function(req, res) {
+		// render the adminpage and pass in any flash data if it exists
+		res.render('admin.ejs', { message: req.flash('loginMessage') });
+	});
+    
+    //show the change password form
+	app.get('/changepassword', isLoggedIn,  function(req, res){
+		res.render('changepassword.ejs' ,{
+			user: req.user
+		});
+	});
+    
+    // process the change password form
+	app.post('/changepassword', isLoggedIn, function(req, res){
+		var email = req.user.local.email;
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+            if (err) {
+                return next(err);
+            }
+            if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+			user.save();
+            res.render('changepasswordsuccess');
+		});													
+	});
+    
+    //show the add user form
+	app.get('/adduser', isLoggedIn,  function(req, res){
+		res.render('adduser.ejs');
+	});
+    
+    //show the add stuent form
+	app.get('/addstudent', isLoggedIn,  function(req, res){
+		res.render('addstudent.ejs', { message: req.flash('signupMessage')} );
+	});
+    
+    //show the add coach form
+	app.get('/addcoach', isLoggedIn,  function(req, res){
+		res.render('addcoach.ejs', { message: req.flash('signupMessage')} );
+	});
+    
+    
+    
+}
 
 
 // route middleware to make sure
