@@ -20,25 +20,17 @@ function initMap() {
  	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
 	var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8"
 	console.log(coachInfo);
-	console.log(coachInfo[0]);
 	for (var i=0; i<coachInfo.length; i++){
 		console.log(coachInfo[i]["address"]);
-		var result = httpGet(url+parseAddress(coachInfo[i].address)+urlAPIKey);
-		console.log("result:" + result);
+		var result = JSON.parse(httpGet(url+parseAddress(coachInfo[i].address)+urlAPIKey));
 		var latitude = result.results[0]["geometry"]["location"]["lat"];
-		var longitude = result.results[0]["geometry"]["location"]["long"];
-		console.log("lat:" + latitude);
-		console.log("long" + longitude);
+		var longitude = result.results[0]["geometry"]["location"]["lng"];
 		var marker = new google.maps.Marker({
 			position: {lat: latitude, lng: longitude},
 			map: map,
 			title: coachInfo[i].email
 		});
 	}
-	/*User.find({'local.occupation': 'coach'}).exec(function(err, coaches){
-		console.log(coaches[0].local.location);
-	});*/
-
  }
 
  function httpGet(url){
@@ -47,7 +39,7 @@ function initMap() {
  	//https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8
  	jsonHTTP.open("GET", url, false);
  	jsonHTTP.send(null);
- 	console.log(jsonHTTP.responseText);
+ 	//console.log(jsonHTTP.responseText);
 	return(jsonHTTP.responseText);
  }
 
