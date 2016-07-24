@@ -425,7 +425,7 @@ module.exports = function(app, passport) {
                         });
                         
                 } 
-                //this student is a coach
+                //this user is a coach
                 else{
                         //find all comments about this coach
                         Comment.find({'coachid': id}, function(err, comments){
@@ -601,6 +601,7 @@ module.exports = function(app, passport) {
     
     
     
+    
     // =====================================
 	// ADMIN LOGIN =========================
 	// =====================================
@@ -612,17 +613,58 @@ module.exports = function(app, passport) {
 
 
 	// process the login form
-	app.post('/admin', passport.authenticate('local-login', {
+	app.post('/admin', passport.authenticate('admin-login', {
 		successRedirect : '/adminpage', // redirect to the secure admin page
 		failureRedirect : '/admin', // redirect back to the admin-login page if there is an error
-		failureFlash : true // allow flash messages
+		failureFlash : true // allow flash messages 
 	}));
     
     // show admin page
-	app.get('/adminpage', function(req, res) {
+	app.get('/adminpage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
 		res.render('admin.ejs', { message: req.flash('loginMessage') });
-	});   
+	});
+    
+    //show the change password form
+	app.get('/changepassword', isLoggedIn,  function(req, res){
+		res.render('changepassword.ejs' ,{
+			user: req.user
+		});
+	});
+    
+    // process the change password form
+	app.post('/changepassword', isLoggedIn, function(req, res){
+		var email = req.user.local.email;
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+            if (err) {
+                return next(err);
+            }
+            if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+			user.save();
+            res.render('changepasswordsuccess');
+		});													
+	});
+    
+    //show the add user form
+	app.get('/adduser', isLoggedIn,  function(req, res){
+		res.render('adduser.ejs');
+	});
+    
+    //show the add stuent form
+	app.get('/addstudent', isLoggedIn,  function(req, res){
+		res.render('addstudent.ejs', { message: req.flash('signupMessage')} );
+	});
+    
+    //show the add coach form
+	app.get('/addcoach', isLoggedIn,  function(req, res){
+		res.render('addcoach.ejs', { message: req.flash('signupMessage')} );
+	});
+    
+    
+    
 }
 
 

@@ -1,0 +1,53 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Coach Form</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+	<h2 style="color:rgb(100, 65, 165)">Add a coach</h2>
+  <div class="form">
+    <!-- show any messages that come back with authentication -->
+	<% if (message.length > 0) { %>
+		<div class="alert"><%= message %></div>
+	<% } %>
+    <form class="login-form" action="/coachsignup" method="post">
+	  <span>Email</span>
+	  <input type="email" name="email" placeholder="123@mail.com" autofocus required/>
+	  <span>Password</span>
+      <input type="password" name="password" placeholder="password" required/>
+	  <span>Nickname</span>                                               
+      <input type="text" name="nickname" placeholder="smith" required/>
+	  <span>Location</span>                                                                                             
+      <input type="text" name="location" placeholder="Toronto" required/>
+	  
+      <span>can offer</span>  
+	  <select type="multiple" name="coachtype" required>
+		<option>Offline</option>
+		<option>Online</option>
+	 </select>
+	  
+	  <span>to be a mentor of</span>                                               
+      <select name="game" required>
+		<option>League of Legends</option>
+		<option>Dota2</option>
+        <option>CS:GO</option>
+        <option>Overwatch</option>
+	  </select>
+	  
+	   <span>cost $/hour</span> 
+	   <input type=number name="cost" placeholder="$" required>
+	
+	  <button type="submit">Add</button>
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>
