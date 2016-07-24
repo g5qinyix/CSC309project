@@ -637,7 +637,11 @@ module.exports = function(app, passport) {
     // show admin page
 	app.get('/adminpage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
-		res.render('admin.ejs', { message: req.flash('loginMessage') });
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin.ejs', { message: req.flash('loginMessage') });
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        } 
 	});
     
     //show the change password form
@@ -647,36 +651,127 @@ module.exports = function(app, passport) {
 		});
 	});
     
+    
     // process the change password form
-	app.post('/changepassword', isLoggedIn, function(req, res){
+	app.post('/changepassword', function(req, res){
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
                 return next(err);
+            } else {
+                user.local.password = user.generateHash(req.param('newpassword'));
+                user.save();
+                res.render('changepasswordsuccess.ejs');
             }
-            if (req.param('password') != '') {
-                user.local.password = user.generateHash(req.param('password'));     
-            }
-			user.save();
-            res.render('changepasswordsuccess');
 		});													
 	});
+	
     
     //show the add user form
 	app.get('/adduser', isLoggedIn,  function(req, res){
-		res.render('adduser.ejs');
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('adduser.ejs');
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
 	});
     
     //show the add stuent form
 	app.get('/addstudent', isLoggedIn,  function(req, res){
-		res.render('addstudent.ejs', { message: req.flash('signupMessage')} );
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('addstudent.ejs', { message: req.flash('signupMessage')});
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
 	});
+    
+    // process the add student form
+    app.post('/addstudent', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres already a user with that email
+            if (user) {
+                res.render('addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+            } else {
+                // if there is no user with that email
+                // create the user
+                var newUser  = new User();
+
+                // set the user's local credentials
+                newUser.local.email    = email;
+                newUser.local.password = newUser.generateHash(req.param('password')); // use the generateHash function in our user model
+                // parse the url
+                newUser.local.location = req.param('location');
+                newUser.local.nickname = req.param('nickname');
+                newUser.local.game = req.param('game');
+                newUser.local.occupation = 'student';
+                // save the user
+                newUser.save(function(err) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.render('addstudentsuccess.ejs');
+                    }
+                });
+            }
+        })
+    });
     
     //show the add coach form
 	app.get('/addcoach', isLoggedIn,  function(req, res){
-		res.render('addcoach.ejs', { message: req.flash('signupMessage')} );
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('addcoach.ejs', { message: req.flash('signupMessage')});
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
 	});
+    
+    // process the add coach form
+    app.post('/addcoach', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres already a user with that email
+            if (user) {
+                res.render('addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+            } else {
+                // if there is no user with that email
+                // create the user
+                var newUser  = new User();
+                
+                 // set the user's local credentials
+                newUser.local.email    = email;
+                newUser.local.password = newUser.generateHash(req.param('password'));
+                newUser.local.nickname = req.param('nickname');
+                newUser.local.location = req.param('location');
+                newUser.local.occupation = 'coach';
+                newUser.local.game = req.param('game');
+                newUser.local.cost = req.param('cost');
+                newUser.local.rate.grade = 0;
+                newUser.local.rate.list= [];
+                newUser.local.coachtype = req.param("coachtype");
+                // save the user
+                newUser.save(function(err) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.render('addcoachsuccess.ejs');
+                    }
+                });
+            };
+        });
+    })
+        
+        
+    
     
     
     
