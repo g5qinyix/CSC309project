@@ -373,14 +373,13 @@ module.exports = function(app, passport) {
             if ( req.param('coachtype') != '') {
                 user.local.coachtype = req.param('coachtype');
             }
-            
 			user.save();
 			//update session
 			req.login(user, function(err) {
 				if (err) return next(err)
 				else{
 					res.redirect('/profile');
-				}
+                }
 			});
 		});														
 	});
@@ -408,7 +407,10 @@ module.exports = function(app, passport) {
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring(7);
-        
+        if (id == req.user._id) {
+                res.redirect('/profile');
+        }
+        else{
         //find this user from database    
         User.findOne({ '_id' :  id }, function(err, user) {
                  if (err) {
@@ -437,6 +439,7 @@ module.exports = function(app, passport) {
                         });
                 }
         });
+        }
     });
 
 
@@ -550,6 +553,7 @@ module.exports = function(app, passport) {
                 }
                 
                 User.find({ '_id': { $in: receivers } }, function(err, users){
+                        
                         res.render('message.ejs', {
                                 targetid: null,
                                 contacters: users,
