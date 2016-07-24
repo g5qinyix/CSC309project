@@ -224,11 +224,14 @@ nav ul li.logo{
 /* hide back of pane during swap */
 .col-md-3-1, .col-md-3-2, .col-md-3-3, .col-md-3-4, .back-1, .back-2, .back-3, .back-4 {
 	backface-visibility: hidden;
-
+    transition:all 0.6s ease 0s;
+	transform-style: preserve-3d;
 	position: absolute;
 	top: 0;
 	left: 0;
 }
+
+
 
 /* front pane, placed above back */
 .col-md-3-1 {

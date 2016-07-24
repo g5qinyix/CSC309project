@@ -255,9 +255,10 @@ select {
 }
 
 /* hide back of pane during swap */
-.col-md-3, .back {
+.col-md-3, .back-1, .back-2, .back-3 {
 	backface-visibility: hidden;
-
+    transition:all 0.6s ease 0s;
+	transform-style: preserve-3d;
 	position: absolute;
 	top: 0;
 	left: 0;
