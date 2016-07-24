@@ -117,6 +117,10 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()){
                 User.find({'local.occupation':'coach', 'local.game': Game,
                    'local.email': {$ne: req.user.local.email } },function(err, coaches){
+                        console.log(coaches);
+                        for (var i=0; i<coaches.length; i++){
+                            console.log(coaches[i]);
+                        }
                         res.render('game.ejs',{
                         coaches: coaches,
                         user: req.user,

@@ -3,10 +3,11 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>League of Legends</title>
+	<script type="text/javascript" src="/script/googleMarker.js"></script>
 	<script type="text/javascript" src="/script/jquery-2.2.1.js"></script>
 	<script type="text/javascript" src="/script/nav_control.js"></script>
+	<link rel="stylesheet" href="/css/map.css" type="text/css">
 	<link href="/css/lol.css" rel="stylesheet" type="text/css" />
-
 	<!--<script type="text/javascript" src="lol.js"></script>-->
 </head>
 <body>
@@ -70,12 +71,12 @@
 		</label>
 		<label>
 		<span>Cost rate</span>
-		<select name='cost'>
+		<select id="priceSelect" name='cost'>
 			<option>Free</option>
 			<option>$1-$10</option>
 			<option>$11-$20</option>
 			<option>$21-$30</option>
-			<option>>$30</option>
+			<option>$30+</option>
 			<option>All</option>
 			<% if (cost != null) { %>
 			<option selected='selected'><%=cost%></option>
@@ -88,10 +89,10 @@
 		</form>
 		<br>
 		<br>
-		
+		<p hidden><%=coaches%></p>
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
-			<div class="block">
+			<a href="/users/<%=coach._id%>"><div class="block">
 				<img class="img-responsive" src=
 			        "/images/person1.jpg" onclick="location.href='/#';">
 			    <p><%=coach.local.nickname%></p>
@@ -102,10 +103,10 @@
 		        	<p>Rating: <%=coach.local.rate.grade%></p>
 				    <% } %>
 			    	<p>Price: $<%=coach.local.cost %>/hour</p>
-			</div>
+			</div></a>
 			<% }); %>		
 		</div>
-		
+		<% if (coachtype == "online") { %>
 		<% coaches.forEach(function(coach) { %>
 		<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
@@ -129,7 +130,12 @@
 	        </div>
         </div>
         <% }); %>	
-		
+		<% } %>
+		<% if (coachtype == "offline") { %>
+				<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8&callback=initMap"></script>
+			<div id="map"></div>
+		<% } %>
 	</section>
 </body>
 </html>
