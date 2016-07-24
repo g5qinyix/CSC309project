@@ -121,11 +121,19 @@ module.exports = function(app, passport) {
 
                    'local.email': {$ne: req.user.local.email } }).
                 sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){          
-					console.log(coaches);
-                    for (var i=0; i<coaches.length; i++){
-                        console.log(coaches[i]);
-                    }
+					   var limitedCoachInfo = [];
+                        for (var i=0; i<coaches.length; i++){
+							var limitedCoach = new Object();
+							limitedCoach.email = coaches[i].local.email;
+							limitedCoach.game = coaches[i].local.game;
+							limitedCoach.cost = coaches[i].local.cost;
+							limitedCoach.address = coaches[i].local.location;
+							limitedCoach.name = coaches[i].local.nickname;
+							limitedCoachInfo.push(limitedCoach);
+                        }
+						console.log(limitedCoachInfo);
                         res.render('game.ejs',{
+						gameCoachInfo: limitedCoachInfo,
                         coaches: coaches,
                         user: req.user,
                         gameName: game,
@@ -137,15 +145,26 @@ module.exports = function(app, passport) {
         
         else{   
                 User.find({'local.occupation':'coach', 'local.game': Game}).
-                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
-                       
-                res.render('game.ejs', {   
-                        coaches: coaches,
-                        user: null,
-                        gameName: game,
-                        coachtype: null,
-                        cost : null
-                        });
+				sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
+					var limitedCoachInfo = [];
+					for (var i=0; i<coaches.length; i++){
+						var limitedCoach = new Object();
+						limitedCoach.email = coaches[i].local.email;
+						limitedCoach.game = coaches[i].local.game;
+						limitedCoach.cost = coaches[i].local.cost;
+						limitedCoach.address = coaches[i].local.location;
+						limitedCoach.name = coaches[i].local.nickname;
+						limitedCoachInfo.push(limitedCoach);
+					}
+					console.log(limitedCoachInfo);
+					res.render('game.ejs', {   
+						coaches: coaches,
+						gameCoachInfo: limitedCoachInfo,
+						user: null,
+						gameName: game,
+						coachtype: null,
+						cost : null
+					});
                 });
         }
     });
@@ -209,6 +228,7 @@ module.exports = function(app, passport) {
 		}
         
         if (req.isAuthenticated()){
+				console.log("cost is:" + cost);
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
                    'local.coachtype': coachtype,
@@ -218,18 +238,33 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }    
                         else {
-                               res.render('game.ejs', {
-                                coaches: coaches,
-                                user: req.user,
-                                //search part
-                                gameName: gameName,
-                                coachtype: coachtype,
-                                cost : cost
-                                });
+							console.log(coaches);
+							var limitedCoachInfo = [];
+							for (var i=0; i<coaches.length; i++){
+								var limitedCoach = new Object();
+								limitedCoach.email = coaches[i].local.email;
+								limitedCoach.game = coaches[i].local.game;
+								limitedCoach.cost = coaches[i].local.cost;
+								limitedCoach.address = coaches[i].local.location;
+								limitedCoach.name = coaches[i].local.nickname;
+								limitedCoachInfo.push(limitedCoach);
+							}
+						    res.render('game.ejs', {
+								gameCoachInfo: limitedCoachInfo,
+								coaches: coaches,
+								user: req.user,
+								//search part
+								gameName: gameName,
+								coachtype: coachtype,
+								cost : cost
+							});
                         }
-                   })
+                   });
          }
          else{
+				console.log("cost is:" + cost);
+				console.log("low limit:" + lowlimit);
+				console.log("high limit:" + highlimit);
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
                     'local.coachtype': coachtype,
@@ -238,14 +273,29 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }
                         else{
-                                res.render('game.ejs', {
-                                coaches: coaches,
-                                user: null,
-                                //search part
-                                gameName: gameName,
-                                coachtype: coachtype,
-                                cost : cost
-                                });
+							console.log("coaches:");
+							console.log(coaches);
+							var limitedCoachInfo = [];
+							console.log(coaches.length);
+							for (var i=0; i<coaches.length; i++){
+								var limitedCoach = new Object();
+								limitedCoach.email = coaches[i].local.email;
+								limitedCoach.game = coaches[i].local.game;
+								limitedCoach.cost = coaches[i].local.cost;
+								limitedCoach.address = coaches[i].local.location;
+								limitedCoach.name = coaches[i].local.nickname;
+								limitedCoachInfo.push(limitedCoach);
+							}
+							console.log(limitedCoachInfo);
+							res.render('game.ejs', {
+								gameCoachInfo: limitedCoachInfo,
+								coaches: coaches,
+								user: null,
+								//search part
+								gameName: gameName,
+								coachtype: coachtype,
+								cost : cost
+							});
                         }
                    });
                 }
