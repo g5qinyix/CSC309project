@@ -88,8 +88,7 @@
 		</form>
 		<br>
 		<br>
-		<!-- HERE -->
-		<!-- <p hidden><%=coaches%></p> -->
+		<p id="coachInfo" hidden><%=JSON.stringify(gameCoachInfo)%></p>
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
 			<a href="/users/<%=coach._id%>"><div class="block">
