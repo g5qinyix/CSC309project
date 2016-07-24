@@ -299,6 +299,7 @@ module.exports = function(app, passport) {
 	});
 	
 	
+    
 	// process the studentedit form
 	app.post('/editstudent', function(req, res){
 		var email = req.user.local.email;
@@ -546,15 +547,14 @@ module.exports = function(app, passport) {
     
     //user view contacter list
     app.get('/messaging', isLoggedIn, function(req, res){
-         unreadmessage =[]
-         senderid =[];
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
-                } 
+                }
+                
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
                              distinct('sender.id').exec(function(err, unread){
                              
@@ -579,24 +579,40 @@ module.exports = function(app, passport) {
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
          var contactid = url.substring(13);
-         Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
-                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                      }).sort({'date': 1}).exec(function(err, conservations){
-                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
-                               {multi: true}, function(err){
-                                   res.render('message.ejs',{
-                                   targetid:  contactid,
-                                   conservations:conservations,
-                                   user: req.user,
-                                    contacters :null
-                                    });
-                        
-                });
+         // get the contacter list
+         Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+            Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                for(i=0; i<senders.length; i++){
+                    if (receivers.indexOf(senders[i]) == -1) {
+                        receivers.push(senders[i]);
+                        }
+                }
+                Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
+                        distinct('sender.id').exec(function(err, unread){
+                                User.find({ '_id': { $in: receivers } }, function(err, users){
+                                        
+                                        //find all messages between user and contacter
+                                        Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
+                                                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
+                                                     }).sort({'date': 1}).exec(function(err, conservations){
+                                                //update message status
+                                                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
+                                                               {multi: true}, function(err){
+                                                                res.render('message.ejs',{
+                                                                        unreads : unread,
+                                                                        targetid:  contactid,
+                                                                        conservations:conservations,
+                                                                        user: req.user,
+                                                                        contacters :users
+                                                                        });
+                                                                });
+                                                });
+                                        });
+                                });
+                        });
                                                                            
-                
-         
-        });    
-    });
+                });
+         });
     
     
     
