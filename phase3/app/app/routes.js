@@ -339,18 +339,17 @@ module.exports = function(app, passport) {
                                     }
                                 });
                             }
-                    });
+                });
                 
                 
-                
-                //delete old images
-                var oldPath = path.join(__dirname, '../public', user.local.photo);
-                fs.unlinkSync(oldPath);
+                if ( user.local.photo != '') {
+                        //delete old images
+                        var oldPath = path.join(__dirname, '../public', user.local.photo);
+                        fs.unlinkSync(oldPath);
+                }
                 
                 //save the url to user photo field
-                user.local.photo = '/tmp/'+ req.files.photo.name;
-               
-              
+                user.local.photo = '/tmp/'+ req.files.photo.name;  
             }
             
           
@@ -425,9 +424,13 @@ module.exports = function(app, passport) {
                             }
                     });
                 
+                    
+                if ( user.local.photo != '') {
+                  
                 //delete old images
                 var oldPath = path.join(__dirname, '../public', user.local.photo);
                 fs.unlinkSync(oldPath);
+                }
                 
                 //save the url to user photo field
                 user.local.photo = '/tmp/'+ req.files.photo.name;

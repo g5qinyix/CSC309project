@@ -23,7 +23,13 @@
 	<section class = "information">
 		<div class = "profile">
 			<div class = "photo">
-			 	<img style="height:60%;width:60%; border-radius: 50%" src="<%=student.local.photo%>">
+			 	<% if (student.local.photo == "") { %>
+			 	<img src="/images/person.gif" >
+				<% } %>
+				
+			    <% if (student.local.photo != "") { %>
+				<img style="height:60%;width:60%; border-radius: 50%" src="<%=student.local.photo%>">
+			    <% } %>
 			</div>
 			
 			<div class="g_information">

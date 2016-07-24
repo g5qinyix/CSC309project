@@ -71,26 +71,31 @@ module.exports = function(passport) {
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
 
-                
-                //read image file
-                fs.readFile(req.files.photo.path, function(err, data){
-                    var imageName = req.files.photo.name;
-                    if(!imageName){
-                        console.log("There was an error");
-                    }else{
-                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
-                        console.log(newPath);
-                        fs.writeFile(newPath, data, function(err){
-                            if (err) {
-                                console.log("err");
-                       
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                    
+                }
+                else{
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                           
+                                }
+                                });
                             }
-                            });
-                        }
-                });
-                
-                //save the url to user photo field
-                newUser.local.photo = '/tmp/'+ req.files.photo.name;
+                    });
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ req.files.photo.name;
+                }
+              
                 // save the user
                 
                 newUser.save(function(err) {
@@ -142,26 +147,31 @@ module.exports = function(passport) {
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list= [];
                 newUser.local.coachtype = req.param("coachtype");
+                  
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                }
                 
-                
-                //read image file
-                fs.readFile(req.files.photo.path, function(err, data){
-                    var imageName = req.files.photo.name;
-                    if(!imageName){
-                        console.log("There was an error");
-                    }else{
-                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
-                        console.log(newPath);
-                        fs.writeFile(newPath, data, function(err){
-                            if (err) {
-                                console.log("err");
-                                }
-                            });
-                        }
-                });
-                
-                //save the url to user photo field
-                newUser.local.photo = '/tmp/'+ req.files.photo.name;
+                else{   
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ req.files.photo.name;
+                }
+               
                 // save the user
                 newUser.save(function(err) {
                     if (err)
@@ -306,7 +316,7 @@ module.exports = function(passport) {
                         newUser.local.nickname =   newUser.facebook.name;
                         newUser.local.email =  newUser.facebook.email;
                         newUser.local.occupation = "student";
-                        newUser.local.photo = 'facebook';
+                        newUser.local.photo = '';
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
