@@ -629,7 +629,22 @@ module.exports = function(app, passport) {
             }
 			user.save();
             res.render('changepasswordsuccess');
-		});														
+		});													
+	});
+    
+    //show the add user form
+	app.get('/adduser', isLoggedIn,  function(req, res){
+		res.render('adduser.ejs');
+	});
+    
+    //show the add stuent form
+	app.get('/addstudent', isLoggedIn,  function(req, res){
+		res.render('addstudent.ejs', { message: req.flash('signupMessage')} );
+	});
+    
+    //show the add coach form
+	app.get('/addcoach', isLoggedIn,  function(req, res){
+		res.render('addcoach.ejs', { message: req.flash('signupMessage')} );
 	});
     
     
