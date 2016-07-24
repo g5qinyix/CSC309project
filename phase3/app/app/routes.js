@@ -543,6 +543,7 @@ module.exports = function(app, passport) {
     
     
     
+    
     //user view contacter list
     app.get('/messaging', isLoggedIn, function(req, res){
          unreadmessage =[]
@@ -574,6 +575,7 @@ module.exports = function(app, passport) {
     });
     
     
+    
     //user view conservations with one contacter
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
@@ -588,7 +590,7 @@ module.exports = function(app, passport) {
                                    conservations:conservations,
                                    user: req.user,
                                     contacters :null
-            });
+                                    });
                         
                 });
                                                                            
