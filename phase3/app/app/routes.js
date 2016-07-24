@@ -202,9 +202,9 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()){
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
+                   'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit},
                    'local.email': {$ne: req.user.local.email} }, function(err, coaches) {
-                  
                         if (err){       
                          console.log("some error");
                         }    
@@ -223,6 +223,7 @@ module.exports = function(app, passport) {
          else{
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
+                    'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
                         if (err){       
                          console.log("some error");
@@ -471,31 +472,9 @@ module.exports = function(app, passport) {
         res.redirect('/users/'+coachid);
     });
     
+
     
     
-    // =====================================
-	// Follow system ======================
-	// =====================================  
-    //student follows a coach
-    app.get('/follow/*', isLoggedIn, function(req, res){
-        var url = req.url;
-        var coachid = url.substring(8);
-        User.findOne({'_id': req.user._id }, function(err, user){
-            if (err) {
-                //code
-            }
-            user.local.follow.push(coachid);
-            user.save();
-        });
-    });
-    
-    //student view follow list 
-    app.get('/viewfollow',isLoggedIn, function(req, res){
-        User.find({'_id': req.user._id}, function(err, coaches){
-            //TODO
-            //TODO
-        });   
-    });
     
     
     
@@ -505,9 +484,6 @@ module.exports = function(app, passport) {
 	// Message system ======================
 	// =====================================
     
-    
-    
-
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;

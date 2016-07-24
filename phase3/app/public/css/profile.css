@@ -197,6 +197,7 @@ nav ul li.logo{
 
 .col-md-3-1, .col-md-3-2, .col-md-3-3, .col-md-3-4 img{
 	width: 50%;
+
 }
 /* flip the pane when hovered */
 .flip-container-1:hover .flipper, .flip-container-1.hover .flipper {

@@ -62,8 +62,8 @@
 		<label>
 		<span>Online or Offline</span>
 		<select name='coachtype'>
-			<option>online</option>
-			<option>offline</option>
+			<option>Online</option>
+			<option>Offline</option>
 			<% if (coachtype != null) { %>
 			<option selected="selected"><%=coachtype%></option>
             <% } %>
@@ -92,10 +92,11 @@
 		
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
+		
 			<a href="/users/<%=coach._id%>"><div class="block">
-				<img class="img-responsive" src=
-			        "/images/person1.jpg" onclick="location.href='/#';">
+				<img  class="img-responsive" src="<%=coach.local.photo%>">
 			    <p><%=coach.local.nickname%></p>
+
 			    <% if (coach.local.rate.grade == 0) { %>
 		        	<p>Rating:N/A</p>
 				    <% } %>

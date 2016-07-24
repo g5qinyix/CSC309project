@@ -101,6 +101,7 @@ nav ul li.logo{
     margin-left:25%;
     margin-right:15%;
     max-width: 60%;
+	margin-top: 5%;
     background: #ececec;
     font: 12px Georgia, "Times New Roman", Times, serif;
     color: #888;
@@ -134,7 +135,6 @@ nav ul li.logo{
 
 
 #list_coach select {
-    appearance:none;
     -webkit-appearance:none; 
     -moz-appearance: none;
     text-indent: 0.01px;
@@ -144,7 +144,9 @@ nav ul li.logo{
     line-height: 25px;
 }
 
+
 #list_coach button {
+	margin-left: 60%;
     background: #E27575;
     border: none;
     padding: 10px 25px 10px 25px;
@@ -165,16 +167,16 @@ nav ul li.logo{
 .img-responsive{
 	display: block;
 	max-width: 100%;
-	height: auto;
+	height: 90%;
 	border-radius: 50%;
 	margin: 0 auto;
-	width: 200px;
+	width: 80%;
 }
 
 .col-md-3{
 	position: relative;
   	min-height: 1px;
-  	height: 250px;
+  	height: 100%;
   	float: left;
   	box-sizing: border-box;
     text-align: center;
@@ -322,6 +324,23 @@ select {
 }
 
 @media screen and (max-device-width: 768px){
+	#list_coach {
+    margin-left:25%;
+    margin-right:15%;
+    max-width: 60%;
+	margin-top: 5%;
+    background: #ececec;
+    font: 8px Georgia, "Times New Roman", Times, serif;
+    color: #888;
+    text-shadow: 1px 1px 1px #FFF;
+	text-align: center;
+	}
+	
+	#list_coach form button{
+		font-size: 8px;
+	}
+	
+	
 	.img {
 		display: block;
 		max-width: 100%;
