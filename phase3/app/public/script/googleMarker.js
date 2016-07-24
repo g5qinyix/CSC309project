@@ -9,7 +9,7 @@ function initMap() {
 	  center: myLatLng
 	});
 	$('#priceSelect').on('change', function(){
-		console.log("???");
+		//console.log(this.value);
 		displayMarkers(this.value);
 	});
 
@@ -18,21 +18,19 @@ function initMap() {
  function displayMarkers(pricingTier){
  	 var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
  	 var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8"
-	 if (pricingTier === "free"){
+	 if (pricingTier === "Free"){
 		 
-	 } else if (pricingTier === "tier1"){
-	 	/*User.find({'local.occupation': 'coach'}).exec(function(err, coaches){
-	 		coaches[0].local.location;
-	 	});*/
-		
-	 } else if (pricingTier === "tier2"){
-		 httpGet();
-	 } else if (pricingTier === "tier3"){
+	 } else if (pricingTier === "$1-$10"){
+	 	User.find({'local.occupation': 'coach'}).exec(function(err, coaches){
+	 		console.log(coaches[0].local.location);
+	 	});
+		httpGet();
+	 } else if (pricingTier === "$11-20"){
 		 
-	 } else if (pricingTier === "tier4"){
+	 } else if (pricingTier === "$21-30"){
 		 
-	 } else if (pricingTier === "all"){
-
+	 } else if (pricingTier === "$30+"){
+		 
 	 }
  }
 
