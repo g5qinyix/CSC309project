@@ -8,10 +8,11 @@ function initMap() {
 	  zoom: 12,
 	  center: myLatLng
 	});
-	$('#priceSelect').on('change', function(){
+	/*$('#priceSelect').on('change', function(){
 		//console.log(this.value);
 		displayMarkers();
-	});
+	});*/
+	displayMarkers();
 
  }
  
@@ -21,7 +22,6 @@ function initMap() {
 	var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8"
 	console.log(coachInfo);
 	for (var i=0; i<coachInfo.length; i++){
-		console.log(coachInfo[i]["address"]);
 		var result = JSON.parse(httpGet(url+parseAddress(coachInfo[i].address)+urlAPIKey));
 		var latitude = result.results[0]["geometry"]["location"]["lat"];
 		var longitude = result.results[0]["geometry"]["location"]["lng"];
