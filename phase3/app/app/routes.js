@@ -331,7 +331,7 @@ module.exports = function(app, passport) {
                        if(!imageName){
                             console.log("There was an error");
                         }else{
-                            var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                            var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
                             console.log(newPath);
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
@@ -349,7 +349,8 @@ module.exports = function(app, passport) {
                 }
                 
                 //save the url to user photo field
-                user.local.photo = '/tmp/'+ req.files.photo.name;  
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
+               
             }
             
           
@@ -414,7 +415,7 @@ module.exports = function(app, passport) {
                        if(!imageName){
                             console.log("There was an error");
                         }else{
-                            var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                            var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
                             console.log(newPath);
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
@@ -433,7 +434,7 @@ module.exports = function(app, passport) {
                 }
                 
                 //save the url to user photo field
-                user.local.photo = '/tmp/'+ req.files.photo.name;
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
             }
             
             
