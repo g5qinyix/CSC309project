@@ -13,6 +13,7 @@
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<li><a href='/logout'>Log Out</a></li>
 				<li><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
@@ -41,15 +42,15 @@
 			<div class="flipper">
 				<div class="col-md-3-1">
 					<% if (user.local.game == "CS:GO") { %>
-		            <img class="img-responsive" src=
+		            <img style="width:100%;height:100%" class="img-responsive" src=
 			        "/images/csgo_logo.png">
 					<% } %>
 					<% if (user.local.game == "League of Legends") { %>
-		            <img class="img-responsive" src=
+		            <img  style="width:100%;height:100%" class="img-responsive" src=
 			        "/images/lol_logo.png">
 					<% } %>
 					<% if (user.local.game == "Dota2") { %>
-		            <img class="img-responsive" src=
+		            <img style="width:100%;height:100%" class="img-responsive" src=
 			        "/images/dota2_logo.png">
 					<% } %>
 					<% if (user.local.game == "Overwatch") { %>

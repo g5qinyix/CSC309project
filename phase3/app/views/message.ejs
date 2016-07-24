@@ -26,18 +26,15 @@
 	</header>
 	
 	<section id= "chat-sys">
+		<% if (contacters != null) { %>
 		<div id = "friend-list">
-			<% if (contacters != null) { %>
 			<% contacters.forEach(function(contacter){ %>
-			
-		
 			<a href="/viewmessage/<%=contacter._id%>">
-				<div class="block">
-						
+				<div class="block">				
 			<% unreads.forEach(function(unread){ %>
 			<% if (unread == contacter._id) { %>
 			    <div id="test" class="square">
-					   !!
+					!!
 				</div>
 			<% } %>
 	        <% });%>
@@ -48,11 +45,12 @@
 				</div>
 				</a>
 			<% });%>
-			
-			<% } %>
-		</div>	
+		</div>
+	    <% } %>
+	
+	    <% if (conservations != null) { %>
 		<div id="convo">
-			<% if (conservations != null) { %>
+			
 			<ul id="divExample" class="chat-thread">	
 				<% conservations.forEach(function(conservation) { %>
 				<% if (conservation.sender.id == user._id) { %>
@@ -69,8 +67,9 @@
 				<button type='submit'>reply</button>
 				</form>
 			</div>
-			<% } %>
-		</div>	
+		
+		</div>
+		<% } %>
 	</section>
 	
 	</body>

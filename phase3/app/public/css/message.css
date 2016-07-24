@@ -6,9 +6,7 @@ body {
   background: #ececec;
 }
 
-header{
-  height: 0px;
-}
+
 
 nav{
   width: 100%;
@@ -66,7 +64,6 @@ nav ul li.logo{
   color:white;  
 }
 
-
 .drop-down{
   display:none;
 }
@@ -78,19 +75,21 @@ nav ul li.logo{
 #chat-sys{
   overflow: auto;
 }
+
 #friend-list{
-  margin-top: 2%;
-  margin-left: 13%;
+  margin-top: 12%;
+  margin-left: 10%;
   overflow: auto;
-  height: 100vw;
-  float: left;
   width: 20%;
   height: 35vw;
 }
+
 #convo{
+  margin-top:10%;
   float: left;
-  margin-left:10%;
+  margin-left:20%;
 }
+
 .block{
   background: white;
   overflow: auto;

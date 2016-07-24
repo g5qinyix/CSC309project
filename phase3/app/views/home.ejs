@@ -15,6 +15,7 @@
 				<li><img src="/images/user.png" onmouseover='src="/images/user1.png"' onmouseout='src="/images/user.png"' onclick="location.href='/login';"></li>
 				<% } %>
 				<% if (user != null) { %>
+				<li><a href='/logout'>Log Out</a></li>
 				<li style="margin-top:0px" ><a href='/profile'>Hi <%= user.local.nickname%></a></li>
 				<% } %>
 			</ul>

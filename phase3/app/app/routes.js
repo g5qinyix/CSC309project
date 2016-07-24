@@ -554,13 +554,12 @@ module.exports = function(app, passport) {
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
-                }     
+                } 
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
                              distinct('sender.id').exec(function(err, unread){
                              
                                     User.find({ '_id': { $in: receivers } }, function(err, users){
-                                        console.log(unread);
-                                        console.log(users);
+                                   
                                         res.render('message.ejs', {   
                                                 unreads : unread,
                                                 targetid: null,
