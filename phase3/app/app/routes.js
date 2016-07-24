@@ -273,10 +273,7 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }
                         else{
-							console.log("coaches:");
-							console.log(coaches);
 							var limitedCoachInfo = [];
-							console.log(coaches.length);
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
 								limitedCoach.email = coaches[i].local.email;
@@ -286,7 +283,6 @@ module.exports = function(app, passport) {
 								limitedCoach.name = coaches[i].local.nickname;
 								limitedCoachInfo.push(limitedCoach);
 							}
-							console.log(limitedCoachInfo);
 							res.render('game.ejs', {
 								gameCoachInfo: limitedCoachInfo,
 								coaches: coaches,
