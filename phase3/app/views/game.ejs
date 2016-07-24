@@ -19,7 +19,8 @@
 				<li><img src="/images/user.png" onmouseover='src="/images/user1.png"' onmouseout='src="/images/user.png"' onclick="location.href='/login';"></li>
 				<% } %>
 				<% if (user != null) { %>
-				<li style="margin-top:0px" ><a href='/profile'>Hi <%= user.local.nickname%></a></li>
+				<li><a href='/profile'>Hi <%= user.local.nickname%></a></li>
+				<li><a href='/logout'>Log Out</a></li>
 				<% } %>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="images/upwards-arrow1.png"' onmouseout='src="images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
@@ -118,13 +119,13 @@
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
 				
 					<% if (coach.local.rate.grade == 0) { %>
-		        	<p>Rating:N/A</p>
+		        	<p style="font-size:15px">Rating:N/A</p>
 				    <% } %>
 					<% if (coach.local.rate.grade != 0) { %>
-		        	<p>Rating: <%=coach.local.rate.grade%></p>
+		        	<p style="font-size:15px">Rating: <%=coach.local.rate.grade%></p>
 				    <% } %>
 					
-		        	<p>Price: $<%=coach.local.cost %>/hour</p>
+		        	<p style="font-size:15px">Price: $<%=coach.local.cost %>/hour</p>
 		        </div></a>
 	        </div>
         </div>

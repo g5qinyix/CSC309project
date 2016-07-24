@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var messageSchema = mongoose.Schema({
     
     
-    date:     Date,
+    date:       Date,
     receiver :{  
         id  : String,
         content  : String,
@@ -16,7 +16,7 @@ var messageSchema = mongoose.Schema({
     
     sender :{
         id : String,
-        content : String,  
+        content : String 
     }
 
 });
