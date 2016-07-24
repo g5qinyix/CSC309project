@@ -16,7 +16,7 @@
 	<% if (message.length > 0) { %>
 		<div class="alert"><%= message %></div>
 	<% } %>
-    <form class="login-form" action="/studentsignup" method="post">
+    <form class="login-form" action="/studentsignup" method="post" enctype='multipart/form-data'>
       <span>Enter an e-mail</span>
       <input type="email" name="email" placeholder="123@mail.com" autofocus required/>
 	  <span>Password</span>

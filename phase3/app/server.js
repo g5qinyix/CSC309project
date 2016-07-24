@@ -7,7 +7,7 @@ var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-var async     = require('async');
+
 
 var configDB = require('./config/database.js');
 

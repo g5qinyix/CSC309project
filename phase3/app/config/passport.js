@@ -8,7 +8,8 @@ var User       		= require('../app/models/user');
 
 // load the auth variables
 var configAuth = require('./auth');
-
+var fs     = require('fs');
+var path     = require('path');
 // expose this function to our app using module.exports
 module.exports = function(passport) {
     
@@ -69,7 +70,29 @@ module.exports = function(passport) {
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
+
+                
+                //read image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                    var imageName = req.files.photo.name;
+                    if(!imageName){
+                        console.log("There was an error");
+                    }else{
+                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                        console.log(newPath);
+                        fs.writeFile(newPath, data, function(err){
+                            if (err) {
+                                console.log("err");
+                       
+                            }
+                            });
+                        }
+                });
+                
+                //save the url to user photo field
+                newUser.local.photo = '/tmp/'+ req.files.photo.name;
                 // save the user
+                
                 newUser.save(function(err) {
                     if (err)
                         throw err;
@@ -113,14 +136,32 @@ module.exports = function(passport) {
 	            // parse the url
                 newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
-                newUser.local.location = req.param('location');
                 newUser.local.occupation = 'coach';
-                newUser.local.coachtype = req.param('coachtype');
                 newUser.local.game = req.param('game');
                 newUser.local.cost = req.param('cost');
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list= [];
                 newUser.local.coachtype = req.param("coachtype");
+                
+                
+                //read image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                    var imageName = req.files.photo.name;
+                    if(!imageName){
+                        console.log("There was an error");
+                    }else{
+                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                        console.log(newPath);
+                        fs.writeFile(newPath, data, function(err){
+                            if (err) {
+                                console.log("err");
+                                }
+                            });
+                        }
+                });
+                
+                //save the url to user photo field
+                newUser.local.photo = '/tmp/'+ req.files.photo.name;
                 // save the user
                 newUser.save(function(err) {
                     if (err)
