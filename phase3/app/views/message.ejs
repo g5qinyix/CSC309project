@@ -36,12 +36,14 @@
 						
 			<% unreads.forEach(function(unread){ %>
 			<% if (unread == contacter._id) { %>
-			            <p>Unread Messages</p>
+			    <div id="test" class="square">
+					99
+				</div>
 			<% } %>
 	        <% });%>
-				<img src="images/person1.jpg" class = "photo">
-				<div class="id">
-					<p style="font-size:16px"><%=contacter.local.nickname%></p>	
+				<div class="inner-container">
+					<img src="person1.jpg" class="photo" >
+					<div class="id">Tony</div>
 				</div>
 				</div>
 				</a>
