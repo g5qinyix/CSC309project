@@ -218,8 +218,8 @@ module.exports = function(app, passport) {
 				lowlimit = 20;
 				highlimit = 31;
 				break;
-			case cost == '>$30':
-				lowlimit = 30;
+			case cost == '$30+':
+				lowlimit = 31;
 				highlimit = 100;
 				break;
 			case cost == 'All':
@@ -265,14 +265,20 @@ module.exports = function(app, passport) {
 				console.log("cost is:" + cost);
 				console.log("low limit:" + lowlimit);
 				console.log("high limit:" + highlimit);
-                User.find({'local.game' : Game,
+				//console.log(User.find({'local.game':Game}));
+                User.find({
+					'local.game' : Game,
 				   'local.occupation':'coach',
                     'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
+					   console.log('coaches cost:' + coaches[0]["local"]["cost"]);
+					   console.log(coaches[0]["local"]["cost"] > lowlimit);
+					   console.log(coaches[0]["local"]["cost"] < highlimit);
                         if (err){       
                          console.log("some error");
                         }
                         else{
+							console.log(coaches);
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
