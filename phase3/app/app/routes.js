@@ -6,6 +6,7 @@ var User       		= require('../app/models/user');
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
 
+
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -533,7 +534,7 @@ module.exports = function(app, passport) {
         newMessage.receiver.id = receiverid;
         newMessage.sender.content = req.param("repley");
         newMessage.receiver.content = req.param("repley");
-        newMessage.receiver.status=0;
+        newMessage.receiver.status= 0;
         newMessage.date = date;
         newMessage.save();
         
@@ -544,25 +545,32 @@ module.exports = function(app, passport) {
     
     //user view contacter list
     app.get('/messaging', isLoggedIn, function(req, res){
+         unreadmessage =[]
+         senderid =[];
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
-                }
-                
-                User.find({ '_id': { $in: receivers } }, function(err, users){
-                        
-                        res.render('message.ejs', {
-                                targetid: null,
-                                contacters: users,
-                                user: req.user,
-                                conservations: null
+                }     
+                Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
+                             distinct('sender.id').exec(function(err, unread){
+                             
+                                    User.find({ '_id': { $in: receivers } }, function(err, users){
+                                        console.log(unread);
+                                        console.log(users);
+                                        res.render('message.ejs', {   
+                                                unreads : unread,
+                                                targetid: null,
+                                                contacters: users,
+                                                user: req.user,
+                                                conservations: null
+                                                });
+                                        });
                                 });
                         });
             });
-        });
     });
     
     
@@ -573,13 +581,19 @@ module.exports = function(app, passport) {
          Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
                       }).sort({'date': 1}).exec(function(err, conservations){
-                console.log(conservations);
-            res.render('message.ejs',{
-                targetid:  contactid,
-                conservations:conservations,
-                user: req.user,
-                contacters :null
+                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
+                               {multi: true}, function(err){
+                                   res.render('message.ejs',{
+                                   targetid:  contactid,
+                                   conservations:conservations,
+                                   user: req.user,
+                                    contacters :null
             });
+                        
+                });
+                                                                           
+                
+         
         });    
     });
     
@@ -608,6 +622,10 @@ module.exports = function(app, passport) {
 		res.render('admin.ejs', { message: req.flash('loginMessage') });
 	});   
 }
+
+
+
+
 
 
 // route middleware to make sure

@@ -29,15 +29,24 @@
 		<div id = "friend-list">
 			<% if (contacters != null) { %>
 			<% contacters.forEach(function(contacter){ %>
+			
+		
 			<a href="/viewmessage/<%=contacter._id%>">
 				<div class="block">
+						
+			<% unreads.forEach(function(unread){ %>
+			<% if (unread == contacter._id) { %>
+			            <p>Unread Messages</p>
+			<% } %>
+	        <% });%>
 				<img src="images/person1.jpg" class = "photo">
 				<div class="id">
-					<p style="font-size:16px"><%=contacter.local.nickname%></p>
+					<p style="font-size:16px"><%=contacter.local.nickname%></p>	
 				</div>
 				</div>
 				</a>
 			<% });%>
+			
 			<% } %>
 		</div>	
 		<div id="convo">

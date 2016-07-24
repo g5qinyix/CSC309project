@@ -2,8 +2,8 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
-  background: #666;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif; 
+  background: #cccccc;
 }
 
 header{
@@ -19,7 +19,7 @@ nav{
   opacity: 0.95;
   z-index: 999;
   padding-top: 2%;
-  background-color:#666;
+
 }
 
 a{
