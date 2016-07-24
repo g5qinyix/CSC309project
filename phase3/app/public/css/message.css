@@ -82,6 +82,7 @@ nav ul li.logo{
   overflow: auto;
   width: 20%;
   height: 35vw;
+  float: left;
 }
 
 #convo{

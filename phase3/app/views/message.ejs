@@ -26,7 +26,6 @@
 	</header>
 	
 	<section id= "chat-sys">
-		<% if (contacters != null) { %>
 		<div id = "friend-list">
 			<% contacters.forEach(function(contacter){ %>
 			<a href="/viewmessage/<%=contacter._id%>">
@@ -45,9 +44,7 @@
 				</div>
 				</a>
 			<% });%>
-		</div>
-	    <% } %>
-	
+		</div>   
 	    <% if (conservations != null) { %>
 		<div id="convo">
 			
