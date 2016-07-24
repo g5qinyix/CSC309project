@@ -183,7 +183,7 @@ module.exports = function(passport) {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our for
+    function(req, email, password, done) { // callback with email and password from our form
         // admin uses admin@bemaster.com email only
         if (email != 'admin@bemaster.com') {
             return done(null, false, req.flash('loginMessage', 'Sorry, but you are not an administrater.'));
