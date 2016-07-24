@@ -5,7 +5,8 @@
 var User       		= require('../app/models/user'); 
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
-
+var fs     = require('fs');
+var path     = require('path');
 
 module.exports = function(app, passport) {
 
@@ -86,9 +87,6 @@ module.exports = function(app, passport) {
 		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
-
-	
-    
     
     // =====================================
 	// Game pages =====================
@@ -324,6 +322,39 @@ module.exports = function(app, passport) {
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
+            
+            
+            if(req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                
+                
+                
+                //delete old images
+                var oldPath = path.join(__dirname, '../public', user.local.photo);
+                fs.unlinkSync(oldPath);
+                
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ req.files.photo.name;
+               
+              
+            }
+            
+          
+            
 
 			user.save();
 			//update session
@@ -376,6 +407,33 @@ module.exports = function(app, passport) {
             if ( req.param('coachtype') != '') {
                 user.local.coachtype = req.param('coachtype');
             }
+            
+            if( req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                
+                //delete old images
+                var oldPath = path.join(__dirname, '../public', user.local.photo);
+                fs.unlinkSync(oldPath);
+                
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ req.files.photo.name;
+            }
+            
+            
 			user.save();
 			//update session
 			req.login(user, function(err) {

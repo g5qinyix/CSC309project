@@ -51,8 +51,8 @@
 			<ul id="divExample" class="chat-thread">
 			
 				<% conservations.forEach(function(conservation) { %>
-								<% if (conservation.sender.id == user._id) { %>
-				<li style=":before"class="source"><%=conservation.sender.content%></li>
+				<% if (conservation.sender.id == user._id) { %>
+				<li class="source"><%=conservation.sender.content%></li>
 				<% } %>
 				<% if (conservation.receiver.id == user._id) { %>
 				<li class="target"><%=conservation.receiver.content%></li>

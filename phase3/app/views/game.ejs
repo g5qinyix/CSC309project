@@ -109,24 +109,20 @@
 		</div>
 		
 		<% coaches.forEach(function(coach) { %>
-		<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+		<div style="margin-bottom:10%" class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3">
 		            <img class="img-responsive" src=
 			        "<%=coach.local.photo%>">
-					
-			        <p style="font-size:20px"><%=coach.local.nickname%></p>
-				
+			        <p style="font-size:20px"><%=coach.local.nickname%></p>	
 		        </div>
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
-				
 					<% if (coach.local.rate.grade == 0) { %>
 		        	<p style="font-size:15px">Rating:N/A</p>
 				    <% } %>
 					<% if (coach.local.rate.grade != 0) { %>
 		        	<p style="font-size:15px">Rating: <%=coach.local.rate.grade%></p>
-				    <% } %>
-					
+				    <% } %>		
 		        	<p style="font-size:15px">Price: $<%=coach.local.cost %>/hour</p>
 		        </div></a>
 	        </div>

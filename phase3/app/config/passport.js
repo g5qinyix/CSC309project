@@ -299,7 +299,6 @@ module.exports = function(passport) {
                     } else {
                         // if there is no user, create them
                         var newUser            = new User();
-
                         newUser.facebook.id    = profile.id;
                         newUser.facebook.token = token;
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
@@ -307,6 +306,7 @@ module.exports = function(passport) {
                         newUser.local.nickname =   newUser.facebook.name;
                         newUser.local.email =  newUser.facebook.email;
                         newUser.local.occupation = "student";
+                        newUser.local.photo = 'facebook';
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
