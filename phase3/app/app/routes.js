@@ -661,7 +661,7 @@ module.exports = function(app, passport) {
 	// show the admin-login form
 	app.get('/admin', function(req, res) {
 		// render the page and pass in any flash data if it exists
-		res.render('adminlogin.ejs', { message: req.flash('loginMessage') });
+		res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage') });
 	});
 
 
@@ -676,15 +676,15 @@ module.exports = function(app, passport) {
 	app.get('/adminpage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin.ejs', { message: req.flash('loginMessage') });
+            res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
     //show the change password form
 	app.get('/changepassword', isLoggedIn,  function(req, res){
-		res.render('changepassword.ejs' ,{
+		res.render('admin/changepassword.ejs' ,{
 			user: req.user
 		});
 	});
@@ -700,7 +700,7 @@ module.exports = function(app, passport) {
             } else {
                 user.local.password = user.generateHash(req.param('newpassword'));
                 user.save();
-                res.render('changepasswordsuccess.ejs');
+                res.render('admin/changepasswordsuccess.ejs');
             }
 		});													
 	});
@@ -709,18 +709,18 @@ module.exports = function(app, passport) {
     //show the add user form
 	app.get('/adduser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('adduser.ejs');
+            res.render('admin/adduser.ejs');
         } else {
-            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     //show the add stuent form
 	app.get('/addstudent', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('addstudent.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addstudent.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
@@ -734,7 +734,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -753,7 +753,7 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('addstudentsuccess.ejs');
+                        res.render('admin/addstudentsuccess.ejs');
                     }
                 });
             }
@@ -763,9 +763,9 @@ module.exports = function(app, passport) {
     //show the add coach form
 	app.get('/addcoach', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('addcoach.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addcoach.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
@@ -779,7 +779,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -801,7 +801,7 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('addcoachsuccess.ejs');
+                        res.render('admin/addcoachsuccess.ejs');
                     }
                 });
             };
@@ -812,9 +812,9 @@ module.exports = function(app, passport) {
 	//show the update user form
 	app.get('/updateuser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('selectuser.ejs', {message: req.flash('selectMessage')});
+            res.render('admin/selectuser.ejs', {message: req.flash('selectMessage')});
         } else {
-            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
 	
@@ -828,15 +828,15 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres is a user with that email
             if (!user) {
-                res.render('selectuser.ejs', {message: ('selectMessage', 'This user does not exist')});
+                res.render('admin/selectuser.ejs', {message: ('selectMessage', 'This user does not exist')});
             } else {
                 // user exists, go to update the user's info
                 if (user.local.occupation == 'student') {
-                    res.render('updatestudent.ejs', {
+                    res.render('admin/updatestudent.ejs', {
 						user: user})
                 };
 				if (user.local.occupation == 'coach') {
-                    res.render('updatecoach.ejs', {
+                    res.render('admin/updatecoach.ejs', {
 						user: user})
                 };
 			};
