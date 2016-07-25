@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
             res.render("home.ejs",{
                 user: null
                 }); 
-	});
+	}); 
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -346,16 +346,10 @@ module.exports = function(app, passport) {
                         //delete old images
                         var oldPath = path.join(__dirname, '../public', user.local.photo);
                         fs.unlinkSync(oldPath);
-                }
-                
+                }      
                 //save the url to user photo field
-                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
-               
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;     
             }
-            
-          
-            
-
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -425,7 +419,6 @@ module.exports = function(app, passport) {
                             }
                     });
                 
-                    
                 if ( user.local.photo != '') {
                   
                 //delete old images
@@ -514,7 +507,7 @@ module.exports = function(app, passport) {
     
          
 	// =====================================
-	// Comment and rating system ===========
+	// Comment and rating system ======================
 	// =====================================
     
     // users add comments to coach
@@ -656,12 +649,12 @@ module.exports = function(app, passport) {
     
     
     // =====================================
-	// ADMIN SYSTEM ========================
+	// ADMIN LOGIN =========================
 	// =====================================
 	// show the admin-login form
 	app.get('/admin', function(req, res) {
 		// render the page and pass in any flash data if it exists
-		res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage') });
+		res.render('adminlogin.ejs', { message: req.flash('loginMessage') });
 	});
 
 
@@ -676,15 +669,15 @@ module.exports = function(app, passport) {
 	app.get('/adminpage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
+            res.render('admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
     //show the change password form
 	app.get('/changepassword', isLoggedIn,  function(req, res){
-		res.render('admin/changepassword.ejs' ,{
+		res.render('changepassword.ejs' ,{
 			user: req.user
 		});
 	});
@@ -700,7 +693,7 @@ module.exports = function(app, passport) {
             } else {
                 user.local.password = user.generateHash(req.param('newpassword'));
                 user.save();
-                res.render('admin/changepasswordsuccess.ejs');
+                res.render('changepasswordsuccess.ejs');
             }
 		});													
 	});
@@ -709,18 +702,18 @@ module.exports = function(app, passport) {
     //show the add user form
 	app.get('/adduser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/adduser.ejs');
+            res.render('adduser.ejs');
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     //show the add stuent form
 	app.get('/addstudent', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addstudent.ejs', { message: req.flash('signupMessage')});
+            res.render('addstudent.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
@@ -734,7 +727,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -753,7 +746,7 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addstudentsuccess.ejs');
+                        res.render('addstudentsuccess.ejs');
                     }
                 });
             }
@@ -763,9 +756,9 @@ module.exports = function(app, passport) {
     //show the add coach form
 	app.get('/addcoach', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addcoach.ejs', { message: req.flash('signupMessage')});
+            res.render('addcoach.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
@@ -779,7 +772,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -801,128 +794,13 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addcoachsuccess.ejs');
+                        res.render('addcoachsuccess.ejs');
                     }
                 });
             };
         });
-    })
-	
-	
-	//show the update user form
-	app.get('/updateuser', isLoggedIn,  function(req, res){
-        if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/selectuser.ejs', {message: req.flash('selectMessage')});
-        } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
-        };
-	});
-	
-	// process the select user form
-    app.post('/selectuser', function(req, res) {
-        var email = req.param('email');
-        
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error
-            if (err)
-                return next(err)
-            // check to see if theres is a user with that email
-            if (!user) {
-                res.render('admin/selectuser.ejs', {message: ('selectMessage', 'This user does not exist')});
-            } else {
-                // user exists, go to update the user's info
-                if (user.local.occupation == 'student') {
-                    res.render('admin/updatestudent.ejs', {
-						user: user})
-                };
-				if (user.local.occupation == 'coach') {
-                    res.render('admin/updatecoach.ejs', {
-						user: user})
-                };
-			};
-		});
-	})
-	
-	// process the updatestudent form
-	app.post('/updatestudent', function(req, res){
-		var email = req.param('email');
-		
-		//update database
-		User.findOne({ 'local.email' :  email }, function(err, user) {
-
-            if (err) {
-                return next(err);
-                //code
-            }
-            if (req.param('password') != '') {
-                user.local.password = user.generateHash(req.param('password'));     
-            }
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
-            }
-            if ( req.param('nickname') != '') {
-                user.local.nickname = req.param('nickname');
-            }
-            if ( req.param('game') != '') {
-                user.local.game = req.param('game');
-            }
-
-			user.save();
-			res.render('studentprofile.ejs', {
-				user: user
-			})
-		});														
-	});
-	
-	// process coach update form
-	app.post('/updatecoach', function(req, res){
-		var email = req.param('email');
-		//update database
-		User.findOne({ 'local.email' :  email }, function(err, user) {
-            if (err) {
-                return next(err);
-                //code
-            }
-            
-			if (req.param('password') != '') {
-                user.local.password = user.generateHash(req.param('password'));     
-            }
-            
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
-            }
-            if ( req.param('nickname') != '') {
-                user.local.nickname = req.param('nickname');
-            }
-            if ( req.param('game') != '' ) {
-                user.local.game = req.param('game');
-            }
-            if (req.param('cost') != '' ) {
-                user.local.cost = req.param('cost');
-            }
-            if ( req.param('coachtype') != '') {
-                user.local.coachtype = req.param('coachtype');
-            }
-			
-			user.save();
-			res.render('coachprofile.ejs', {
-				user: user,
-				comments: null
-			});
-		});														
-	});
-				
-        
-        
-    
-    
-    
-    
+    })  
 }
-
-
-
-
 
 
 // route middleware to make sure
