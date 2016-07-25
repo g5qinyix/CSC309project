@@ -78,8 +78,17 @@
 		        </div>
 				
 		        <div class="back-1">
+					<% if (coach.local.rate.grade == 0) { %>
+		        	<h3>Rating: N/A</h3>
+						<p>(Pending...)</p>
+				    <% } %>
+					
+				    <% if (coach.local.rate.grade != 0) { %>
 		        	<h3>Rating: <%=coach.local.rate.grade%>/10</h3>
 					<p>(from <%=coach.local.rate.studentlist.length%> students)</p>
+					<% } %>
+					
+				
 		        	<h3>Price: $<%=coach.local.cost%>/hour</h3>
 				
 		        </div>

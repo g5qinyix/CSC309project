@@ -63,7 +63,12 @@
 
 		        </div>
 		        <div class="back-1">
-		        	<p>Rating: <%=user.local.rate.grade%></p>
+					<% if (user.local.rate.grade == 0) { %>
+		        	<p>Rating: <%=N/A%></p>
+					<% } %>
+					<% if (user.local.rate.grade != 0) { %>
+		        	<p>Rating: <%=user.local.rate.grade%>/10</p>
+					<% } %>
 		        	<p>Price: <%=user.local.cost%></p>
 		        </div>
 	        </div>

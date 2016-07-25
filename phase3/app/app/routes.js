@@ -55,25 +55,28 @@ module.exports = function(app, passport) {
 		}));
 
     
+    
 	// =====================================
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
 	app.get('/signup', function(req, res) {
-
 		// render the page and pass in any flash data if it exists
 		res.render('signup.ejs');
 	});
-		
+
+    
 	//sign up for student
 	app.get('/studentsignup', function(req, res){
 		res.render('studentsignup.ejs', { message: req.flash('signupMessage') });
 	});
 	
+    
 	app.get('/coachsignup', function(req, res){
 		res.render('coachsignup.ejs', { message: req.flash('signupMessage') });
 	});
 	
+    
 	// process the studentsignup form
 	app.post('/studentsignup', passport.authenticate('local-signup-student', {
 		successRedirect : '/home', // redirect to the secure profile section
@@ -109,13 +112,13 @@ module.exports = function(app, passport) {
         }
         
         if (game=='overwatch') {
-                Game='Overwatch'
-         
+                Game='Overwatch' 
         }
+        
         if (req.isAuthenticated()){
                 User.find({'local.occupation':'coach', 'local.game': Game,
-                   'local.email': {$ne: req.user.local.email } },function(err, coaches){
-                       
+                   'local.email': {$ne: req.user.local.email } }).
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){          
                         res.render('game.ejs',{
                         coaches: coaches,
                         user: req.user,
@@ -125,8 +128,10 @@ module.exports = function(app, passport) {
                         });
                    });
         }
+        
         else{   
-                User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
+                User.find({'local.occupation':'coach', 'local.game': Game}).
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
                         console.log(coaches);
                 res.render('game.ejs', {   
                         coaches: coaches,
