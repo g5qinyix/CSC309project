@@ -425,7 +425,6 @@ module.exports = function(app, passport) {
                             }
                     });
                 
-                    
                 if ( user.local.photo != '') {
                   
                 //delete old images
@@ -806,13 +805,7 @@ module.exports = function(app, passport) {
                 });
             };
         });
-    })
-        
-        
-    
-    
-    
-    
+    })  
 }
 
 
