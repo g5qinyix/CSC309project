@@ -132,7 +132,7 @@ module.exports = function(app, passport) {
         else{   
                 User.find({'local.occupation':'coach', 'local.game': Game}).
                 sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
-                        console.log(coaches);
+                       
                 res.render('game.ejs', {   
                         coaches: coaches,
                         user: null,
@@ -334,7 +334,7 @@ module.exports = function(app, passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
-                            console.log(newPath);
+                         
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
@@ -412,7 +412,7 @@ module.exports = function(app, passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
-                            console.log(newPath);
+                           
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
@@ -598,7 +598,7 @@ module.exports = function(app, passport) {
     
     
     //user view contact list
-    app.get('/messaging', isLoggedIn, function(req, res){
+    app.get('/messaging', checkLogin, function(req, res){
         //get contact list from database
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
@@ -610,8 +610,7 @@ module.exports = function(app, passport) {
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
                              distinct('sender.id').exec(function(err, unread){
                              
-                                    User.find({ '_id': { $in: receivers } }, function(err, users){
-                                   
+                                    User.find({ '_id': { $in: receivers } }, function(err, users){  
                                         res.render('message.ejs', {   
                                                 unreads : unread,
                                                 targetid: null,
