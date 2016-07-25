@@ -127,7 +127,8 @@ module.exports = function(app, passport) {
 							limitedCoach.email = coaches[i].local.email;
 							limitedCoach.game = coaches[i].local.game;
 							limitedCoach.cost = coaches[i].local.cost;
-							limitedCoach.address = coaches[i].local.location;
+							limitedCoach.lng = coaches[i].local.coordinate.lng;
+							limitedCoach.lat = coaches[i].local.coordinate.lat;
 							limitedCoach.name = coaches[i].local.nickname;
 							limitedCoachInfo.push(limitedCoach);
                         }
@@ -152,7 +153,8 @@ module.exports = function(app, passport) {
 						limitedCoach.email = coaches[i].local.email;
 						limitedCoach.game = coaches[i].local.game;
 						limitedCoach.cost = coaches[i].local.cost;
-						limitedCoach.address = coaches[i].local.location;
+						limitedCoach.lng = coaches[i].local.coordinate.lng;
+						limitedCoach.lat = coaches[i].local.coordinate.lat;
 						limitedCoach.name = coaches[i].local.nickname;
 						limitedCoachInfo.push(limitedCoach);
 					}
@@ -245,7 +247,8 @@ module.exports = function(app, passport) {
 								limitedCoach.email = coaches[i].local.email;
 								limitedCoach.game = coaches[i].local.game;
 								limitedCoach.cost = coaches[i].local.cost;
-								limitedCoach.address = coaches[i].local.location;
+								limitedCoach.lng = coaches[i].local.coordinate.lng;
+								limitedCoach.lat = coaches[i].local.coordinate.lat;
 								limitedCoach.name = coaches[i].local.nickname;
 								limitedCoachInfo.push(limitedCoach);
 							}
@@ -262,18 +265,12 @@ module.exports = function(app, passport) {
                    });
          }
          else{
-				console.log("cost is:" + cost);
-				console.log("low limit:" + lowlimit);
-				console.log("high limit:" + highlimit);
 				//console.log(User.find({'local.game':Game}));
                 User.find({
 					'local.game' : Game,
 				   'local.occupation':'coach',
                     'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
-					   console.log('coaches cost:' + coaches[0]["local"]["cost"]);
-					   console.log(coaches[0]["local"]["cost"] > lowlimit);
-					   console.log(coaches[0]["local"]["cost"] < highlimit);
                         if (err){       
                          console.log("some error");
                         }
@@ -285,7 +282,8 @@ module.exports = function(app, passport) {
 								limitedCoach.email = coaches[i].local.email;
 								limitedCoach.game = coaches[i].local.game;
 								limitedCoach.cost = coaches[i].local.cost;
-								limitedCoach.address = coaches[i].local.location;
+								limitedCoach.lng = coaches[i].local.coordinate.lng;
+								limitedCoach.lat = coaches[i].local.coordinate.lat;
 								limitedCoach.name = coaches[i].local.nickname;
 								limitedCoachInfo.push(limitedCoach);
 							}

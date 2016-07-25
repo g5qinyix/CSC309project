@@ -90,6 +90,7 @@
 		<br>
 		<br>
 		<p id="coachInfo" hidden><%=JSON.stringify(gameCoachInfo)%></p>
+		
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
 			<a href="/users/<%=coach._id%>"><div class="block">
@@ -106,7 +107,7 @@
 			</div></a>
 			<% }); %>		
 		</div>
-		<% if (coachtype == "online") { %>
+		<% if (coachtype == "Online") { %>
 		<% coaches.forEach(function(coach) { %>
 		<div style="margin-bottom:10%" class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
@@ -128,7 +129,7 @@
         </div>
         <% }); %>	
 		<% } %>
-		<% if (coachtype == "offline") { %>
+		<% if (coachtype == "Offline") { %>
 				<script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8&callback=initMap"></script>
 			<div id="map"></div>

@@ -15,24 +15,24 @@ function initMap() {
 	displayMarkers();
 
  }
- 
+ // TODO: ACCOUNT FOR BOTH & OFFLINE IN ROUTES.JS
  function displayMarkers(){
 	var coachInfo = JSON.parse(document.getElementById('coachInfo').innerHTML);
- 	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
-	var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8"
 	console.log(coachInfo);
 	for (var i=0; i<coachInfo.length; i++){
-		var result = JSON.parse(httpGet(url+parseAddress(coachInfo[i].address)+urlAPIKey));
-		var latitude = result.results[0]["geometry"]["location"]["lat"];
-		var longitude = result.results[0]["geometry"]["location"]["lng"];
+		var latitude = coachInfo[i]["lat"];
+		var longitude = coachInfo[i]["lng"];
+		console.log("latitude:"+latitude);
+		console.log("longitude:"+longitude);
 		var marker = new google.maps.Marker({
-			position: {lat: latitude, lng: longitude},
+			position: {lat:  parseFloat(latitude), lng:  parseFloat(longitude)},
 			map: map,
 			title: coachInfo[i].email
 		});
 	}
  }
-
+/*
+// Depreciated
  function httpGet(url){
 	 var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8"
  	var jsonHTTP = new XMLHttpRequest();
@@ -53,7 +53,7 @@ function initMap() {
 	return result;
 	}
 	
- }
+ }*/
 	/*var marker = new google.maps.Marker({
 	  position: {lat: 43.6629, lng: -79.3957},
 	  map: map,
