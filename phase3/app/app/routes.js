@@ -286,6 +286,7 @@ module.exports = function(app, passport) {
 	
 	
     
+    
 	// =====================================
 	// EDIT PROFILE=========================
 	// =====================================
@@ -505,7 +506,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	// Comment and rating system ======================
 	// =====================================
-    
+  
     // users add comments to coach
 	app.post('/comments/*', isLoggedIn, function(req, res){
         //get the id of coach to be commented
@@ -521,6 +522,7 @@ module.exports = function(app, passport) {
         newComment.comment.content = content;
         newComment.comment.date = date;
         newComment.save();
+        
         // handle rate(each coach has to get at least 3 times rate in order to get grade)
         User.findOne({'_id': coachid}).exec(function(err, coach){
                 if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
@@ -553,7 +555,6 @@ module.exports = function(app, passport) {
     // =====================================
 	// Message system ======================
 	// =====================================
-    
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;
@@ -591,16 +592,16 @@ module.exports = function(app, passport) {
     
     
     
-    //user view contacter list
+    //user view contact list
     app.get('/messaging', isLoggedIn, function(req, res){
+        //get contact list from database
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
-                }
-                
+                } 
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
                              distinct('sender.id').exec(function(err, unread){
                              
@@ -621,13 +622,13 @@ module.exports = function(app, passport) {
     
     
     
-    //user view conservations with one contacter
+    //user view all messages with one contact
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
          var contactid = url.substring(13);
-         // get the contacter list
+         // get the contact list
       
-        //find all messages between user and contacter
+        //find all messages between user and one contact
         Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
                      }).sort({'date': 1}).exec(function(err, conservations){
@@ -641,7 +642,7 @@ module.exports = function(app, passport) {
                                                                 receivers.push(senders[i]);
                                                                 }
                                                 }
-                                                //get the contacter list from database
+                                                //get the contact list from database
                                                 Message.find({'receiver.id': req.user._id,
                                                              'receiver.status' : 0}).distinct('sender.id').exec(function(err, unread){
                                                         User.find({ '_id': { $in: receivers } }, function(err, users){
