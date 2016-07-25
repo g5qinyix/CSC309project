@@ -14,7 +14,7 @@
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-				<li><a href='/logout'>Log Out</a></li>
+				<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
 				<li><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
@@ -23,11 +23,17 @@
 	<section class = "information">
 		<div class = "profile">
 			<div class = "photo">
-			 	<img src="/images/person1.jpg">
+			    <% if (user.local.photo == "") { %>
+			 	<img src="/images/person.gif" >
+				<% } %>
+			    <% if (user.local.photo != "") { %>
+				<img style="height:60%;width:60%; border-radius: 50%" src="<%=user.local.photo%>">
+			    <% } %>
 			</div>
 			<div class="g_information">
 				<h2><%=user.local.nickname%></h2>
 				<p>Your account: <%=user.local.email%></p>
+				<p>Your coachtype: <%=user.local.coachtype%></p>
 			</div>
 			<div id="edit" onclick="location.href='/editcoach'">
 				<img src="/images/edit.png">

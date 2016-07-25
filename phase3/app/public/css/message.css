@@ -17,6 +17,7 @@ nav{
   padding-top: 2%;
 }
 
+
 a{
   color:#555;
   word-break: break-all;
@@ -73,22 +74,26 @@ nav ul li.logo{
 }
 
 #chat-sys{
+  margin:auto;
+  width:100%;
   overflow: auto;
 }
 
 #friend-list{
-  margin-top: 12%;
-  margin-left: 10%;
+  margin-top: 10%;
+  margin-left: 1%;
   overflow: auto;
-  width: 20%;
   height: 35vw;
   float: left;
+  width:20%;
 }
 
+
 #convo{
-  margin-top:10%;
+  margin-top:2%;
   float: left;
-  margin-left:20%;
+  margin-left: 15%;
+
 }
 
 .block{

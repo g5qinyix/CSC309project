@@ -5,7 +5,8 @@
 var User       		= require('../app/models/user'); 
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
-
+var fs     = require('fs');
+var path     = require('path');
 
 module.exports = function(app, passport) {
 
@@ -86,9 +87,6 @@ module.exports = function(app, passport) {
 		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
-
-	
-    
     
     // =====================================
 	// Game pages =====================
@@ -202,9 +200,9 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()){
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
+                   'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit},
                    'local.email': {$ne: req.user.local.email} }, function(err, coaches) {
-                  
                         if (err){       
                          console.log("some error");
                         }    
@@ -223,6 +221,7 @@ module.exports = function(app, passport) {
          else{
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
+                    'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
                         if (err){       
                          console.log("some error");
@@ -323,6 +322,39 @@ module.exports = function(app, passport) {
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
+            
+            
+            if(req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                });
+                
+                
+                if ( user.local.photo != '') {
+                        //delete old images
+                        var oldPath = path.join(__dirname, '../public', user.local.photo);
+                        fs.unlinkSync(oldPath);
+                }
+                
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
+               
+            }
+            
+          
+            
 
 			user.save();
 			//update session
@@ -375,6 +407,37 @@ module.exports = function(app, passport) {
             if ( req.param('coachtype') != '') {
                 user.local.coachtype = req.param('coachtype');
             }
+            
+            if( req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                
+                    
+                if ( user.local.photo != '') {
+                  
+                //delete old images
+                var oldPath = path.join(__dirname, '../public', user.local.photo);
+                fs.unlinkSync(oldPath);
+                }
+                
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
+            }
+            
+            
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -471,31 +534,9 @@ module.exports = function(app, passport) {
         res.redirect('/users/'+coachid);
     });
     
+
     
     
-    // =====================================
-	// Follow system ======================
-	// =====================================  
-    //student follows a coach
-    app.get('/follow/*', isLoggedIn, function(req, res){
-        var url = req.url;
-        var coachid = url.substring(8);
-        User.findOne({'_id': req.user._id }, function(err, user){
-            if (err) {
-                //code
-            }
-            user.local.follow.push(coachid);
-            user.save();
-        });
-    });
-    
-    //student view follow list 
-    app.get('/viewfollow',isLoggedIn, function(req, res){
-        User.find({'_id': req.user._id}, function(err, coaches){
-            //TODO
-            //TODO
-        });   
-    });
     
     
     
@@ -505,9 +546,6 @@ module.exports = function(app, passport) {
 	// Message system ======================
 	// =====================================
     
-    
-    
-
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;

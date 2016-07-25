@@ -16,7 +16,7 @@
 	<% if (message.length > 0) { %>
 		<div class="alert"><%= message %></div>
 	<% } %>
-    <form class="login-form" action="/coachsignup" method="post">
+    <form class="login-form" action="/coachsignup" method="post" enctype='multipart/form-data'>
 	  <span>Email</span>
 	  <input type="email" name="email" placeholder="123@mail.com" autofocus required/>
 	  <span>Password</span>
@@ -27,7 +27,7 @@
       <input type="text" name="location" placeholder="Toronto" required/>
 	  
       <span>You can offer</span>  
-	  <select type="multiple" name="coachtype" required>
+	  <select name="coachtype" required>
 		<option>Offline</option>
 		<option>Online</option>
 	 </select>
@@ -42,7 +42,10 @@
 	  
 	   <span>Your cost $/hour</span> 
 	   <input type=number name="cost" placeholder="$" required>
-	
+	 
+	   <span>Your Photo</span>                                               
+      <input type="file" name="photo"/>
+	  
 	  <button type="submit">Signup</button>
 	  <p class="message">Already have an account?   <a href="/login">Login</a></p>
     </form>
