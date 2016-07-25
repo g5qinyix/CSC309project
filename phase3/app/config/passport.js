@@ -138,7 +138,7 @@ module.exports = function(passport) {
                 var newUser  = new User();
 
 				// There are missing fields.
-                if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Online"){
+                if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
                     if (req.param('streetAddress').length == 0 ||
                         req.param('city').length == 0 ||
                         req.param('province').length == 0){
