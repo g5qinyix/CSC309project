@@ -514,7 +514,7 @@ module.exports = function(app, passport) {
     
          
 	// =====================================
-	// Comment and rating system ======================
+	// Comment and rating system ===========
 	// =====================================
     
     // users add comments to coach
