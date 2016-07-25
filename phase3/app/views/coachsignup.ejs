@@ -18,7 +18,7 @@
 	<% if (message.length > 0) { %>
 		<div class="alert"><%= message %></div>
 	<% } %>
-
+	
     <form class="login-form" action="/coachsignup" method="post" enctype='multipart/form-data'>
 	  <span>Email</span>
 	  <input type="email" name="email" placeholder="example123@mail.com" autofocus required/>
@@ -41,7 +41,7 @@
 		<input type="text" name="province" placeholder="Province"/>
       </section>
 
-	  <span>You want to be a mentor of</span>                                               
+	  <span>You want to be a mentor for</span>                                               
       <select name="game" required>
 		<option>League of Legends</option>
 		<option>Dota2</option>
