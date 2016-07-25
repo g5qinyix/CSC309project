@@ -19,7 +19,8 @@ var userSchema = mongoose.Schema({
         },
         cost         : Number,
         coachtype    : String,
-        photo        : String
+        photo        : String,
+        follow       : [String],
     },
     
     facebook         : {

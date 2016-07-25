@@ -76,6 +76,7 @@ module.exports = function(passport) {
                     
                 }
                 else{
+                    
                     //read image file
                     fs.readFile(req.files.photo.path, function(err, data){
                         var imageName = req.files.photo.name;
@@ -87,22 +88,23 @@ module.exports = function(passport) {
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
-                           
                                 }
                                 });
                             }
                     });
+                    
                     //save the url to user photo field
                     newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                    
                 }
-              
-                // save the user
                 
+                // save the user         
                 newUser.save(function(err) {
                     if (err)
                         throw err;
                     return done(null, newUser);
                 });
+                
             }
 
         });
