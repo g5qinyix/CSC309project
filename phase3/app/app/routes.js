@@ -120,7 +120,7 @@ module.exports = function(app, passport) {
                 User.find({'local.occupation':'coach', 'local.game': Game,
 
                    'local.email': {$ne: req.user.local.email } }).
-                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){          
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
 					   var limitedCoachInfo = [];
                         for (var i=0; i<coaches.length; i++){
 							var limitedCoach = new Object();
@@ -131,7 +131,6 @@ module.exports = function(app, passport) {
 							limitedCoach.name = coaches[i].local.nickname;
 							limitedCoachInfo.push(limitedCoach);
                         }
-						console.log(limitedCoachInfo);
                         res.render('game.ejs',{
 						gameCoachInfo: limitedCoachInfo,
                         coaches: coaches,
@@ -144,6 +143,7 @@ module.exports = function(app, passport) {
         }
         
         else{   
+
                 User.find({'local.occupation':'coach', 'local.game': Game}).
 				sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
 					var limitedCoachInfo = [];
