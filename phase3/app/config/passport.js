@@ -5,6 +5,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 // load up the user model
 var User       		= require('../app/models/user');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // load the auth variables
 var configAuth = require('./auth');
@@ -125,25 +126,55 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
-
-				// if there is no user with that email
+                // if there is no user with that email
                 // create the user
                 var newUser  = new User();
+
+				// There are missing fields.
+                if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Online"){
+                    if (req.param('streetAddress').length == 0 ||
+                        req.param('city').length == 0 ||
+                        req.param('province').length == 0){
+                            return done(null, false, req.flash('signupMessage', 'Must enter all location fields if offline coach.'));
+                    }
+                    // obtain coordinates of address.
+                    var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
+                    var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
+                                           + req.param('province') + urlAPIKey; 
+                    var jsonHTTP = new XMLHttpRequest();
+                    jsonHTTP.open("GET", url, false);
+                    jsonHTTP.send(null);
+                    var result = JSON.parse(jsonHTTP.responseText);
+                    if (result["status"] == "ZERO_RESULTS"){
+                        return done(null, false, req.flash('signupMessage', 'Cannot find address'));
+                    }
+                    else {
+                        newUser.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
+                        newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+
+                    }
+                    //console.log(jsonHTTP.responseText); 
+                    
+
+                }
+                
 
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.occupation = 'coach';
                 newUser.local.game = req.param('game');
                 newUser.local.cost = req.param('cost');
                 newUser.local.rate.grade = 0;
-                newUser.local.rate.list= [];
+                newUser.local.rate.list = [];
                 newUser.local.coachtype = req.param("coachtype");
-                
-                
+                newUser.local.address.street = req.param('streetAddress');
+                newUser.local.address.city = req.param('city');
+                newUser.local.address.province = req.param('province');
+
                 //read image file
                 fs.readFile(req.files.photo.path, function(err, data){
                     var imageName = req.files.photo.name;
