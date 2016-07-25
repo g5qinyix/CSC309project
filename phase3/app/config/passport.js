@@ -67,7 +67,6 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
@@ -177,6 +176,7 @@ module.exports = function(passport) {
                 newUser.local.cost = req.param('cost');
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list = [];
+                newUser.local.rate.studentlist=[];
                 newUser.local.coachtype = req.param("coachtype");
                 newUser.local.address.street = req.param('streetAddress');
                 newUser.local.address.city = req.param('city');

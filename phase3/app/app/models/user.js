@@ -23,7 +23,8 @@ var userSchema = mongoose.Schema({
         game         : String,
         rate         : {
             grade: Number,
-            list: [Number]
+            list: [Number],
+            studentlist: [String]
         },
         cost         : Number,
         coachtype    : String,

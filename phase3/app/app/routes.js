@@ -313,16 +313,12 @@ module.exports = function(app, passport) {
             if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
-            }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
-            
             
             if(req.files.photo.name != ''){  
                 //read new image file
@@ -516,6 +512,7 @@ module.exports = function(app, passport) {
         var url = req.url;
         var coachid = url.substring(10);
         var content = req.param("comment");
+        var rate = req.param('rate');
         var newComment  = new Comment();
         var date = new Date();
         newComment.coachid = coachid;
@@ -524,7 +521,25 @@ module.exports = function(app, passport) {
         newComment.comment.content = content;
         newComment.comment.date = date;
         newComment.save();
-        res.redirect('/users/'+coachid);
+        // handle rate(each coach has to get at least 3 times rate in order to get grade)
+        User.findOne({'_id': coachid}).exec(function(err, coach){
+                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
+                        coach.local.rate.list.push(rate);
+                        if (coach.local.rate.list.length >= 3) {
+                                var total = 0;
+                                for(var i = 0; i < coach.local.rate.list.length; i++) {
+                                    total += coach.local.rate.list[i];
+                                    }
+                                var avg = (total / coach.local.rate.list.length).toFixed(2);
+                                coach.local.rate.grade = avg;
+                                }
+                                
+                                //add student to studentlist
+                                coach.local.rate.studentlist.push(req.user._id);      
+                        }
+                coach.save();
+                res.redirect('/users/'+coachid);
+        }); 
     });
     
 
@@ -611,39 +626,45 @@ module.exports = function(app, passport) {
          var url = req.url;
          var contactid = url.substring(13);
          // get the contacter list
-         Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
-            Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
-                for(i=0; i<senders.length; i++){
-                    if (receivers.indexOf(senders[i]) == -1) {
-                        receivers.push(senders[i]);
-                        }
-                }
-                Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
-                        distinct('sender.id').exec(function(err, unread){
-                                User.find({ '_id': { $in: receivers } }, function(err, users){
-                                        
-                                        //find all messages between user and contacter
-                                        Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
-                                                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                                                     }).sort({'date': 1}).exec(function(err, conservations){
-                                                //update message status
-                                                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
-                                                               {multi: true}, function(err){
-                                                                res.render('message.ejs',{
-                                                                        unreads : unread,
-                                                                        targetid:  contactid,
-                                                                        conservations:conservations,
-                                                                        user: req.user,
-                                                                        contacters :users
+      
+        //find all messages between user and contacter
+        Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
+                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
+                     }).sort({'date': 1}).exec(function(err, conservations){
+                //update message status
+                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
+                               {multi: true}, function(err){
+                                Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+                                        Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                                                for(i=0; i<senders.length; i++){
+                                                        if (receivers.indexOf(senders[i]) == -1) {
+                                                                receivers.push(senders[i]);
+                                                                }
+                                                }
+                                                //get the contacter list from database
+                                                Message.find({'receiver.id': req.user._id,
+                                                             'receiver.status' : 0}).distinct('sender.id').exec(function(err, unread){
+                                                        User.find({ '_id': { $in: receivers } }, function(err, users){
+                                                                User.findOne({'_id': contactid}, function(err, targetuser){
+                                                                        res.render('message.ejs',{
+                                                                                unreads : unread,
+                                                                                targetid:  contactid,
+                                                                                conservations:conservations,
+                                                                                user: req.user,
+                                                                                contacters :users,
+                                                                                targetuser: targetuser
+                                                                                });
                                                                         });
                                                                 });
+                                                        });
                                                 });
-                                        });
                                 });
                         });
-                                                                           
-                });
-         });
+        });
+    });
+
+
+                                                         
     
     
     

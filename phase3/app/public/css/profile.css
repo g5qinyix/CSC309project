@@ -352,7 +352,6 @@ nav ul li.logo{
     box-sizing: border-box;
     margin: auto;
     text-align: left;
-
 	color: #689;
 }
 
@@ -378,6 +377,11 @@ h1{
 
 
 /*comment section*/
+
+#showcomment{
+	height: 600px;
+	overflow: auto;
+}
 .content{
     float: left;
     margin: 1%;
@@ -391,9 +395,26 @@ h1{
 	margin-bottom: 250px;
 }
 
+.comment form label{
+	margin-left:25%;
+	border-radius: 10px;
+	font-size: 20px;
+	color:#888;
+	
+}
 
+.comment form select{
+   color: #EEE;
+   font-size: 20px;
+   font-weight: bold;
+   padding: 2px 10px;
+   width: 15%;
+   background: #888;
+   -webkit-appearance: none;
+}
 
 .comment form textarea{
+	margin-top:2%;
 	font-size: 20px;
     border: 2px solid #765942;
 	margin-left:25%;
@@ -402,13 +423,14 @@ h1{
 	width: 60%;
 }
 
+
 .comment form button{
 	background: black;
 	color: #fff;
 	font-size: 15px;
 	border: 1px solid #eee;
 	border-radius: 20px;
-	margin-left:25%;
+	margin-left:70%;
 
 }
 
@@ -426,6 +448,7 @@ h1{
 	margin-top: 20px;
 }
 
+
 #showmessage form textarea{
 	font-size: 16px;
     border: 2px solid #765942;
@@ -434,6 +457,7 @@ h1{
 	height: 80px;
 	width: 80%;
 }
+
 
 #showmessage form button{
 	background: black;
