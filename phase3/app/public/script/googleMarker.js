@@ -23,8 +23,9 @@ function initMap() {
 
 		console.log(coachInfo[i].nickname);
 		var contentString = "<div>" +
-			"<p>" + coachInfo[i].name + "</p><br>" +
-			"<p>" + coachInfo[i].email + "</p><br>" +
+			"<p>Name: " + coachInfo[i].name + "</p><br>" +
+			"<p>Email: " + coachInfo[i].email + "</p><br>" +
+			"<p>Cost: " + coachInfo[i].cost + "</p><br>" +
 			"</div>";
 		var infoWindow = new google.maps.InfoWindow({
 			content: contentString
