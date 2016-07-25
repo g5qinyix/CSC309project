@@ -142,7 +142,7 @@ nav ul li.logo{
   	box-sizing: border-box;
     text-align: center;
     margin:1%;
-    margin-top: 5%;
+   
 }
 
 .flip-container-1 {
@@ -181,6 +181,7 @@ nav ul li.logo{
   	box-sizing: border-box;
     text-align: center;
     margin:1%;
+	
 }
 
 .flip-container-4{
@@ -193,6 +194,7 @@ nav ul li.logo{
   	box-sizing: border-box;
     text-align: center;
     margin:1%;
+
 }
 
 .col-md-3-1, .col-md-3-2, .col-md-3-3, .col-md-3-4 img{
@@ -241,7 +243,7 @@ nav ul li.logo{
 	height: 21.5vw;
 	background: rgb(240, 115, 92);
 	box-sizing: border-box;
-	padding-top: 10%;
+	
 }
 
 .col-md-3-2 {

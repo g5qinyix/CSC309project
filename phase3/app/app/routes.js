@@ -260,13 +260,18 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res){
         
-		//handle student  
+		//handle student
+        
 		if (req.user.local.occupation == "student") {
+                User.find({'local.occupation':'coach', 'local.game': req.user.local.game}).
+                sort({'local.rate.grade': -1}).limit(3).exec(function(err, coaches){
                 res.render('studentprofile.ejs', {
-                           user : req.user
+                        user : req.user,
+                        coaches: coaches
                            });
-         
+                }); 
         }
+        
         
 		//handle coach
 		else{
