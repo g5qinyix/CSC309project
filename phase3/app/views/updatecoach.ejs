@@ -1,0 +1,55 @@
+<!-- views/update.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>admin update user</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+
+  <div class="form">
+    <!-- show any messages that come back with authentication -->
+	<p style="text-align: center">Update coach's info</p>
+	
+    <form class="login-form" action="/updatecoach" method="post">
+	  <span>Coach's email</span>
+	  <input type="email" name="email" value=<%= user.local.email %> />
+	  <span>Enter new Password</span>
+      <input type="password" name="password" placeholder="password" autofocus/>
+	  <span>Enter new Nickname</span>                                               
+      <input type="text" name="nickname" placeholder=<%= user.local.nickname %> />
+	  <span>Enter new Location</span>                                                                                             
+      <input type="text" name="location" placeholder=<%= user.local.location %> />
+	  <span>Select coachtype the coach can offer</span>
+	  
+	  <select type="multiple" name="coachtype">
+		<option>Offline</option>
+		<option>Online</option>
+		<option selected='selected'><%= user.local.coachtype %></option>
+	 </select>
+	  
+	  <span>Your want to be a mentor of</span>
+      <select name="game">
+		<option>League of Legends</option>
+		<option>Dota2</option>
+        <option>CS:GO</option>
+        <option>Overwatch</option>
+		<option selected='selected'><%= user.local.game %></option>
+	  </select>
+	  
+	   <span>Your cost $/hour</span> 
+	   <input type=number name="cost" placeholder=<%= user.local.cost %> >
+	
+	  <button type="submit">Update</button>
+	  <p class="message">Cancel <a href="/updateuser">return</a></p>
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>

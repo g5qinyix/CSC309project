@@ -68,20 +68,22 @@
 	<section class="others_life">
 		<h1 id="viewcomment">View Comments</h1>
 		<div id="showcomment" style="display:none" >
-		<% comments.forEach(function(comment) { %>
-		<div id = "posts">
-			<div class = "small_photo">
-					<img src="/images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
-			</div>
-			<div class="content">
-				<div class = "ID">
-					<a href="/users/<%=comment.comment.studentid%>"><p class = "ID"><%=comment.comment.nickname %></p></a>
+		<% if (comments) { %>
+			<% comments.forEach(function(comment) { %>
+			<div id = "posts">
+				<div class = "small_photo">
+						<img src="/images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
 				</div>
-				<p><%=comment.comment.content%></p>
+				<div class="content">
+					<div class = "ID">
+						<a href="/users/<%=comment.comment.studentid%>"><p class = "ID"><%=comment.comment.nickname %></p></a>
+					</div>
+					<p><%=comment.comment.content%></p>
+				</div>
+				 <p><%=comment.comment.date%></p>
 			</div>
-			 <p><%=comment.comment.date%></p>
-		</div>
-		<% }); %>
+			<% }); %>
+		<% } %>
 		</div>
 	</section>
 	
