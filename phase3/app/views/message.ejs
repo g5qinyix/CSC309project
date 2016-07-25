@@ -20,7 +20,6 @@
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-				<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
 				<li><a href='/profile'><%= user.local.nickname%></a></li>
 			</ul>
 		</nav>
@@ -39,7 +38,7 @@
 			<% } %>
 	        <% });%>
 				<div class="inner-container">
-					<img src="<%=contacter.local.photo%>" class="photo" >
+					<img src="<%=contacter.local.photo%>" class="photo">
 					<div class="id"><%=contacter.local.nickname%></div>
 				</div>
 				</div>
@@ -48,12 +47,14 @@
 		</div>   
 	    <% if (conservations != null) { %>
 		<div id="convo">
-			
+			<h4> <%=targetuser.local.nickname %> </h4>
+			<hr>
+
 			<ul id="divExample" class="chat-thread">
-			
+
 				<% conservations.forEach(function(conservation) { %>
-				<% if (conservation.sender.id == user._id) { %>
-				<li class="source"><%=conservation.sender.content%></li>
+								<% if (conservation.sender.id == user._id) { %>
+				<li style=":before"class="source"><%=conservation.sender.content%></li>
 				<% } %>
 				<% if (conservation.receiver.id == user._id) { %>
 				<li class="target"><%=conservation.receiver.content%></li>
@@ -62,7 +63,7 @@
 			</ul>
 			<div class="input">
 				<form action="/repley/<%=targetid%>" method="post">
-				<input name="repley" autofocus></input>
+				<input name="repley" class = "form" autofocus></input>
 				<button type='submit'>reply</button>
 				</form>
 			</div>
