@@ -10,19 +10,17 @@
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2>Setting</h2>
+	
   <div class="form">
 	
     <!-- show any messages that come back with authentication -->
-    <form class="login-form" action="/editstudent" method="post">
+    <form class="login-form" action="/editstudent" method="post" enctype='multipart/form-data'>
       <span>Your e-mail:</span>
       <p><%= user.local.email %> </p>
 	  <span>Your new Password</span>
       <input type="password" name="password" placeholder="password" />
 	  <span>Your new Nickname</span>                                               
       <input type="text" name="nickname" placeholder="smith" />
-	  <span>Your new Location</span>                                               
-      <input type="text" name="location" placeholder="Toronto"/>
 	  <span>Your game</span>
 	   <select name="game">
 		<option>Dota2</option>
@@ -30,9 +28,11 @@
 		<option>CS:GO</option>
 		<option>Overwatch</option>
 	  </select>
+	   <span>Your new Photo</span>                                               
+      <input type="file" name="photo"/>   
       
 	  <button type="submit">Submit</button>
-	  <p class="message">Return to homepage  <a href="/home">Enter</a></p>
+	<p class="message">Cancel <a href="/profile">return</a></p>
     </form>
   </div>
 </div>

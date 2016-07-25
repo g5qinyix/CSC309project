@@ -5,10 +5,12 @@ var LocalStrategy   = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 // load up the user model
 var User       		= require('../app/models/user');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // load the auth variables
 var configAuth = require('./auth');
-
+var fs     = require('fs');
+var path     = require('path');
 // expose this function to our app using module.exports
 module.exports = function(passport) {
     
@@ -65,16 +67,44 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
-                // save the user
+
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                    
+                }
+                else{
+                    
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                }
+                                });
+                            }
+                    });
+                    
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                    
+                }
+                
+                // save the user         
                 newUser.save(function(err) {
                     if (err)
                         throw err;
                     return done(null, newUser);
                 });
+                
             }
 
         });
@@ -102,25 +132,99 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
-
-				// if there is no user with that email
+                // if there is no user with that email
                 // create the user
                 var newUser  = new User();
+
+				// There are missing fields.
+                if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
+                    if (req.param('streetAddress').length == 0 ||
+                        req.param('city').length == 0 ||
+                        req.param('province').length == 0){
+                            return done(null, false, req.flash('signupMessage', 'Must enter all location fields if offline coach.'));
+                    }
+                    // obtain coordinates of address.
+                    var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
+                    var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
+                                           + req.param('province') + urlAPIKey; 
+                    var jsonHTTP = new XMLHttpRequest();
+                    jsonHTTP.open("GET", url, false);
+                    jsonHTTP.send(null);
+                    var result = JSON.parse(jsonHTTP.responseText);
+                    if (result["status"] == "ZERO_RESULTS"){
+                        return done(null, false, req.flash('signupMessage', 'Cannot find address'));
+                    }
+                    else {
+                        newUser.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
+                        newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+
+                    }
+                    //console.log(jsonHTTP.responseText); 
+                    
+
+                }
+                
 
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.location = req.param('location');
                 newUser.local.nickname = req.param('nickname');
-                newUser.local.location = req.param('location');
                 newUser.local.occupation = 'coach';
-                newUser.local.coachtype = req.param('coachtype');
                 newUser.local.game = req.param('game');
                 newUser.local.cost = req.param('cost');
                 newUser.local.rate.grade = 0;
-                newUser.local.rate.list= [];
+                newUser.local.rate.list = [];
+                newUser.local.rate.studentlist=[];
                 newUser.local.coachtype = req.param("coachtype");
+                newUser.local.address.street = req.param('streetAddress');
+                newUser.local.address.city = req.param('city');
+                newUser.local.address.province = req.param('province');
+
+                //read image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                    var imageName = req.files.photo.name;
+                    if(!imageName){
+                        console.log("There was an error");
+                    }else{
+                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                        console.log(newPath);
+                        fs.writeFile(newPath, data, function(err){
+                            if (err) {
+                                console.log("err");
+                                }
+                            });
+                        }
+                });
+                
+                //save the url to user photo field
+                newUser.local.photo = '/tmp/'+ req.files.photo.name;
+                  
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                }
+                
+                else{   
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                }
+               
                 // save the user
                 newUser.save(function(err) {
                     if (err)
@@ -183,7 +287,7 @@ module.exports = function(passport) {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our for
+    function(req, email, password, done) { // callback with email and password from our form
         // admin uses admin@bemaster.com email only
         if (email != 'admin@bemaster.com') {
             return done(null, false, req.flash('loginMessage', 'Sorry, but you are not an administrater.'));
@@ -258,7 +362,6 @@ module.exports = function(passport) {
                     } else {
                         // if there is no user, create them
                         var newUser            = new User();
-
                         newUser.facebook.id    = profile.id;
                         newUser.facebook.token = token;
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
@@ -266,6 +369,7 @@ module.exports = function(passport) {
                         newUser.local.nickname =   newUser.facebook.name;
                         newUser.local.email =  newUser.facebook.email;
                         newUser.local.occupation = "student";
+                        newUser.local.photo = '';
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);

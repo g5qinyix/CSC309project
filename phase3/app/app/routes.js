@@ -5,6 +5,8 @@
 var User       		= require('../app/models/user'); 
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
+var fs     = require('fs');
+var path     = require('path');
 
 module.exports = function(app, passport) {
 
@@ -53,25 +55,28 @@ module.exports = function(app, passport) {
 		}));
 
     
+    
 	// =====================================
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
 	app.get('/signup', function(req, res) {
-
 		// render the page and pass in any flash data if it exists
 		res.render('signup.ejs');
 	});
-		
+
+    
 	//sign up for student
 	app.get('/studentsignup', function(req, res){
 		res.render('studentsignup.ejs', { message: req.flash('signupMessage') });
 	});
 	
+    
 	app.get('/coachsignup', function(req, res){
 		res.render('coachsignup.ejs', { message: req.flash('signupMessage') });
 	});
 	
+    
 	// process the studentsignup form
 	app.post('/studentsignup', passport.authenticate('local-signup-student', {
 		successRedirect : '/home', // redirect to the secure profile section
@@ -85,9 +90,6 @@ module.exports = function(app, passport) {
 		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
-
-	
-    
     
     // =====================================
 	// Game pages =====================
@@ -110,12 +112,13 @@ module.exports = function(app, passport) {
         }
         
         if (game=='overwatch') {
-                Game='Overwatch'
-         
+                Game='Overwatch' 
         }
+        
         if (req.isAuthenticated()){
                 User.find({'local.occupation':'coach', 'local.game': Game,
-                   'local.email': {$ne: req.user.local.email } },function(err, coaches){
+                   'local.email': {$ne: req.user.local.email } }).
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){  
 					   var limitedCoachInfo = [];
                         for (var i=0; i<coaches.length; i++){
 							var limitedCoach = new Object();
@@ -126,7 +129,6 @@ module.exports = function(app, passport) {
 							limitedCoach.name = coaches[i].local.nickname;
 							limitedCoachInfo.push(limitedCoach);
                         }
-						console.log(limitedCoachInfo);
                         res.render('game.ejs',{
 						gameCoachInfo: limitedCoachInfo,
                         coaches: coaches,
@@ -137,8 +139,11 @@ module.exports = function(app, passport) {
                         });
                    });
         }
+        
         else{   
-                User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
+
+                User.find({'local.occupation':'coach', 'local.game': Game}).
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
 					var limitedCoachInfo = [];
 					for (var i=0; i<coaches.length; i++){
 						var limitedCoach = new Object();
@@ -221,12 +226,11 @@ module.exports = function(app, passport) {
 		}
         
         if (req.isAuthenticated()){
-				console.log("cost is:" + cost);
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
+                   'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit},
                    'local.email': {$ne: req.user.local.email} }, function(err, coaches) {
-
                         if (err){       
                          console.log("some error");
                         }    
@@ -262,6 +266,7 @@ module.exports = function(app, passport) {
                 User.find({
 					'local.game' : Game,
 				   'local.occupation':'coach',
+                    'local.coachtype': coachtype,
 				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
 					   console.log('coaches cost:' + coaches[0]["local"]["cost"]);
 					   console.log(coaches[0]["local"]["cost"] > lowlimit);
@@ -341,6 +346,7 @@ module.exports = function(app, passport) {
 	
 	
     
+    
 	// =====================================
 	// EDIT PROFILE=========================
 	// =====================================
@@ -353,6 +359,7 @@ module.exports = function(app, passport) {
 	});
 	
 	
+    
 	// process the studentedit form
 	app.post('/editstudent', function(req, res){
 		var email = req.user.local.email;
@@ -367,16 +374,39 @@ module.exports = function(app, passport) {
             if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
-            }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
-
+            
+            if(req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                });
+                
+                
+                if ( user.local.photo != '') {
+                        //delete old images
+                        var oldPath = path.join(__dirname, '../public', user.local.photo);
+                        fs.unlinkSync(oldPath);
+                }      
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;     
+            }
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -428,6 +458,36 @@ module.exports = function(app, passport) {
             if ( req.param('coachtype') != '') {
                 user.local.coachtype = req.param('coachtype');
             }
+            
+            if( req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                
+                if ( user.local.photo != '') {
+                  
+                //delete old images
+                var oldPath = path.join(__dirname, '../public', user.local.photo);
+                fs.unlinkSync(oldPath);
+                }
+                
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
+            }
+            
+            
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -506,13 +566,14 @@ module.exports = function(app, passport) {
 	// =====================================
 	// Comment and rating system ======================
 	// =====================================
-    
+  
     // users add comments to coach
 	app.post('/comments/*', isLoggedIn, function(req, res){
         //get the id of coach to be commented
         var url = req.url;
         var coachid = url.substring(10);
         var content = req.param("comment");
+        var rate = req.param('rate');
         var newComment  = new Comment();
         var date = new Date();
         newComment.coachid = coachid;
@@ -521,34 +582,31 @@ module.exports = function(app, passport) {
         newComment.comment.content = content;
         newComment.comment.date = date;
         newComment.save();
-        res.redirect('/users/'+coachid);
+        
+        // handle rate(each coach has to get at least 3 times rate in order to get grade)
+        User.findOne({'_id': coachid}).exec(function(err, coach){
+                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
+                        coach.local.rate.list.push(rate);
+                        if (coach.local.rate.list.length >= 3) {
+                                var total = 0;
+                                for(var i = 0; i < coach.local.rate.list.length; i++) {
+                                    total += coach.local.rate.list[i];
+                                    }
+                                var avg = (total / coach.local.rate.list.length).toFixed(2);
+                                coach.local.rate.grade = avg;
+                                }
+                                
+                                //add student to studentlist
+                                coach.local.rate.studentlist.push(req.user._id);      
+                        }
+                coach.save();
+                res.redirect('/users/'+coachid);
+        }); 
     });
     
+
     
     
-    // =====================================
-	// Follow system ======================
-	// =====================================  
-    //student follows a coach
-    app.get('/follow/*', isLoggedIn, function(req, res){
-        var url = req.url;
-        var coachid = url.substring(8);
-        User.findOne({'_id': req.user._id }, function(err, user){
-            if (err) {
-                //code
-            }
-            user.local.follow.push(coachid);
-            user.save();
-        });
-    });
-    
-    //student view follow list 
-    app.get('/viewfollow',isLoggedIn, function(req, res){
-        User.find({'_id': req.user._id}, function(err, coaches){
-            //TODO
-            //TODO
-        });   
-    });
     
     
     
@@ -557,10 +615,6 @@ module.exports = function(app, passport) {
     // =====================================
 	// Message system ======================
 	// =====================================
-    
-    
-    
-
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;
@@ -588,7 +642,7 @@ module.exports = function(app, passport) {
         newMessage.receiver.id = receiverid;
         newMessage.sender.content = req.param("repley");
         newMessage.receiver.content = req.param("repley");
-        newMessage.receiver.status=0;
+        newMessage.receiver.status= 0;
         newMessage.date = date;
         newMessage.save();
         
@@ -597,46 +651,81 @@ module.exports = function(app, passport) {
     
     
     
-    //user view contacter list
+    
+    //user view contact list
     app.get('/messaging', isLoggedIn, function(req, res){
+        //get contact list from database
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
-                }
-                
-                User.find({ '_id': { $in: receivers } }, function(err, users){
-                        
-                        res.render('message.ejs', {
-                                targetid: null,
-                                contacters: users,
-                                user: req.user,
-                                conservations: null
+                } 
+                Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
+                             distinct('sender.id').exec(function(err, unread){
+                             
+                                    User.find({ '_id': { $in: receivers } }, function(err, users){
+                                   
+                                        res.render('message.ejs', {   
+                                                unreads : unread,
+                                                targetid: null,
+                                                contacters: users,
+                                                user: req.user,
+                                                conservations: null
+                                                });
+                                        });
                                 });
                         });
             });
-        });
     });
     
     
-    //user view conservations with one contacter
+    
+    //user view all messages with one contact
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
          var contactid = url.substring(13);
-         Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
+         // get the contact list
+      
+        //find all messages between user and one contact
+        Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
                              {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                      }).sort({'date': 1}).exec(function(err, conservations){
-                console.log(conservations);
-            res.render('message.ejs',{
-                targetid:  contactid,
-                conservations:conservations,
-                user: req.user,
-                contacters :null
-            });
-        });    
+                     }).sort({'date': 1}).exec(function(err, conservations){
+                //update message status
+                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
+                               {multi: true}, function(err){
+                                Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+                                        Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                                                for(i=0; i<senders.length; i++){
+                                                        if (receivers.indexOf(senders[i]) == -1) {
+                                                                receivers.push(senders[i]);
+                                                                }
+                                                }
+                                                //get the contact list from database
+                                                Message.find({'receiver.id': req.user._id,
+                                                             'receiver.status' : 0}).distinct('sender.id').exec(function(err, unread){
+                                                        User.find({ '_id': { $in: receivers } }, function(err, users){
+                                                                User.findOne({'_id': contactid}, function(err, targetuser){
+                                                                        res.render('message.ejs',{
+                                                                                unreads : unread,
+                                                                                targetid:  contactid,
+                                                                                conservations:conservations,
+                                                                                user: req.user,
+                                                                                contacters :users,
+                                                                                targetuser: targetuser
+                                                                                });
+                                                                        });
+                                                                });
+                                                        });
+                                                });
+                                });
+                        });
+        });
     });
+
+
+                                                         
     
     
     
@@ -661,7 +750,11 @@ module.exports = function(app, passport) {
     // show admin page
 	app.get('/adminpage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
-		res.render('admin.ejs', { message: req.flash('loginMessage') });
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin.ejs', { message: req.flash('loginMessage') });
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        } 
 	});
     
     //show the change password form
@@ -671,39 +764,124 @@ module.exports = function(app, passport) {
 		});
 	});
     
+    
     // process the change password form
-	app.post('/changepassword', isLoggedIn, function(req, res){
+	app.post('/changepassword', function(req, res){
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
                 return next(err);
+            } else {
+                user.local.password = user.generateHash(req.param('newpassword'));
+                user.save();
+                res.render('changepasswordsuccess.ejs');
             }
-            if (req.param('password') != '') {
-                user.local.password = user.generateHash(req.param('password'));     
-            }
-			user.save();
-            res.render('changepasswordsuccess');
 		});													
 	});
+	
     
     //show the add user form
 	app.get('/adduser', isLoggedIn,  function(req, res){
-		res.render('adduser.ejs');
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('adduser.ejs');
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
 	});
     
     //show the add stuent form
 	app.get('/addstudent', isLoggedIn,  function(req, res){
-		res.render('addstudent.ejs', { message: req.flash('signupMessage')} );
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('addstudent.ejs', { message: req.flash('signupMessage')});
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
 	});
+    
+    // process the add student form
+    app.post('/addstudent', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres already a user with that email
+            if (user) {
+                res.render('addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+            } else {
+                // if there is no user with that email
+                // create the user
+                var newUser  = new User();
+
+                // set the user's local credentials
+                newUser.local.email    = email;
+                newUser.local.password = newUser.generateHash(req.param('password')); // use the generateHash function in our user model
+                // parse the url
+                newUser.local.location = req.param('location');
+                newUser.local.nickname = req.param('nickname');
+                newUser.local.game = req.param('game');
+                newUser.local.occupation = 'student';
+                // save the user
+                newUser.save(function(err) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.render('addstudentsuccess.ejs');
+                    }
+                });
+            }
+        })
+    });
     
     //show the add coach form
 	app.get('/addcoach', isLoggedIn,  function(req, res){
-		res.render('addcoach.ejs', { message: req.flash('signupMessage')} );
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('addcoach.ejs', { message: req.flash('signupMessage')});
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
 	});
     
-    
-    
+    // process the add coach form
+    app.post('/addcoach', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres already a user with that email
+            if (user) {
+                res.render('addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+            } else {
+                // if there is no user with that email
+                // create the user
+                var newUser  = new User();
+                
+                 // set the user's local credentials
+                newUser.local.email    = email;
+                newUser.local.password = newUser.generateHash(req.param('password'));
+                newUser.local.nickname = req.param('nickname');
+                newUser.local.location = req.param('location');
+                newUser.local.occupation = 'coach';
+                newUser.local.game = req.param('game');
+                newUser.local.cost = req.param('cost');
+                newUser.local.rate.grade = 0;
+                newUser.local.rate.list= [];
+                newUser.local.coachtype = req.param("coachtype");
+                // save the user
+                newUser.save(function(err) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.render('addcoachsuccess.ejs');
+                    }
+                });
+            };
+        });
+    })  
 }
 
 

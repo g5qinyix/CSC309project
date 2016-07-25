@@ -10,10 +10,10 @@
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-	<h2 style="margin:auto">Setting</h2>
+
   <div class="form">
     <!-- show any messages that come back with authentication -->
-    <form class="login-form" action="/editcoach" method="post">
+    <form class="login-form" action="/editcoach" method="post" enctype='multipart/form-data'>
 	  <span>Your email</span>
 	  <p><%= user.local.email %> </p>
 	  <span>Your new Password</span>
@@ -37,11 +37,14 @@
         <option>Overwatch</option>
 	  </select>
 	  
+	  <span>Your new Photo</span>                                               
+      <input type="file" name="photo"/>
+	  
 	   <span>Your cost $/hour</span> 
 	   <input type=number name="cost" placeholder="$">
 	
 	  <button type="submit">Submit</button>
-	  <p class="message">Return to homepage  <a href="/login">enter</a></p>
+	  <p class="message">Cancel <a href="/profile">return</a></p>
     </form>
   </div>
 </div>

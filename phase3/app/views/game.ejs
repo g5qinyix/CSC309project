@@ -19,7 +19,8 @@
 				<li><img src="/images/user.png" onmouseover='src="/images/user1.png"' onmouseout='src="/images/user.png"' onclick="location.href='/login';"></li>
 				<% } %>
 				<% if (user != null) { %>
-				<li style="margin-top:0px" ><a href='/profile'>Hi <%= user.local.nickname%></a></li>
+			    <li style="margin-left:10px"><a href='/logout'>Log Out</a></li>
+				<li><a href='/profile'><%= user.local.nickname%></a></li>
 				<% } %>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="images/upwards-arrow1.png"' onmouseout='src="images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
@@ -61,11 +62,11 @@
 		<label>
 		<span>Online or Offline</span>
 		<select name='coachtype'>
-			<option>online</option>
-			<option>offline</option>
+			<option>Online</option>
+			<option>Offline</option>
 			<% if (coachtype != null) { %>
 			<option selected="selected"><%=coachtype%></option>
-            <% } %>	
+            <% } %>
 		</select>
 		</label>
 		<label>
@@ -91,10 +92,11 @@
 		<p id="coachInfo" hidden><%=JSON.stringify(gameCoachInfo)%></p>
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
+		
 			<a href="/users/<%=coach._id%>"><div class="block">
-				<img class="img-responsive" src=
-			        "/images/person1.jpg" onclick="location.href='/#';">
+				<img  class="img-responsive" src="<%=coach.local.photo%>">
 			    <p><%=coach.local.nickname%></p>
+
 			    <% if (coach.local.rate.grade == 0) { %>
 		        	<p>Rating:N/A</p>
 				    <% } %>
@@ -107,24 +109,21 @@
 		</div>
 		<% if (coachtype == "online") { %>
 		<% coaches.forEach(function(coach) { %>
-		<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+		<div style="margin-bottom:10%" class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3">
 		            <img class="img-responsive" src=
-			        "/images/person1.jpg">
-			        <p style="font-size:20px"><%=coach.local.nickname%></p>
-				
+			        "<%=coach.local.photo%>">
+			        <p style="font-size:20px"><%=coach.local.nickname%></p>	
 		        </div>
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
-				
 					<% if (coach.local.rate.grade == 0) { %>
-		        	<p>Rating:N/A</p>
+		        	<p style="font-size:15px">Rating:N/A</p>
 				    <% } %>
 					<% if (coach.local.rate.grade != 0) { %>
-		        	<p>Rating: <%=coach.local.rate.grade%></p>
-				    <% } %>
-					
-		        	<p>Price: $<%=coach.local.cost %>/hour</p>
+		        	<p style="font-size:15px">Rating: <%=coach.local.rate.grade%></p>
+				    <% } %>		
+		        	<p style="font-size:15px">Price: $<%=coach.local.cost %>/hour</p>
 		        </div></a>
 	        </div>
         </div>

@@ -14,6 +14,7 @@
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
+				<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
 				<li><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
@@ -22,11 +23,17 @@
 	<section class = "information">
 		<div class = "profile">
 			<div class = "photo">
-			 	<img src="/images/person1.jpg">
+			    <% if (user.local.photo == "") { %>
+			 	<img src="/images/person.gif" >
+				<% } %>
+			    <% if (user.local.photo != "") { %>
+				<img style="height:60%;width:60%; border-radius: 50%" src="<%=user.local.photo%>">
+			    <% } %>
 			</div>
 			<div class="g_information">
 				<h2><%=user.local.nickname%></h2>
 				<p>Your account: <%=user.local.email%></p>
+				<p>Your coachtype: <%=user.local.coachtype%></p>
 			</div>
 			<div id="edit" onclick="location.href='/editcoach'">
 				<img src="/images/edit.png">
@@ -38,15 +45,15 @@
 			<div class="flipper">
 				<div class="col-md-3-1">
 					<% if (user.local.game == "CS:GO") { %>
-		            <img class="img-responsive" src=
+		            <img style="width:100%;height:100%" class="img-responsive" src=
 			        "/images/csgo_logo.png">
 					<% } %>
 					<% if (user.local.game == "League of Legends") { %>
-		            <img class="img-responsive" src=
+		            <img style="width:100%;height:100%" class="img-responsive" src=
 			        "/images/lol_logo.png">
 					<% } %>
 					<% if (user.local.game == "Dota2") { %>
-		            <img class="img-responsive" src=
+		            <img style="width:100%;height:100%" class="img-responsive" src=
 			        "/images/dota2_logo.png">
 					<% } %>
 					<% if (user.local.game == "Overwatch") { %>
@@ -56,7 +63,12 @@
 
 		        </div>
 		        <div class="back-1">
-		        	<p>Rating: <%=user.local.rate.grade%></p>
+					<% if (user.local.rate.grade == 0) { %>
+		        	<p>Rating: <%=N/A%></p>
+					<% } %>
+					<% if (user.local.rate.grade != 0) { %>
+		        	<p>Rating: <%=user.local.rate.grade%>/10</p>
+					<% } %>
 		        	<p>Price: <%=user.local.cost%></p>
 		        </div>
 	        </div>
@@ -67,29 +79,25 @@
 	<section class="others_life">
 		<h1 id="viewcomment">View Comments</h1>
 		<div id="showcomment" style="display:none" >
-		<% comments.forEach(function(comment) { %>
-		<div id = "posts">
-			<div class = "small_photo">
-					<img src="/images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
-			</div>
-			<div class="content">
-				<div class = "ID">
-					<a href="/users/<%=comment.comment.studentid%>"><p class = "ID"><%=comment.comment.nickname %></p></a>
+		<% if (comments) { %>
+			<% comments.forEach(function(comment) { %>
+			<div id = "posts">
+				<div class = "small_photo">
+						<img src="/images/person.gif" class="img-responsive" alt="Who is that" style="width:50px;height:50px;">
 				</div>
-				<p><%=comment.comment.content%></p>
+				<div class="content">
+					<div class = "ID">
+						<a href="/users/<%=comment.comment.studentid%>"><p class = "ID"><%=comment.comment.nickname %></p></a>
+					</div>
+					<p><%=comment.comment.content%></p>
+				</div>
+				 <p><%=comment.comment.date%></p>
 			</div>
-			 <p><%=comment.comment.date%></p>
-		</div>
-		<% }); %>
+			<% }); %>
+		<% } %>
 		</div>
 	</section>
 	
-	
-	
-
-	
-	
-	
-	
+		
 </body>
 </html>
