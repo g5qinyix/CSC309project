@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
             res.render("home.ejs",{
                 user: null
                 }); 
-	}); 
+	});
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -514,7 +514,7 @@ module.exports = function(app, passport) {
     
          
 	// =====================================
-	// Comment and rating system ======================
+	// Comment and rating system ===========
 	// =====================================
     
     // users add comments to coach
@@ -656,7 +656,7 @@ module.exports = function(app, passport) {
     
     
     // =====================================
-	// ADMIN LOGIN =========================
+	// ADMIN SYSTEM ========================
 	// =====================================
 	// show the admin-login form
 	app.get('/admin', function(req, res) {
@@ -807,6 +807,111 @@ module.exports = function(app, passport) {
             };
         });
     })
+	
+	
+	//show the update user form
+	app.get('/updateuser', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('selectuser.ejs', {message: req.flash('selectMessage')});
+        } else {
+            res.render('adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the select user form
+    app.post('/selectuser', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres is a user with that email
+            if (!user) {
+                res.render('selectuser.ejs', {message: ('selectMessage', 'This user does not exist')});
+            } else {
+                // user exists, go to update the user's info
+                if (user.local.occupation == 'student') {
+                    res.render('updatestudent.ejs', {
+						user: user})
+                };
+				if (user.local.occupation == 'coach') {
+                    res.render('updatecoach.ejs', {
+						user: user})
+                };
+			};
+		});
+	})
+	
+	// process the updatestudent form
+	app.post('/updatestudent', function(req, res){
+		var email = req.param('email');
+		
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+
+            if (err) {
+                return next(err);
+                //code
+            }
+            if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
+            if ( req.param('nickname') != '') {
+                user.local.nickname = req.param('nickname');
+            }
+            if ( req.param('game') != '') {
+                user.local.game = req.param('game');
+            }
+
+			user.save();
+			res.render('studentprofile.ejs', {
+				user: user
+			})
+		});														
+	});
+	
+	// process coach update form
+	app.post('/updatecoach', function(req, res){
+		var email = req.param('email');
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+            if (err) {
+                return next(err);
+                //code
+            }
+            
+			if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+            
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
+            if ( req.param('nickname') != '') {
+                user.local.nickname = req.param('nickname');
+            }
+            if ( req.param('game') != '' ) {
+                user.local.game = req.param('game');
+            }
+            if (req.param('cost') != '' ) {
+                user.local.cost = req.param('cost');
+            }
+            if ( req.param('coachtype') != '') {
+                user.local.coachtype = req.param('coachtype');
+            }
+			
+			user.save();
+			res.render('coachprofile.ejs', {
+				user: user,
+				comments: null
+			});
+		});														
+	});
+				
         
         
     

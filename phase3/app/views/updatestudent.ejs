@@ -1,0 +1,43 @@
+<!-- views/updatestudent.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="/css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edit</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+	
+  <div class="form">
+	
+    <p style="text-align: center">Update student's info</p>
+    <form class="login-form" action="/updatestudent" method="post">
+      <span>Student e-mail:</span>
+      <input type="email" name="email" value=<%= user.local.email %> />
+	  <span>Enter student new Password</span>
+      <input type="password" name="password" placeholder="password" autofocus/>
+	  <span>Enter student new Nickname</span>                                               
+      <input type="text" name="nickname" placeholder=<%= user.local.nickname %> />
+	  <span>Enter student new Location</span>                                               
+      <input type="text" name="location" placeholder=<%= user.local.location %> />
+	  <span>Select student game</span>
+	   <select name="game">
+		<option>Dota2</option>
+		<option>League of Legends</option>
+		<option>CS:GO</option>
+		<option>Overwatch</option>
+		<option selected='selected'><%= user.local.game %></option>
+	  </select>
+      
+	  <button type="submit">Update</button>
+	<p class="message">Cancel <a href="/updateuser">return</a></p>
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>

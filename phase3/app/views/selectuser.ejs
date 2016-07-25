@@ -1,0 +1,31 @@
+<!-- views/selectuser.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>admin update user</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+	<h2 style="color:rgb(100, 65, 165);margin-bottom:0px">Select a user</h2>
+  <div style="margin-top:0px" class="form">
+    <!-- show any messages that come back with authentication -->
+	<% if (message.length > 0) { %>
+		<div class="alert"><%= message %></div>
+	<% } %>
+    <form class="login-form" action="/selectuser" method="post">
+      <span>Enter user e-mail </span>
+      <input type="email" name="email" placeholder="123@mail.com" autofocus required/>
+	  
+	  <button type="submit">next</button>
+
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>
