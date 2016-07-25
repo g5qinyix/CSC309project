@@ -184,6 +184,12 @@ module.exports = function(app, passport) {
         var Game;
 		var cost = req.param('cost');
         var coachtype =req.param('coachtype');
+        var flag;
+        if (coachtype === 'Both'){
+        	flag=0;
+        } else{
+        	flag=1;
+        }
 		var lowlimit;
 		var highlimit;
         
@@ -233,7 +239,7 @@ module.exports = function(app, passport) {
 				console.log("cost is:" + cost);
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
-                   'local.coachtype': coachtype,
+                   'local.coachtype': { $in : [coachtype, 'Both']},
 				   'local.cost': { $gt: lowlimit, $lt: highlimit},
                    'local.email': {$ne: req.user.local.email} }, function(err, coaches) {
                         if (err){       
@@ -335,7 +341,8 @@ module.exports = function(app, passport) {
             Comment.find({'coachid': req.user._id}, function(err, comments){
                 	res.render('coachprofile.ejs', {
                         user : req.user,
-                        comments : comments 
+                        comments : comments,
+                        coachtype: req.user.local.coachtype
                     });	
             }); 
 		}	
