@@ -892,6 +892,7 @@ function isLoggedIn(req, res, next) {
 }
 
 
+
 function checkLogin(req, res, next) {
    if (req.isAuthenticated())
         return next();
