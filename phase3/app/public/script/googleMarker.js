@@ -5,16 +5,19 @@ function initMap() {
 	var myLatLng = {lat: 43.6629, lng: -79.3957};
 
 	map = new google.maps.Map(document.getElementById('map'), {
-	  zoom: 12,
+	  zoom: 13,
 	  center: myLatLng
 	});
 	displayMarkers();
 
  }
- // TODO: ACCOUNT FOR BOTH & OFFLINE IN ROUTES.JS
+
  function displayMarkers(){
 	var coachInfo = JSON.parse(document.getElementById('coachInfo').innerHTML);
 	console.log(coachInfo);
+	var marker;
+	var infoWindow;
+	var contentString;
 	for (var i=0; i<coachInfo.length; i++){
 		var latitude = coachInfo[i]["lat"];
 		var longitude = coachInfo[i]["lng"];
@@ -22,21 +25,28 @@ function initMap() {
 		console.log("longitude:"+longitude);
 
 		console.log(coachInfo[i].nickname);
-		var contentString = "<div>" +
-			"<p>Name: " + coachInfo[i].name + "</p><br>" +
-			"<p>Email: " + coachInfo[i].email + "</p><br>" +
-			"<p>Cost: " + coachInfo[i].cost + "</p><br>" +
+		contentString = "<div>" +
+			"<p>Name: " + coachInfo[i].name + "</p>" +
+			"<p>Email: " + coachInfo[i].email + "</p>" +
+			"<p>Cost: $" + coachInfo[i].cost + "</p>" +
+			"<a href='/users/" + coachInfo[i].profile + "'>Profile</a>" +
 			"</div>";
-		var infoWindow = new google.maps.InfoWindow({
+		infoWindow = new google.maps.InfoWindow({
 			content: contentString
 		});
 
-		var marker = new google.maps.Marker({
+		marker = new google.maps.Marker({
 			position: {lat:  parseFloat(latitude), lng:  parseFloat(longitude)},
 			map: map,
 		});
-		marker.addListener('click', function(){
-			infoWindow.open(map, marker);
-		});
+		google.maps.event.addListener(marker, 'click', (function(marker, contentString, infoWindow){
+			return function(){
+				infoWindow.setContent(contentString);
+				infoWindow.open(map, marker);
+				google.maps.event.addListener(map, 'click', function(){
+					infoWindow.close();
+				});
+			}
+		})(marker, contentString, infoWindow));
 	}
  }

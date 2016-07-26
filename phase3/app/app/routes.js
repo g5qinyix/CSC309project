@@ -124,6 +124,7 @@ module.exports = function(app, passport) {
 					   var limitedCoachInfo = [];
                         for (var i=0; i<coaches.length; i++){
 							var limitedCoach = new Object();
+							limitedCoach.profile = coaches[i]._id;
 							limitedCoach.email = coaches[i].local.email;
 							limitedCoach.game = coaches[i].local.game;
 							limitedCoach.cost = coaches[i].local.cost;
@@ -150,6 +151,7 @@ module.exports = function(app, passport) {
 					var limitedCoachInfo = [];
 					for (var i=0; i<coaches.length; i++){
 						var limitedCoach = new Object();
+						limitedCoach.profile = coaches[i]._id;
 						limitedCoach.email = coaches[i].local.email;
 						limitedCoach.game = coaches[i].local.game;
 						limitedCoach.cost = coaches[i].local.cost;
@@ -246,11 +248,12 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }    
                         else {
-							console.log(coaches);
+							console.log("coaches:" + coaches);
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
 								limitedCoach.email = coaches[i].local.email;
+								limitedCoach.profile = coaches[i]._id;
 								limitedCoach.game = coaches[i].local.game;
 								limitedCoach.cost = coaches[i].local.cost;
 								limitedCoach.lng = coaches[i].local.coordinate.lng;
@@ -286,6 +289,7 @@ module.exports = function(app, passport) {
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
 								limitedCoach.email = coaches[i].local.email;
+								limitedCoach.profile = coaches[i]._id;
 								limitedCoach.game = coaches[i].local.game;
 								limitedCoach.cost = coaches[i].local.cost;
 								limitedCoach.lng = coaches[i].local.coordinate.lng;
