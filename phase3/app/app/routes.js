@@ -447,7 +447,9 @@ module.exports = function(app, passport) {
                 user.local.cost = req.param('cost');
             }
             
-        
+            if ( req.param('coachtype') != '') {
+                user.local.coachtype = req.param('coachtype');
+            }
             
             if( req.files.photo.name != ''){  
                 //read new image file
