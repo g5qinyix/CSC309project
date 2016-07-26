@@ -7,7 +7,6 @@ var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
 var fs     = require('fs');
 var path     = require('path');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 module.exports = function(app, passport) {
 
@@ -325,18 +324,13 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res){
         
-		//handle student
-        
+		//handle student  
 		if (req.user.local.occupation == "student") {
-                User.find({'local.occupation':'coach', 'local.game': req.user.local.game}).
-                sort({'local.rate.grade': -1}).limit(3).exec(function(err, coaches){
                 res.render('studentprofile.ejs', {
-                        user : req.user,
-                        coaches: coaches
+                           user : req.user
                            });
-                }); 
+         
         }
-        
         
 		//handle coach
 		else{
@@ -406,7 +400,7 @@ module.exports = function(app, passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
-                         
+                            console.log(newPath);
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
@@ -440,7 +434,6 @@ module.exports = function(app, passport) {
 	//show the coach edit form
 	app.get('/editcoach', isLoggedIn,  function(req, res){
 		res.render('editcoach.ejs' ,{
-			message: '',
 			user: req.user
 		});
 	});
@@ -459,50 +452,10 @@ module.exports = function(app, passport) {
 			if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
-			// Missing Address fields
-			if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
-				// Empty address fields means coach does not want to change address.
-				if (!(req.param('streetAddress').length == 0 &&
-					req.param('city').length == 0 &&
-					req.param('province').length == 0)){
-						// If not all filled out.
-						if (!(req.param('streetAddress').length != 0 &&
-							req.param('city').length != 0 &&
-							req.param('province').length != 0)){
-								res.render('editcoach.ejs', { 
-									message: 'Must enter all location fields if offline coach.',
-									user: req.user
-								});
-								return;
-						} else {
-							var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
-							var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-							var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
-												   + req.param('province') + urlAPIKey; 
-							var jsonHTTP = new XMLHttpRequest();
-							jsonHTTP.open("GET", url, false);
-							jsonHTTP.send(null);
-							var result = JSON.parse(jsonHTTP.responseText);
-							if (result["status"] == "ZERO_RESULTS"){
-								res.render('editcoach.ejs', { 
-										message: 'Invalid Address.',
-										user: req.user
-									});
-									return;
-							}
-							else {
-								user.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
-								user.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
-								user.local.address.street = req.param('streetAddress');
-								user.local.address.city = req.param('city');
-								user.local.address.province = req.param('province');
-							}
-						}
-				}
-
-				
-                    
-			}
+            
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
@@ -525,7 +478,7 @@ module.exports = function(app, passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
-                           
+                            console.log(newPath);
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
@@ -584,16 +537,25 @@ module.exports = function(app, passport) {
                 res.redirect('/profile');
         }
         else{
-        //find this user from database    
+        //find this user from database
+        var has_followed = 0;
+        for(var i = 0; i < req.user.local.follow.length; i++){
+            if (req.user.local.follow[i] == id){
+                has_followed = 1;
+            }
+        }
+        console.log(id);
         User.findOne({ '_id' :  id }, function(err, user) {
                  if (err) {
                         console.log(err);
-                        }     
-                //this user is a student      
+                        }    
+                console.log(user.local.occupation);     
                 if (user.local.occupation =="student") {
                         res.render('viewstudent.ejs', {
                                 student : user,
-                                user : req.user
+                                user : req.user,
+                                friend_list :  req.user.local.follow,
+                                has_followed : has_followed
                         });
                         
                 } 
@@ -603,11 +565,13 @@ module.exports = function(app, passport) {
                         Comment.find({'coachid': id}, function(err, comments){
                                 if (err) {
                                         console.log(err);
-                                        }
+                                        } 
                                 res.render('viewcoach.ejs',{
                                         user: req.user,
                                         coach:user,
-                                        comments: comments
+                                        comments: comments,
+                                        friend_list : req.user.local.follow,
+                                        has_followed :  has_followed
                                 });
                         });
                 }
@@ -615,6 +579,66 @@ module.exports = function(app, passport) {
         }
     });
 
+    app.get('/follow/*', checkLogin, function(req, res){
+        console.log("!!!!!!!!!!!!!!!!!!!")
+        var url = req.url;
+        var id = url.substring(8);
+        console.log(id);
+        var email = req.user.local.email;
+        User.findOne({ '_id' :  id }, function(err, user){
+            if (err){
+                console.log(err);
+            }
+        });
+        User.findOne({ 'local.email' :  email }, function(err, user){
+            user.local.follow.push(id);
+            console.log(user.local.follow);
+            user.save();
+            req.login(user, function(err) {
+                if (err) return next(err)
+                else{
+                    res.redirect('/users/'+id);
+                   
+                }
+            });
+        
+        });
+    });
+    app.get('/unfollow/*', checkLogin, function(req, res){
+        var url = req.url;
+        var id = url.substring(10);
+        var email = req.user.local.email;
+        var index;
+        User.findOne({ 'local.email' :  email }, function(err, user){
+            for (var i = 0; i < user.local.follow.length; i++){
+                if (id == user.local.follow[i]){
+                    index = i;
+                }
+            }
+            user.local.follow.splice(index, 1);
+            console.log(user.local.follow);
+            user.save();
+            req.login(user, function(err) {
+                if (err) return next(err)
+                else{
+                    res.redirect('/friend');
+                   
+                }
+            });
+        
+        });
+    });
+
+    app.get('/friend', isLoggedIn, function(req, res){
+ 
+            var friend_list = req.user.local.follow;
+            User.find({'_id' : { $in: friend_list}}, function(err,coaches){
+            res.render('friend.ejs', {
+                coaches: coaches,
+                user: req.user
+            });
+        });
+})    
 
 
 	
@@ -686,6 +710,12 @@ module.exports = function(app, passport) {
         newMessage.receiver.status=0;
         newMessage.date = date;
         newMessage.save();
+        console.log(receiverid);
+        User.findOne({'_id' : receiverid}).exec(function(err, user){
+                console.log("receiver id: " + user);
+                
+        });
+        
         res.redirect('/users/'+receiverid);
     });
     
@@ -711,19 +741,26 @@ module.exports = function(app, passport) {
     
     
     //user view contact list
-    app.get('/messaging', checkLogin, function(req, res){
+
+    app.get('/messaging', isLoggedIn, function(req, res){
+
         //get contact list from database
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+                     console.log(receivers);
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                console.log(senders);
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
                 } 
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
+
                              distinct('sender.id').exec(function(err, unread){
                              
-                                    User.find({ '_id': { $in: receivers } }, function(err, users){  
+                                    User.find({ '_id': { $in: receivers } }, function(err, users){
+                                   
+
                                         res.render('message.ejs', {   
                                                 unreads : unread,
                                                 targetid: null,
@@ -799,65 +836,65 @@ module.exports = function(app, passport) {
 
 	// process the login form
 	app.post('/admin', passport.authenticate('admin-login', {
-		successRedirect : '/adminpage', // redirect to the secure admin page
+		successRedirect : '/adminPage', // redirect to the secure admin page
 		failureRedirect : '/admin', // redirect back to the admin-login page if there is an error
 		failureFlash : true // allow flash messages 
 	}));
     
     // show admin page
-	app.get('/adminpage', isLoggedIn, function(req, res) {
+	app.get('/adminPage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('/admin/admin.ejs', { message: req.flash('loginMessage') });
+            res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('/admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
     //show the change password form
-	app.get('/changepassword', isLoggedIn,  function(req, res){
-		res.render('changepassword.ejs' ,{
+	app.get('/changePassword', isLoggedIn,  function(req, res){
+		res.render('admin/changePassword.ejs' ,{
 			user: req.user
 		});
 	});
     
     
     // process the change password form
-	app.post('/changepassword', function(req, res){
+	app.post('/changePassword', function(req, res){
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
                 return next(err);
             } else {
-                user.local.password = user.generateHash(req.param('newpassword'));
+                user.local.password = user.generateHash(req.param('newPassword'));
                 user.save();
-                res.render('admin/changepasswordsuccess.ejs');
+                res.render('admin/changePasswordSuccess.ejs');
             }
 		});													
 	});
 	
     
     //show the add user form
-	app.get('/adduser', isLoggedIn,  function(req, res){
+	app.get('/addUser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/adduser.ejs');
+            res.render('admin/addUser.ejs');
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     //show the add stuent form
-	app.get('/addstudent', isLoggedIn,  function(req, res){
+	app.get('/addStudent', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addstudent.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addStudent.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     // process the add student form
-    app.post('/addstudent', function(req, res) {
+    app.post('/addStudent', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -866,7 +903,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addStudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -885,7 +922,9 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addstudentsuccess.ejs');
+                        res.render('admin/addStudentSuccess.ejs', {
+						user: newUser
+						});
                     }
                 });
             }
@@ -893,16 +932,16 @@ module.exports = function(app, passport) {
     });
     
     //show the add coach form
-	app.get('/addcoach', isLoggedIn,  function(req, res){
+	app.get('/addCoach', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addcoach.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addCoach.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     // process the add coach form
-    app.post('/addcoach', function(req, res) {
+    app.post('/addCoach', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -911,7 +950,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addCoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -933,12 +972,187 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addcoachsuccess.ejs');
+                        res.render('admin/addCoachSuccess.ejs', {
+						user: newUser
+						});
                     }
                 });
             };
         });
-    })  
+    })
+	
+	
+	//dispaly all users
+	app.get('/usersList', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+			User.find().
+			sort('local.email').
+			select('local.email local.nickname local.occupation').
+			exec(function(err, users) {
+				if (err) {
+                    throw err
+                }
+				if (!users) {
+                    res.render('admin/usersList.ejs', {
+						message: "No user",
+						users: null
+					})
+                } else {
+					res.render('admin/usersList.ejs', {
+						message: 'All users list',
+						users: users
+					})
+				}
+			})
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        }
+	});
+	
+	
+	//show the update user form
+	app.get('/updateUser', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/selectUser.ejs', {message: req.flash('selectMessage')});
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the select user form
+    app.post('/selectUser', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres is a user with that email
+            if (!user) {
+                res.render('admin/selectUser.ejs', {message: ('selectMessage', 'This user does not exist')});
+            } else {
+                // user exists, go to update the user's info
+                if (user.local.occupation == 'student') {
+                    res.render('admin/updateStudent.ejs', {
+						user: user
+						})
+                };
+				if (user.local.occupation == 'coach') {
+                    res.render('admin/updateCoach.ejs', {
+						user: user
+						})
+                };
+			};
+		});
+	})
+	
+	// process the updatestudent form
+	app.post('/updateStudent', function(req, res){
+		var email = req.param('email');
+		
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+
+            if (err) {
+                return next(err);
+                //code
+            }
+            if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
+            if ( req.param('nickname') != '') {
+                user.local.nickname = req.param('nickname');
+            }
+            if ( req.param('game') != '') {
+                user.local.game = req.param('game');
+            }
+
+			user.save();
+			res.render('studentprofile.ejs', {
+				user: user
+			})
+		});														
+	});
+	
+	// process coach update form
+	app.post('/updateCoach', function(req, res){
+		var email = req.param('email');
+		//update database
+		User.findOne({ 'local.email' :  email }, function(err, user) {
+            if (err) {
+                return next(err);
+                //code
+            }
+            
+			if (req.param('password') != '') {
+                user.local.password = user.generateHash(req.param('password'));     
+            }
+            
+            if (req.param('location') != '') {
+                user.local.location = req.param('location');
+            }
+            if ( req.param('nickname') != '') {
+                user.local.nickname = req.param('nickname');
+            }
+            if ( req.param('game') != '' ) {
+                user.local.game = req.param('game');
+            }
+            if (req.param('cost') != '' ) {
+                user.local.cost = req.param('cost');
+            }
+            if ( req.param('coachtype') != '') {
+                user.local.coachtype = req.param('coachtype');
+            }
+			
+			user.save();
+			res.render('coachprofile.ejs', {
+				user: user,
+				comments: null
+			});
+		});														
+	});
+	
+	//show the delete user form
+	app.get('/deleteUser', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteUser.ejs', {message: req.flash('deleteMessage')});
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete user form
+    app.post('/deleteUser', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres is a user with that email
+            if (!user) {
+                res.render('admin/deleteUser.ejs', {message: ('deleteMessage', 'This user does not exist')});
+            } else {
+                // user exists, delete the user
+				user.remove();
+				res.render('admin/deleteUserSuccess', {
+					user: user});
+				
+			};
+		});
+	})
+	
+	
+				
+        
+        
+    
+    
+    
+    
 }
 
 
@@ -950,6 +1164,7 @@ function isLoggedIn(req, res, next) {
 		return next();// if they aren't redirect them to the home page
 	res.redirect('/');
 }
+
 
 
 function checkLogin(req, res, next) {

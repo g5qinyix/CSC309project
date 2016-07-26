@@ -1,0 +1,23 @@
+<!-- views/usersList.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="/css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>admin</title>
+</head>
+<body style="padding-left: 10px">
+	<% if (message) { %>
+        <h2><%= message %></h2>
+    <% } %>
+	
+	<% if (users) { %>
+	    <% users.forEach(function(user) { %>
+		    <p>user-email: <%= user.local.email %></p>
+			<p>user-nickname: <%= user.local.nickname %>;
+			   user-occupation: <%= user.local.occupation %></p><br>
+		<% }); %>
+    <% } %>
+  
+</body>
+</html>
