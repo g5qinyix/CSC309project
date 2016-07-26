@@ -542,11 +542,6 @@ module.exports = function(app, passport) {
         var url = req.url;
         var id = url.substring(10);
         var email = req.user.local.email;
-        User.findOne({ '_id' :  id }, function(err, user){
-            if (err){
-                console.log(err);
-            }
-        });
         var index;
         User.findOne({ 'local.email' :  email }, function(err, user){
             for (var i = 0; i < user.local.follow.length; i++){

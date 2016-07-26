@@ -12,9 +12,10 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
+					<li style="font-weight:bold;float:left;margin-left:4%"><a href="/games/lol">Coaches</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-				<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
-				<li><a href='/profile'><%=user.local.nickname%></a></li>
+				<li style="font-weight:bold;margin-left:20px"><a href='/logout'>Log Out</a></li>
+				<li style="font-weight:bold;"><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
 		</nav>
@@ -68,15 +69,7 @@
 					
 		        </div>
 
-				<a href="/users/<%=coach._id%>"><div class="back-3">
-					<% if (coach.local.rate.grade == 0) { %>
-		        	<h2 style="font-size:100%">Rating:N/A</h2>
-				    <% } %>
-					<% if (coach.local.rate.grade != 0) { %>
-		        	<h2 style="font-size:100%">Rating: <%=coach.local.rate.grade%>/10</h2>
-				    <% } %>		
-		        	<h2 style="font-size:100%">Price: $<%=coach.local.cost %>/hour</h2>
-		        </div></a>
+			
 
 	        </div>
         </div>
