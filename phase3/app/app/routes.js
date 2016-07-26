@@ -753,7 +753,9 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addstudentsuccess.ejs');
+                        res.render('admin/addstudentsuccess.ejs', {
+						user: newUser
+						});
                     }
                 });
             }
@@ -801,12 +803,42 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addcoachsuccess.ejs');
+                        res.render('admin/addcoachsuccess.ejs', {
+						user: newUser
+						});
                     }
                 });
             };
         });
     })
+	
+	
+	//dispaly all users
+	app.get('/usersList', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+			User.find().
+			sort('local.email').
+			select('local.email local.nickname local.occupation').
+			exec(function(err, users) {
+				if (err) {
+                    throw err
+                }
+				if (!users) {
+                    res.render('admin/usersList.ejs', {
+						message: "No user",
+						users: null
+					})
+                } else {
+					res.render('admin/usersList.ejs', {
+						message: 'All users list',
+						users: users
+					})
+				}
+			})
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        }
+	});
 	
 	
 	//show the update user form
@@ -833,11 +865,13 @@ module.exports = function(app, passport) {
                 // user exists, go to update the user's info
                 if (user.local.occupation == 'student') {
                     res.render('admin/updatestudent.ejs', {
-						user: user})
+						user: user
+						})
                 };
 				if (user.local.occupation == 'coach') {
                     res.render('admin/updatecoach.ejs', {
-						user: user})
+						user: user
+						})
                 };
 			};
 		});
@@ -911,6 +945,38 @@ module.exports = function(app, passport) {
 			});
 		});														
 	});
+	
+	//show the delete user form
+	app.get('/deleteuser', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteuser.ejs', {message: req.flash('deleteMessage')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete user form
+    app.post('/deleteuser', function(req, res) {
+        var email = req.param('email');
+        
+        User.findOne({ 'local.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return next(err)
+            // check to see if theres is a user with that email
+            if (!user) {
+                res.render('admin/deleteuser.ejs', {message: ('deleteMessage', 'This user does not exist')});
+            } else {
+                // user exists, delete the user
+				user.remove();
+				res.render('admin/deleteusersuccess', {
+					user: user});
+				
+			};
+		});
+	})
+	
+	
 				
         
         
