@@ -2,7 +2,7 @@ body{
 	display: block;
 	margin: 0px;
 	box-sizing: border-box;
-	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+	font-family: 'Merriweather','Georgia',Cambria,"Times New Roman",Times;
 	background: #ececec;
 }
 
@@ -381,7 +381,7 @@ h1{
 /*comment section*/
 
 #showcomment{
-	height: 600px;
+    height:600px;
 	overflow: auto;
 }
 .content{

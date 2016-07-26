@@ -16,7 +16,7 @@
 body{
 	display: block;
 	margin: 0px;
-	font-family: sans-serif;
+	font-family: 'Merriweather','Georgia',Cambria,"Times New Roman",Times;
 	font-size: 15px;
 	-webkit-font-smoothing: antialiased;
 	box-sizing: border-box;
