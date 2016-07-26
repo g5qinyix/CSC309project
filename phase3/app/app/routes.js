@@ -618,6 +618,12 @@ module.exports = function(app, passport) {
         newMessage.receiver.status=0;
         newMessage.date = date;
         newMessage.save();
+        console.log(receiverid);
+        User.findOne({'_id' : receiverid}).exec(function(err, user){
+                console.log("receiver id: " + user);
+                
+        });
+        
         res.redirect('/users/'+receiverid);
     });
     
@@ -644,17 +650,19 @@ module.exports = function(app, passport) {
     
     //user view contact list
     app.get('/messaging', checkLogin, function(req, res){
+        console.log(req.user);
         //get contact list from database
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+                     console.log(receivers);
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                console.log(senders);
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
                 } 
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
-                             distinct('sender.id').exec(function(err, unread){
-                             
+                             distinct('sender.id').exec(function(err, unread){    
                                     User.find({ '_id': { $in: receivers } }, function(err, users){  
                                         res.render('message.ejs', {   
                                                 unreads : unread,

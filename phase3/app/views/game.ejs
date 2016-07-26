@@ -94,7 +94,13 @@
 			<% coaches.forEach(function(coach) { %>
 		
 			<a href="/users/<%=coach._id%>"><div class="block">
+			
+				<% if (coach.local.photo == "") { %>
+			 	<img src="/images/person.gif" >
+				<% } %>
+				<% if (coach.local.photo != "") { %>
 				<img  class="img-responsive" src="<%=coach.local.photo%>">
+				<% } %>
 			    <p><%=coach.local.nickname%></p>
 
 			    <% if (coach.local.rate.grade == 0) { %>
@@ -112,9 +118,16 @@
 		<div style="margin-bottom:10%" class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3">
+					<% if (coach.local.photo == "") { %>
+		            <img class="img-responsive" src=
+			        "/images/person.gif">
+					<% } %>
+					<% if (coach.local.photo != "") { %>
 		            <img class="img-responsive" src=
 			        "<%=coach.local.photo%>">
-			        <p style="font-size:20px"><%=coach.local.nickname%></p>	
+					<% } %>
+			        <p style="font-size:20px"><%=coach.local.nickname%></p>
+					
 		        </div>
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
 					<% if (coach.local.rate.grade == 0) { %>
