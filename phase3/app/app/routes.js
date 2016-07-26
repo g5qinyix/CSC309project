@@ -273,7 +273,6 @@ module.exports = function(app, passport) {
                    });
          }
          else{
-				//console.log(User.find({'local.game':Game}));
                 User.find({
 					'local.game' : Game,
 				   'local.occupation':'coach',
@@ -308,7 +307,6 @@ module.exports = function(app, passport) {
                         }
                    });
                 }
-     
         });
     
     
@@ -907,6 +905,7 @@ module.exports = function(app, passport) {
             } else {
                 // if there is no user with that email
                 // create the user
+                
                 var newUser  = new User();
 
                 // set the user's local credentials
@@ -931,6 +930,8 @@ module.exports = function(app, passport) {
         })
     });
     
+    
+    
     //show the add coach form
 	app.get('/addCoach', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
@@ -939,6 +940,7 @@ module.exports = function(app, passport) {
             res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
+    
     
     // process the add coach form
     app.post('/addCoach', function(req, res) {
