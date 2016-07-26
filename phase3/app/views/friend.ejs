@@ -14,93 +14,24 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
+					<li style="font-weight:bold;float:left;margin-left:4%"><a href="/games/lol">Coaches</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
                 <% if (user == null) { %>
 				<li><img src="/images/user.png" onmouseover='src="/images/user1.png"' onmouseout='src="/images/user.png"' onclick="location.href='/login';"></li>
 				<% } %>
 				<% if (user != null) { %>
-			    <li style="font-weight:bold;margin-left:20px"><a href='/logout'>Log Out</a></li>
+			    <li style="font-weight:bold;margin-left:10px"><a href='/logout'>Log Out</a></li>
 				<li style="font-weight:bold;"><a href='/profile'><%= user.local.nickname%></a></li>
 				<% } %>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="images/upwards-arrow1.png"' onmouseout='src="images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
 		</nav>
 	</header>
-	<section id="nav">
-		<div class="games">
-			<a href='/games/lol'><p class="text">League of Legends</p>
-			<img class="img" src="/images/lol_logo.png"></a>
-		</div>
-		<div class="games">
-			<a href='/games/overwatch'><p class="text">Overwatch</p>
-			<img class="img" src="/images/overwatch_logo.png"></a>
-		</div>
-		<div class="games">
-			<a href='/games/dota2'><p class="text">Dota2</p>
-		    <img class="img" src="/images/dota2_logo.png"></a>
-		</div>
-		<div class="games">
-			<a href='/games/csgo'><p class="text">CS: GO</p>
-           <img class="img" src="/images/csgo_logo.png"></a>
-		</div>
-	</section>
-	<section id="list_coach">
-		<form action='/search' method="post">
-		<% if (gameName == 'lol') { %>
-		<h1>Coaches for League of Legends</h1>
-		<% } %>
-		<% if (gameName == 'csgo') { %>
-		<h1>Coaches for CS:GO</h1>
-		<% } %>
-		<% if (gameName == 'dota2'){%>
-		<h1>Coaches for Dota2</h1>
-		<% } %>
-		<% if (gameName == 'overwatch'){%>
-		<h1>Coaches for Overwatch</h1>
-		<% } %>
-		<input type="hidden" name="gamename" value="<%=gameName%>">
-		<label>
-		<span>Online or Offline</span>
-		<select name='coachtype'>
-			<option>Online</option>
-			<option>Offline</option>
-			<% if (coachtype != null) { %>
-			<option selected="selected"><%=coachtype%></option>
-            <% } %>
-		</select>
-		</label>
-		<label>
-		<span>Cost rate</span>
-		<select name='cost'>
-			<option>Free</option>
-			<option>$1-$10</option>
-			<option>$11-$20</option>
-			<option>$21-$30</option>
-			<option>>$30</option>
-			<option>All</option>
-			<% if (cost != null) { %>
-			<option selected='selected'><%=cost%></option>
-            <% } %>
-		</select>
-		</label>
-		<label>
-		<button type='submit'>Search</button>
-		</label>
-		</form>
-		<br>
-		<br>
-		
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
 		
 			<a href="/users/<%=coach._id%>"><div class="block">
-			
-				<% if (coach.local.photo == "") { %>
-			 	<img src="/images/person.gif" >
-				<% } %>
-				<% if (coach.local.photo != "") { %>
 				<img  class="img-responsive" src="<%=coach.local.photo%>">
-				<% } %>
 			    <p><%=coach.local.nickname%></p>
 
 			    <% if (coach.local.rate.grade == 0) { %>
@@ -118,16 +49,9 @@
 		<div style="margin-bottom:10%" class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3">
-					<% if (coach.local.photo == "") { %>
-		            <img class="img-responsive" src=
-			        "/images/person.gif">
-					<% } %>
-					<% if (coach.local.photo != "") { %>
 		            <img class="img-responsive" src=
 			        "<%=coach.local.photo%>">
-					<% } %>
-			        <p style="font-size:20px"><%=coach.local.nickname%></p>
-					
+			        <p style="font-size:20px"><%=coach.local.nickname%></p>	
 		        </div>
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
 					<% if (coach.local.rate.grade == 0) { %>

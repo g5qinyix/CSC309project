@@ -17,7 +17,7 @@ body{
 	display: block;
 	margin: 0px;
 	box-sizing: border-box;
-	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+	font-family: 'Merriweather','Georgia',Cambria,"Times New Roman",Times;
 }
 
 header{
@@ -30,7 +30,7 @@ nav{
 	background-color: transparent;
 	opacity: 0.95;
 	z-index: 999;
-	padding-top: 2%;
+	padding-top: 1%;
 }
 
 a{

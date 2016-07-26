@@ -12,9 +12,10 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
+					<li style="font-weight:bold;float:left;margin-left:4%"><a href="/games/lol">Coaches</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-					<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
-				<li><a href='/profile'><%=user.local.nickname%></a></li>
+				<li style="font-weight:bold; margin-left:20px"><a href='/logout'>Log Out</a></li>
+				<li style="font-weight:bold;"><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
 		</nav>
@@ -35,11 +36,19 @@
 				<h2><%=coach.local.nickname%></h2>
 				<p><%=coach.local.game%> coach</p>
 				<p><%=coach.local.coachtype%></p>
-				<p><%=coach.local.location%></p>
+				
 			</div>
 			<a id="sendmessage"><div id="message" >
 				<img src="/images/conversation.png">
 			</div></a>
+			<div id="follow">
+				<% if (has_followed == 0){ %>
+					<a href="/follow/<%=coach._id%>">follow</a>
+				<% } %>
+				<% if (has_followed == 1){ %>
+					<a href="/unfollow/<%=coach._id%>">unfollow</a>
+				<% } %>
+			</div>
 			
 			<div id='showmessage' style="display:none">
 				<form action="/message/<%=coach._id%>" method="post">
@@ -74,14 +83,23 @@
 					<% if (coach.local.game == "Overwatch") { %>
 		            <img  style="width:100%;height:100%" class="img-responsive" src=
 						  "/images/overwatch_logo.png">
-					<% } %>
-		           
+					<%} %>
 		        </div>
 				
 		        <div class="back-1">
-		        	<p>Rating: <%=coach.local.rate.grade%></p>
-		        	<p>Price: <%=coach.local.cost%></p>
-					<p>Location: <%=coach.local.location%></p>
+					<% if (coach.local.rate.grade == 0) { %>
+		        	<h3>Rating: N/A</h3>
+						<p>(Pending...)</p>
+				    <% } %>
+					
+				    <% if (coach.local.rate.grade != 0) { %>
+		        	<h3>Rating: <%=coach.local.rate.grade%>/10</h3>
+					<p>(from <%=coach.local.rate.studentlist.length%> students)</p>
+					<% } %>
+					
+				
+		        	<h3>Price: $<%=coach.local.cost%>/hour</h3>
+				
 		        </div>
 	        </div>
         </div>
@@ -89,7 +107,7 @@
     
 
 	<section class="others_life">
-	    <h1 id="viewcomment">View Comments</h1>
+	    <h1 id="viewcomment">Public Comments</h1>
 		<div id="showcomment" style="display:none" >
 		<% comments.forEach(function(comment) { %>
 		<div id="posts">
@@ -110,7 +128,18 @@
     
     <section class='comment'>
         <form action="/comments/<%=coach._id%>" method='post'>
-            <h1>Your comment</h1>
+            <h1>Leave a Comment</h1>
+			<h4>(You can only rate your coach once)</h4>
+			<label>
+			<span>Rate Your Coach</span>
+			<select name='rate'>
+				<option>10</option>
+				<option>8</option>
+				<option>6</option>
+				<option>4</option>
+				<option>2</option>
+			</select>
+			</label>
             <textarea cols="3" name="comment" placeholder="Message" rows="2" required>       
             </textarea>
             <button type="submit">Send Comment</button>

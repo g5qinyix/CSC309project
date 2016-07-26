@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
             res.render("home.ejs",{
                 user: null
                 }); 
-	});
+	}); 
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -55,25 +55,28 @@ module.exports = function(app, passport) {
 		}));
 
     
+    
 	// =====================================
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
 	app.get('/signup', function(req, res) {
-
 		// render the page and pass in any flash data if it exists
 		res.render('signup.ejs');
 	});
-		
+
+    
 	//sign up for student
 	app.get('/studentsignup', function(req, res){
 		res.render('studentsignup.ejs', { message: req.flash('signupMessage') });
 	});
 	
+    
 	app.get('/coachsignup', function(req, res){
 		res.render('coachsignup.ejs', { message: req.flash('signupMessage') });
 	});
 	
+    
 	// process the studentsignup form
 	app.post('/studentsignup', passport.authenticate('local-signup-student', {
 		successRedirect : '/home', // redirect to the secure profile section
@@ -109,13 +112,13 @@ module.exports = function(app, passport) {
         }
         
         if (game=='overwatch') {
-                Game='Overwatch'
-         
+                Game='Overwatch' 
         }
+        
         if (req.isAuthenticated()){
                 User.find({'local.occupation':'coach', 'local.game': Game,
-                   'local.email': {$ne: req.user.local.email } },function(err, coaches){
-                       
+                   'local.email': {$ne: req.user.local.email } }).
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){          
                         res.render('game.ejs',{
                         coaches: coaches,
                         user: req.user,
@@ -125,8 +128,10 @@ module.exports = function(app, passport) {
                         });
                    });
         }
+        
         else{   
-                User.find({'local.occupation':'coach', 'local.game': Game},function(err, coaches){
+                User.find({'local.occupation':'coach', 'local.game': Game}).
+                sort({'local.rate.grade': -1}).limit(4).exec(function(err, coaches){
                         console.log(coaches);
                 res.render('game.ejs', {   
                         coaches: coaches,
@@ -286,6 +291,7 @@ module.exports = function(app, passport) {
 	
 	
     
+    
 	// =====================================
 	// EDIT PROFILE=========================
 	// =====================================
@@ -313,16 +319,12 @@ module.exports = function(app, passport) {
             if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
-            }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
-            
             
             if(req.files.photo.name != ''){  
                 //read new image file
@@ -346,16 +348,10 @@ module.exports = function(app, passport) {
                         //delete old images
                         var oldPath = path.join(__dirname, '../public', user.local.photo);
                         fs.unlinkSync(oldPath);
-                }
-                
+                }      
                 //save the url to user photo field
-                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;
-               
+                user.local.photo = '/tmp/'+ req.user.local.email+req.files.photo.name;     
             }
-            
-          
-            
-
 			user.save();
 			//update session
 			req.login(user, function(err) {
@@ -425,7 +421,6 @@ module.exports = function(app, passport) {
                             }
                     });
                 
-                    
                 if ( user.local.photo != '') {
                   
                 //delete old images
@@ -476,16 +471,25 @@ module.exports = function(app, passport) {
                 res.redirect('/profile');
         }
         else{
-        //find this user from database    
+        //find this user from database
+        var has_followed = 0;
+        for(var i = 0; i < req.user.local.follow.length; i++){
+            if (req.user.local.follow[i] == id){
+                has_followed = 1;
+            }
+        }
+        console.log(id);
         User.findOne({ '_id' :  id }, function(err, user) {
                  if (err) {
                         console.log(err);
-                        }     
-                //this user is a student      
+                        }    
+                console.log(user.local.occupation);     
                 if (user.local.occupation =="student") {
                         res.render('viewstudent.ejs', {
                                 student : user,
-                                user : req.user
+                                user : req.user,
+                                friend_list :  req.user.local.follow,
+                                has_followed : has_followed
                         });
                         
                 } 
@@ -495,11 +499,13 @@ module.exports = function(app, passport) {
                         Comment.find({'coachid': id}, function(err, comments){
                                 if (err) {
                                         console.log(err);
-                                        }
+                                        } 
                                 res.render('viewcoach.ejs',{
                                         user: req.user,
                                         coach:user,
-                                        comments: comments
+                                        comments: comments,
+                                        friend_list : req.user.local.follow,
+                                        has_followed :  has_followed
                                 });
                         });
                 }
@@ -507,6 +513,66 @@ module.exports = function(app, passport) {
         }
     });
 
+    app.get('/follow/*', checkLogin, function(req, res){
+        console.log("!!!!!!!!!!!!!!!!!!!")
+        var url = req.url;
+        var id = url.substring(8);
+        console.log(id);
+        var email = req.user.local.email;
+        User.findOne({ '_id' :  id }, function(err, user){
+            if (err){
+                console.log(err);
+            }
+        });
+        User.findOne({ 'local.email' :  email }, function(err, user){
+            user.local.follow.push(id);
+            console.log(user.local.follow);
+            user.save();
+            req.login(user, function(err) {
+                if (err) return next(err)
+                else{
+                    res.redirect('/users/'+id);
+                   
+                }
+            });
+        
+        });
+    });
+    app.get('/unfollow/*', checkLogin, function(req, res){
+        var url = req.url;
+        var id = url.substring(10);
+        var email = req.user.local.email;
+        var index;
+        User.findOne({ 'local.email' :  email }, function(err, user){
+            for (var i = 0; i < user.local.follow.length; i++){
+                if (id == user.local.follow[i]){
+                    index = i;
+                }
+            }
+            user.local.follow.splice(index, 1);
+            console.log(user.local.follow);
+            user.save();
+            req.login(user, function(err) {
+                if (err) return next(err)
+                else{
+                    res.redirect('/friend');
+                   
+                }
+            });
+        
+        });
+    });
+
+    app.get('/friend', isLoggedIn, function(req, res){
+ 
+            var friend_list = req.user.local.follow;
+            User.find({'_id' : { $in: friend_list}}, function(err,coaches){
+            res.render('friend.ejs', {
+                coaches: coaches,
+                user: req.user
+            });
+        });
+})    
 
 
 	
@@ -514,15 +580,16 @@ module.exports = function(app, passport) {
     
          
 	// =====================================
-	// Comment and rating system ===========
+	// Comment and rating system ======================
 	// =====================================
-    
+  
     // users add comments to coach
 	app.post('/comments/*', isLoggedIn, function(req, res){
         //get the id of coach to be commented
         var url = req.url;
         var coachid = url.substring(10);
         var content = req.param("comment");
+        var rate = req.param('rate');
         var newComment  = new Comment();
         var date = new Date();
         newComment.coachid = coachid;
@@ -531,7 +598,26 @@ module.exports = function(app, passport) {
         newComment.comment.content = content;
         newComment.comment.date = date;
         newComment.save();
-        res.redirect('/users/'+coachid);
+        
+        // handle rate(each coach has to get at least 3 times rate in order to get grade)
+        User.findOne({'_id': coachid}).exec(function(err, coach){
+                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
+                        coach.local.rate.list.push(rate);
+                        if (coach.local.rate.list.length >= 3) {
+                                var total = 0;
+                                for(var i = 0; i < coach.local.rate.list.length; i++) {
+                                    total += coach.local.rate.list[i];
+                                    }
+                                var avg = (total / coach.local.rate.list.length).toFixed(2);
+                                coach.local.rate.grade = avg;
+                                }
+                                
+                                //add student to studentlist
+                                coach.local.rate.studentlist.push(req.user._id);      
+                        }
+                coach.save();
+                res.redirect('/users/'+coachid);
+        }); 
     });
     
 
@@ -545,7 +631,6 @@ module.exports = function(app, passport) {
     // =====================================
 	// Message system ======================
 	// =====================================
-    
     //send a message to a user
     app.post('/message/*', isLoggedIn, function(req,res){
         var url = req.url;
@@ -559,6 +644,12 @@ module.exports = function(app, passport) {
         newMessage.receiver.status=0;
         newMessage.date = date;
         newMessage.save();
+        console.log(receiverid);
+        User.findOne({'_id' : receiverid}).exec(function(err, user){
+                console.log("receiver id: " + user);
+                
+        });
+        
         res.redirect('/users/'+receiverid);
     });
     
@@ -583,21 +674,27 @@ module.exports = function(app, passport) {
     
     
     
-    //user view contacter list
+    //user view contact list
+
     app.get('/messaging', isLoggedIn, function(req, res){
+
+        //get contact list from database
          Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+                     console.log(receivers);
             Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                console.log(senders);
                 for(i=0; i<senders.length; i++){
                     if (receivers.indexOf(senders[i]) == -1) {
                         receivers.push(senders[i]);
                         }
-                }
-                
+                } 
                 Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
+
                              distinct('sender.id').exec(function(err, unread){
                              
                                     User.find({ '_id': { $in: receivers } }, function(err, users){
                                    
+
                                         res.render('message.ejs', {   
                                                 unreads : unread,
                                                 targetid: null,
@@ -613,50 +710,56 @@ module.exports = function(app, passport) {
     
     
     
-    //user view conservations with one contacter
+    //user view all messages with one contact
     app.get('/viewmessage/*', isLoggedIn, function(req, res){
          var url = req.url;
          var contactid = url.substring(13);
-         // get the contacter list
-         Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
-            Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
-                for(i=0; i<senders.length; i++){
-                    if (receivers.indexOf(senders[i]) == -1) {
-                        receivers.push(senders[i]);
-                        }
-                }
-                Message.find({'receiver.id': req.user._id, 'receiver.status' : 0}).
-                        distinct('sender.id').exec(function(err, unread){
-                                User.find({ '_id': { $in: receivers } }, function(err, users){
-                                        
-                                        //find all messages between user and contacter
-                                        Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
-                                                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
-                                                     }).sort({'date': 1}).exec(function(err, conservations){
-                                                //update message status
-                                                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
-                                                               {multi: true}, function(err){
-                                                                res.render('message.ejs',{
-                                                                        unreads : unread,
-                                                                        targetid:  contactid,
-                                                                        conservations:conservations,
-                                                                        user: req.user,
-                                                                        contacters :users
+         // get the contact list
+      
+        //find all messages between user and one contact
+        Message.find({ $or: [{$and: [ { 'sender.id': req.user._id }, { 'receiver.id': contactid} ] },
+                             {$and: [ { 'sender.id': contactid }, { 'receiver.id': req.user._id} ] }]
+                     }).sort({'date': 1}).exec(function(err, conservations){
+                //update message status
+                Message.update({'sender.id': contactid, 'receiver.status':0}, {'receiver.status': 1},
+                               {multi: true}, function(err){
+                                Message.find({'sender.id': req.user._id}).distinct('receiver.id').exec(function(err, receivers){
+                                        Message.find({'receiver.id': req.user._id}).distinct('sender.id').exec(function(err, senders){
+                                                for(i=0; i<senders.length; i++){
+                                                        if (receivers.indexOf(senders[i]) == -1) {
+                                                                receivers.push(senders[i]);
+                                                                }
+                                                }
+                                                //get the contact list from database
+                                                Message.find({'receiver.id': req.user._id,
+                                                             'receiver.status' : 0}).distinct('sender.id').exec(function(err, unread){
+                                                        User.find({ '_id': { $in: receivers } }, function(err, users){
+                                                                User.findOne({'_id': contactid}, function(err, targetuser){
+                                                                        res.render('message.ejs',{
+                                                                                unreads : unread,
+                                                                                targetid:  contactid,
+                                                                                conservations:conservations,
+                                                                                user: req.user,
+                                                                                contacters :users,
+                                                                                targetuser: targetuser
+                                                                                });
                                                                         });
                                                                 });
+                                                        });
                                                 });
-                                        });
                                 });
                         });
-                                                                           
-                });
-         });
+        });
+    });
+
+
+                                                         
     
     
     
     
     // =====================================
-	// ADMIN SYSTEM ========================
+	// ADMIN LOGIN =========================
 	// =====================================
 	// show the admin-login form
 	app.get('/admin', function(req, res) {
@@ -667,65 +770,65 @@ module.exports = function(app, passport) {
 
 	// process the login form
 	app.post('/admin', passport.authenticate('admin-login', {
-		successRedirect : '/adminpage', // redirect to the secure admin page
+		successRedirect : '/adminPage', // redirect to the secure admin page
 		failureRedirect : '/admin', // redirect back to the admin-login page if there is an error
 		failureFlash : true // allow flash messages 
 	}));
     
     // show admin page
-	app.get('/adminpage', isLoggedIn, function(req, res) {
+	app.get('/adminPage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
         if (req.user.local.email == 'admin@bemaster.com') {
             res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
     //show the change password form
-	app.get('/changepassword', isLoggedIn,  function(req, res){
-		res.render('admin/changepassword.ejs' ,{
+	app.get('/changePassword', isLoggedIn,  function(req, res){
+		res.render('admin/changePassword.ejs' ,{
 			user: req.user
 		});
 	});
     
     
     // process the change password form
-	app.post('/changepassword', function(req, res){
+	app.post('/changePassword', function(req, res){
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
                 return next(err);
             } else {
-                user.local.password = user.generateHash(req.param('newpassword'));
+                user.local.password = user.generateHash(req.param('newPassword'));
                 user.save();
-                res.render('admin/changepasswordsuccess.ejs');
+                res.render('admin/changePasswordSuccess.ejs');
             }
 		});													
 	});
 	
     
     //show the add user form
-	app.get('/adduser', isLoggedIn,  function(req, res){
+	app.get('/addUser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/adduser.ejs');
+            res.render('admin/addUser.ejs');
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     //show the add stuent form
-	app.get('/addstudent', isLoggedIn,  function(req, res){
+	app.get('/addStudent', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addstudent.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addStudent.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     // process the add student form
-    app.post('/addstudent', function(req, res) {
+    app.post('/addStudent', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -734,7 +837,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addStudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -753,7 +856,7 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addstudentsuccess.ejs', {
+                        res.render('admin/addStudentSuccess.ejs', {
 						user: newUser
 						});
                     }
@@ -763,16 +866,16 @@ module.exports = function(app, passport) {
     });
     
     //show the add coach form
-	app.get('/addcoach', isLoggedIn,  function(req, res){
+	app.get('/addCoach', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addcoach.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addCoach.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     // process the add coach form
-    app.post('/addcoach', function(req, res) {
+    app.post('/addCoach', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -781,7 +884,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addCoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -803,7 +906,7 @@ module.exports = function(app, passport) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addcoachsuccess.ejs', {
+                        res.render('admin/addCoachSuccess.ejs', {
 						user: newUser
 						});
                     }
@@ -836,22 +939,22 @@ module.exports = function(app, passport) {
 				}
 			})
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         }
 	});
 	
 	
 	//show the update user form
-	app.get('/updateuser', isLoggedIn,  function(req, res){
+	app.get('/updateUser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/selectuser.ejs', {message: req.flash('selectMessage')});
+            res.render('admin/selectUser.ejs', {message: req.flash('selectMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
 	
 	// process the select user form
-    app.post('/selectuser', function(req, res) {
+    app.post('/selectUser', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -860,16 +963,16 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres is a user with that email
             if (!user) {
-                res.render('admin/selectuser.ejs', {message: ('selectMessage', 'This user does not exist')});
+                res.render('admin/selectUser.ejs', {message: ('selectMessage', 'This user does not exist')});
             } else {
                 // user exists, go to update the user's info
                 if (user.local.occupation == 'student') {
-                    res.render('admin/updatestudent.ejs', {
+                    res.render('admin/updateStudent.ejs', {
 						user: user
 						})
                 };
 				if (user.local.occupation == 'coach') {
-                    res.render('admin/updatecoach.ejs', {
+                    res.render('admin/updateCoach.ejs', {
 						user: user
 						})
                 };
@@ -878,7 +981,7 @@ module.exports = function(app, passport) {
 	})
 	
 	// process the updatestudent form
-	app.post('/updatestudent', function(req, res){
+	app.post('/updateStudent', function(req, res){
 		var email = req.param('email');
 		
 		//update database
@@ -909,7 +1012,7 @@ module.exports = function(app, passport) {
 	});
 	
 	// process coach update form
-	app.post('/updatecoach', function(req, res){
+	app.post('/updateCoach', function(req, res){
 		var email = req.param('email');
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -947,16 +1050,16 @@ module.exports = function(app, passport) {
 	});
 	
 	//show the delete user form
-	app.get('/deleteuser', isLoggedIn,  function(req, res){
+	app.get('/deleteUser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/deleteuser.ejs', {message: req.flash('deleteMessage')});
+            res.render('admin/deleteUser.ejs', {message: req.flash('deleteMessage')});
         } else {
-            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
 	
 	// process the delete user form
-    app.post('/deleteuser', function(req, res) {
+    app.post('/deleteUser', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -965,11 +1068,11 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres is a user with that email
             if (!user) {
-                res.render('admin/deleteuser.ejs', {message: ('deleteMessage', 'This user does not exist')});
+                res.render('admin/deleteUser.ejs', {message: ('deleteMessage', 'This user does not exist')});
             } else {
                 // user exists, delete the user
 				user.remove();
-				res.render('admin/deleteusersuccess', {
+				res.render('admin/deleteUserSuccess', {
 					user: user});
 				
 			};
@@ -987,10 +1090,6 @@ module.exports = function(app, passport) {
 }
 
 
-
-
-
-
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 
@@ -999,6 +1098,7 @@ function isLoggedIn(req, res, next) {
 		return next();// if they aren't redirect them to the home page
 	res.redirect('/');
 }
+
 
 
 function checkLogin(req, res, next) {

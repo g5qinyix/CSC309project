@@ -10,12 +10,21 @@ var userSchema = mongoose.Schema({
         email        : String,
         password     : String,
         nickname     : String,
-        location     : String,
+        address      : {
+            street   : String,
+            city     : String,
+            province : String,
+        },
+        coordinate   : {
+            lng: String,
+            lat: String
+        },
         occupation   : String,
         game         : String,
         rate         : {
             grade: Number,
-            list: [Number]
+            list: [Number],
+            studentlist: [String]
         },
         cost         : Number,
         coachtype    : String,
