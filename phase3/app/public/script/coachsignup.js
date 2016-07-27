@@ -3,14 +3,14 @@
 $(document).ready(function(){
 	var $coachtype = $('#coachtype option:selected');
 	var $location = $('#offlineLocation');
-	if ($coachtype.text() == 'Online'){
-		location.hide();
-	}
+
 	$('#coachtype').on('change', function(){
 		$coachtype = $('#coachtype option:selected');
 		if ($coachtype.text() == 'Online'){
+			$('#offlineLocation input').removeAttr('required')
 			$location.hide();
 		} else if ($coachtype.text() == 'Offline' || $coachtype.text() == 'Both'){
+				$('#offlineLocation input').attr("required", true);
 			$location.show();
 		}
 	});

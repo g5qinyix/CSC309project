@@ -165,10 +165,15 @@ module.exports = function(passport) {
                         newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
 
                     }
-                    //console.log(jsonHTTP.responseText); 
+                    
+                   
+                    newUser.local.address.street = req.param('streetAddress');
+                    newUser.local.address.city = req.param('city');
+                    newUser.local.address.province = req.param('province');
+             
                 }
                 
-
+                newUser.local.coachtype = req.param("coachtype");
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
@@ -201,9 +206,8 @@ module.exports = function(passport) {
                         }
                 });
                 
-                //save the url to user photo field
-                newUser.local.photo = '/tmp/'+ req.files.photo.name;
-                  
+                
+                //handle imgae upload
                 if (req.files.photo.name == '') {
                     newUser.local.photo = '';
                 }

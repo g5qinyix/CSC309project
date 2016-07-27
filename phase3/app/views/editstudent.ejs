@@ -12,7 +12,6 @@
 <div class="login-page">
 	
   <div class="form">
-	
     <!-- show any messages that come back with authentication -->
     <form class="login-form" action="/editstudent" method="post" enctype='multipart/form-data'>
       <span>Your e-mail:</span>
@@ -27,7 +26,7 @@
 		<option>League of Legends</option>
 		<option>CS:GO</option>
 		<option>Overwatch</option>
-		<option selected><%=user.local.nickname%></option>
+		<option selected><%=user.local.game%></option>
 	  </select>
 	   <span>Your new Photo</span>                                               
       <input type="file" name="photo"/>   

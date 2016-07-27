@@ -192,12 +192,7 @@ module.exports = function(app, passport) {
         var Game;
 		var cost = req.param('cost');
         var coachtype =req.param('coachtype');
-        var flag;
-        if (coachtype === 'Both'){
-        	flag=0;
-        } else{
-        	flag=1;
-        }
+   
 		var lowlimit;
 		var highlimit;
         
@@ -253,18 +248,20 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }    
                         else {
-						
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
-								var limitedCoach = new Object();
-								limitedCoach.email = coaches[i].local.email;
-								limitedCoach.profile = coaches[i]._id;
-								limitedCoach.game = coaches[i].local.game;
-								limitedCoach.cost = coaches[i].local.cost;
-								limitedCoach.lng = coaches[i].local.coordinate.lng;
-								limitedCoach.lat = coaches[i].local.coordinate.lat;
-								limitedCoach.name = coaches[i].local.nickname;
-								limitedCoachInfo.push(limitedCoach);
+                                if (coaches[i].local.coachtype=="Both" ||
+                                    coaches[i].local.coachtype == "Offline") {
+                                  var limitedCoach = new Object();
+                                limitedCoach.email = coaches[i].local.email;
+                                limitedCoach.profile = coaches[i]._id;
+                                limitedCoach.game = coaches[i].local.game;
+                                limitedCoach.cost = coaches[i].local.cost;
+                                limitedCoach.lng = coaches[i].local.coordinate.lng;
+                                limitedCoach.lat = coaches[i].local.coordinate.lat;
+                                limitedCoach.name = coaches[i].local.nickname;
+                                limitedCoachInfo.push(limitedCoach);
+                                }
 							}
 						    res.render('game.ejs', {
 								gameCoachInfo: limitedCoachInfo,
@@ -281,9 +278,10 @@ module.exports = function(app, passport) {
          else{
                 User.find({
 					'local.game' : Game,
-				   'local.occupation':'coach',
-                    'local.coachtype': coachtype,
+				   'local.occupation':  'coach',
+                    'local.coachtype':  {$in : [coachtype, 'Both']},
 				   'local.cost': { $gt: lowlimit, $lt: highlimit}}, function(err, coaches) {
+                        console.log(coaches);
                         if (err){       
                          console.log("some error");
                         }
@@ -291,16 +289,20 @@ module.exports = function(app, passport) {
 					
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
-								var limitedCoach = new Object();
-								limitedCoach.email = coaches[i].local.email;
-								limitedCoach.profile = coaches[i]._id;
-								limitedCoach.game = coaches[i].local.game;
-								limitedCoach.cost = coaches[i].local.cost;
-								limitedCoach.lng = coaches[i].local.coordinate.lng;
-								limitedCoach.lat = coaches[i].local.coordinate.lat;
-								limitedCoach.name = coaches[i].local.nickname;
-								limitedCoachInfo.push(limitedCoach);
+                                if (coaches[i].local.coachtype=="Both" ||
+                                    coaches[i].local.coachtype == "Offline") {
+                                  var limitedCoach = new Object();
+                                limitedCoach.email = coaches[i].local.email;
+                                limitedCoach.profile = coaches[i]._id;
+                                limitedCoach.game = coaches[i].local.game;
+                                limitedCoach.cost = coaches[i].local.cost;
+                                limitedCoach.lng = coaches[i].local.coordinate.lng;
+                                limitedCoach.lat = coaches[i].local.coordinate.lat;
+                                limitedCoach.name = coaches[i].local.nickname;
+                                limitedCoachInfo.push(limitedCoach);
+                                }
 							}
+                            console.log(limitedCoachInfo);
 							res.render('game.ejs', {
 								gameCoachInfo: limitedCoachInfo,
 								coaches: coaches,
@@ -340,7 +342,8 @@ module.exports = function(app, passport) {
         }
         
 		//handle coach
-		else{
+		if (req.user.local.occupation == "coach") {
+        
             // Coach can view comments to him on profile
             // get comments from database
             Comment.find({'coachid': req.user._id}, function(err, comments){
@@ -992,6 +995,32 @@ module.exports = function(app, passport) {
                 newUser.local.nickname = sanitizer.sanitize(req.param('nickname'));
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
+                 //handle imgae upload
+                 
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                }
+                
+                else{   
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                        
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                }
+               
 				var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
                 // save the user
                 newUser.save(function(err) {
@@ -1059,11 +1088,13 @@ module.exports = function(app, passport) {
                         newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
 
                     }
-                    //console.log(jsonHTTP.responseText); 
-                    
-
+                   newUser.local.address.street = req.param('streetAddress');
+                   newUser.local.address.city = req.param('city');
+                   newUser.local.address.province = req.param('province');
                 }
                 
+                
+                newUser.local.coachtype = req.param("coachtype");
 
                 // set the user's local credentials
                 newUser.local.email    = email;
@@ -1099,7 +1130,7 @@ module.exports = function(app, passport) {
                 
                 //save the url to user photo field
                 newUser.local.photo = '/tmp/'+ req.files.photo.name;
-                  
+
                 if (req.files.photo.name == '') {
                     newUser.local.photo = '';
                 }
@@ -1121,12 +1152,10 @@ module.exports = function(app, passport) {
                             }
                     });
                     //save the url to user photo field
-                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                    newUser.local.photo = '/tmp/'+ email+ req.files.photo.name;
                 }
-                
-
                 // save the user
-			    var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
+			    var messageInfo = 'Success: new user ' + email + ' has been added.';
 				
                 newUser.save(function(err) {
 					if (err) {
@@ -1231,36 +1260,99 @@ module.exports = function(app, passport) {
             if ( req.param('game') != '') {
                 user.local.game = sanitizer.sanitize(req.param('game'));
             }
+            
+             //handle imgae upload
+         
+                   
+            if (req.files.photo.name != '') {
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                        
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                 
+                   if ( user.local.photo != '') {
+                       //delete old images
+                       var oldPath = path.join(__dirname, '../public', user.local.photo);
+                      fs.unlinkSync(oldPath);
+                    }
+                    
+                    //save the url to user photo field
+                    user.local.photo = '/tmp/'+ email+ req.files.photo.name;
+            }
+             
+               
 
 			user.save();
-			res.render('studentprofile.ejs', {
-				user: user
-			})
+           
+			res.send("A new student has been updated successfully");
+			
+
 		});														
 	});
 	
 	// process coach update form
 	app.post('/updatecoach', function(req, res){
+<<<<<<< HEAD
 		var email = sanitizer.sanitize(req.param('email'));
+=======
+		var email = req.param('email');
+        console.log(email)
+>>>>>>> origin/master
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
-                return next(err);
+                console.log("error");
                 //code
             }
-            
 			if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
             
-            if (req.param('streetAddress') != '') {
-                user.local.address.street = req.param('streetAddress');
-            }
-			if (req.param('city') != '') {
-                user.local.address.city = req.param('city');
-            }
-			if (req.param('province') != '') {
-                user.local.address.province = req.param('province');
+
+            if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
+                 
+                  
+                    // obtain coordinates of address.
+                    var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
+                    var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
+                                           + req.param('province') + urlAPIKey; 
+                    var jsonHTTP = new XMLHttpRequest();
+                    jsonHTTP.open("GET", url, false);
+                    jsonHTTP.send(null);
+                    var result = JSON.parse(jsonHTTP.responseText);
+                    if (result["status"] == "ZERO_RESULTS"){
+                        return done(null, false, req.flash('signupMessage', 'Cannot find address'));
+                    }
+                    else {
+                        user.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
+                        user.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+
+                    }
+                    
+                    user.local.address.street = req.param('streetAddress');
+                    user.local.address.city = req.param('city');
+                    user.local.address.province = req.param('province');
+                    user.local.coachtype = req.param("coachtype");
+                    
+                    }
+                // use the generateHash function in our user model
+	            // parse the url
+               
+           
+            if(req.param('coachtype') == 'Online'){
+                user.local.coachtype = req.param('coachtype');    
             }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
@@ -1268,18 +1360,47 @@ module.exports = function(app, passport) {
             if ( req.param('game') != '' ) {
                 user.local.game = req.param('game');
             }
-            if (req.param('cost') != '' ) {
+            if ( req.param('cost') != '' ) {
                 user.local.cost = req.param('cost');
             }
-            if ( req.param('coachtype') != '') {
-                user.local.coachtype = req.param('coachtype');
-            }
+            console.log("okkkkkk");
+            
+            if( req.files.photo.name != ''){  
+                //read new image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                var imageName = req.files.photo.name;
+                       if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp',email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                
+                if ( user.local.photo != '') {
+                  
+                //delete old images
+                var oldPath = path.join(__dirname, '../public', user.local.photo);
+                fs.unlinkSync(oldPath);
+                }
+                //save the url to user photo field
+                user.local.photo = '/tmp/'+ email+req.files.photo.name;
+            } 
 			user.save();
-			res.render('coachprofile.ejs', {
-				user: user,
-				comments: null
-			});
-		});														
+			//update session
+		    console.log("okkkkkk");
+           
+		    res.render('coachprofile.ejs', {
+                user:user,
+                comments: null
+                })
+        });
+																				
 	});
 	
     
