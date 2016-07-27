@@ -46,33 +46,30 @@
 		</div>
 	</section>
     
+	
 	<section id="service">
+		<h1>Top Coaches for you</h1>
+		<% coaches.forEach(function(coach) { %>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3-1">
-					<% if (user.local.game == "CS:GO") { %>
-		            <img style="width:100%;height:100%" class="img-responsive" src=
-			        "/images/csgo_logo.png">
-					<% } %>
-					<% if (user.local.game == "League of Legends") { %>
-		            <img  style="width:100%;height:100%" class="img-responsive" src=
-			        "/images/lol_logo.png">
-					<% } %>
-					<% if (user.local.game == "Dota2") { %>
-		            <img style="width:100%;height:100%" class="img-responsive" src=
-			        "/images/dota2_logo.png">
-					<% } %>
-					<% if (user.local.game == "Overwatch") { %>
-		            <img style="width:100%;height:100%" class="img-responsive" src=
-			        "/images/overwatch_logo.png">
-					<% } %>
 					
+		            <img style="width:100%;height:100%" class="img-responsive" src=
+			        "<%=coach.local.photo%>">
+		
 		        </div>
-
-			
-
+				    <a href="/users/<%=coach._id%>"><div class="back-1">
+					<% if (coach.local.rate.grade == 0) { %>
+		        	<p style="font-size:15px">Rating:N/A</p>
+				    <% } %>
+					<% if (coach.local.rate.grade != 0) { %>
+		        	<p style="font-size:15px">Rating: <%=coach.local.rate.grade%></p>
+				    <% } %>		
+		        	<p style="font-size:15px">Price: $<%=coach.local.cost %>/hour</p>
+		        </div></a>
 	        </div>
         </div>
+		<% }); %>
     </section>
 	
 	

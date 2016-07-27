@@ -20,13 +20,14 @@
 	  <span>Your new Password</span>
       <input type="password" name="password" placeholder="password" />
 	  <span>Your new Nickname</span>                                               
-      <input type="text" name="nickname" placeholder="smith" />
+      <input type="text" name="nickname" placeholder="<%=user.local.nickname%>" />
 	  <span>Your game</span>
 	   <select name="game">
 		<option>Dota2</option>
 		<option>League of Legends</option>
 		<option>CS:GO</option>
 		<option>Overwatch</option>
+		<option selected><%=user.local.nickname%></option>
 	  </select>
 	   <span>Your new Photo</span>                                               
       <input type="file" name="photo"/>   

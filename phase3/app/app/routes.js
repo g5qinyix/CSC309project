@@ -16,7 +16,8 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/', function(req, res) {  
             res.render("home.ejs",{
-                user: null
+                user: null,
+                message: null
                 }); 
 	}); 
 	// =====================================
@@ -91,6 +92,8 @@ module.exports = function(app, passport) {
 		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+    
+    
     
     // =====================================
 	// Game pages =====================
@@ -248,7 +251,7 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }    
                         else {
-							console.log("coaches:" + coaches);
+						
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
@@ -283,7 +286,7 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }
                         else{
-							console.log(coaches);
+					
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
@@ -325,10 +328,13 @@ module.exports = function(app, passport) {
         
 		//handle student  
 		if (req.user.local.occupation == "student") {
-                res.render('studentprofile.ejs', {
-                           user : req.user
+                User.find({'local.occupation':'coach', 'local.game':req.user.local.game}).sort({'rate': -1}).
+                limit(4).exec(function(err, coaches){
+                        res.render('studentprofile.ejs', {
+                           user : req.user,
+                           coaches: coaches
                            });
-         
+                        })
         }
         
 		//handle coach
@@ -349,7 +355,8 @@ module.exports = function(app, passport) {
 	// Returned to homepage
 	app.get('/home', isLoggedIn, function(req, res) {
             res.render("home.ejs", {
-                user: req.user
+                user: req.user,
+                message: null
             });
 	});
 	
@@ -376,11 +383,14 @@ module.exports = function(app, passport) {
 		
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
+                
+                
 
             if (err) {
-                return next(err);
+                console.log("error");
                 //code
             }
+        
             if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
@@ -391,6 +401,9 @@ module.exports = function(app, passport) {
                 user.local.game = req.param('game');
             }
             
+         
+            
+            
             if(req.files.photo.name != ''){  
                 //read new image file
                 fs.readFile(req.files.photo.path, function(err, data){
@@ -399,7 +412,7 @@ module.exports = function(app, passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
-                            console.log(newPath);
+                        
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
@@ -420,7 +433,7 @@ module.exports = function(app, passport) {
 			user.save();
 			//update session
 			req.login(user, function(err) {
-				if (err) return next(err)
+				if (err) console.log(err)
 				else{
 					res.redirect('/profile');
 				}
@@ -433,7 +446,7 @@ module.exports = function(app, passport) {
 	//show the coach edit form
 	app.get('/editcoach', isLoggedIn,  function(req, res){
 		res.render('editcoach.ejs' ,{
-			user: req.user
+			user: req.user,
 		});
 	});
 	
@@ -442,7 +455,7 @@ module.exports = function(app, passport) {
 	app.post('/editcoach', function(req, res){
 		var email = req.user.local.email;
 		//update database
-		User.findOne({ 'local.email' :  email }, function(err, user) {
+		User.findOne({ 'local.email' :  email }, function(err, user , done) {
             if (err) {
                 return next(err);
                 //code
@@ -452,21 +465,56 @@ module.exports = function(app, passport) {
                 user.local.password = user.generateHash(req.param('password'));     
             }
             
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
+            if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
+                    if (req.param('streetAddress').length == 0 ||
+                        req.param('city').length == 0 ||
+                        req.param('province').length == 0){
+                           return;
+                    }
+                    else{
+                    // obtain coordinates of address.
+                    var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
+                    var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
+                                           + req.param('province') + urlAPIKey; 
+                    var jsonHTTP = new XMLHttpRequest();
+                    jsonHTTP.open("GET", url, false);
+                    jsonHTTP.send(null);
+                    var result = JSON.parse(jsonHTTP.responseText);
+                    if (result["status"] == "ZERO_RESULTS"){
+                        return done(null, false, req.flash('signupMessage', 'Cannot find address'));
+                    }
+                    else {
+                        user.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
+                        user.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+
+                    }
+                    user.local.address.street = req.param('streetAddress');
+                    user.local.address.city = req.param('city');
+                    user.local.address.province = req.param('province');
+                    user.local.coachtype = req.param("coachtype");
+                    }
+            
+                }
+                
+
+                // use the generateHash function in our user model
+	            // parse the url
+               
+           
+            if(req.param('coachtype') == 'Online'){
+                user.local.coachtype = req.param('coachtype');
+                
             }
+            
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
             if ( req.param('game') != '' ) {
                 user.local.game = req.param('game');
             }
-            if (req.param('cost') != '' ) {
+            if ( req.param('cost') != '' ) {
                 user.local.cost = req.param('cost');
-            }
-            
-            if ( req.param('coachtype') != '') {
-                user.local.coachtype = req.param('coachtype');
             }
             
             if( req.files.photo.name != ''){  
@@ -532,6 +580,7 @@ module.exports = function(app, passport) {
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring(7);
+        
         if (id == req.user._id) {
                 res.redirect('/profile');
         }
@@ -543,12 +592,19 @@ module.exports = function(app, passport) {
                 has_followed = 1;
             }
         }
-        console.log(id);
+ 
         User.findOne({ '_id' :  id }, function(err, user) {
+                 if (!user) {
+                        res.redirect('/') 
+                 }
+                 
+                 else{
+                        
                  if (err) {
-                        console.log(err);
-                        }    
-                console.log(user.local.occupation);     
+                        res.redirect('/')
+                             
+                }
+                
                 if (user.local.occupation =="student") {
                         res.render('viewstudent.ejs', {
                                 student : user,
@@ -574,24 +630,20 @@ module.exports = function(app, passport) {
                                 });
                         });
                 }
+         }
         });
         }
+        
     });
 
     app.get('/follow/*', checkLogin, function(req, res){
-        console.log("!!!!!!!!!!!!!!!!!!!")
         var url = req.url;
         var id = url.substring(8);
-        console.log(id);
+
         var email = req.user.local.email;
-        User.findOne({ '_id' :  id }, function(err, user){
-            if (err){
-                console.log(err);
-            }
-        });
+  
         User.findOne({ 'local.email' :  email }, function(err, user){
             user.local.follow.push(id);
-            console.log(user.local.follow);
             user.save();
             req.login(user, function(err) {
                 if (err) return next(err)
@@ -615,7 +667,7 @@ module.exports = function(app, passport) {
                 }
             }
             user.local.follow.splice(index, 1);
-            console.log(user.local.follow);
+          
             user.save();
             req.login(user, function(err) {
                 if (err) return next(err)
@@ -666,6 +718,11 @@ module.exports = function(app, passport) {
         
         // handle rate(each coach has to get at least 3 times rate in order to get grade)
         User.findOne({'_id': coachid}).exec(function(err, coach){
+                if (!coach) {
+                     res.direct('/')
+           
+                 }
+                 else{
                 if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
                         coach.local.rate.list.push(rate);
                         if (coach.local.rate.list.length >= 3) {
@@ -682,6 +739,7 @@ module.exports = function(app, passport) {
                         }
                 coach.save();
                 res.redirect('/users/'+coachid);
+                 }
         }); 
     });
     
@@ -709,11 +767,8 @@ module.exports = function(app, passport) {
         newMessage.receiver.status=0;
         newMessage.date = date;
         newMessage.save();
-        console.log(receiverid);
-        User.findOne({'_id' : receiverid}).exec(function(err, user){
-                console.log("receiver id: " + user);
-                
-        });
+   
+
         
         res.redirect('/users/'+receiverid);
     });
@@ -860,6 +915,7 @@ module.exports = function(app, passport) {
     
     // process the change password form
 	app.post('/changepassword', function(req, res){
+
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -868,6 +924,7 @@ module.exports = function(app, passport) {
             } else {
                 user.local.password = user.generateHash(req.param('newpassword'));
                 user.save();
+
 				var messageInfo = 'Success: you password has been changed.'
                 res.render('admin/info.ejs', {
 					message: messageInfo
@@ -1196,7 +1253,6 @@ module.exports = function(app, passport) {
             if ( req.param('coachtype') != '') {
                 user.local.coachtype = req.param('coachtype');
             }
-			
 			user.save();
 			res.render('coachprofile.ejs', {
 				user: user,
@@ -1205,6 +1261,7 @@ module.exports = function(app, passport) {
 		});														
 	});
 	
+    
 	//show the delete user form
 	app.get('/deleteuser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
@@ -1213,6 +1270,7 @@ module.exports = function(app, passport) {
             res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
+    
 	
 	// process the delete user form
     app.post('/deleteuser', function(req, res) {

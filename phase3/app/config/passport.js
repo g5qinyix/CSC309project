@@ -75,6 +75,7 @@ module.exports = function(passport) {
                     newUser.local.photo = '';
                     
                 }
+                
                 else{
                     
                     //read image file
@@ -84,11 +85,12 @@ module.exports = function(passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
-                            console.log(newPath);
+                          
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
                                 }
+                            
                                 });
                             }
                     });
@@ -161,8 +163,6 @@ module.exports = function(passport) {
 
                     }
                     //console.log(jsonHTTP.responseText); 
-                    
-
                 }
                 
 
@@ -189,7 +189,7 @@ module.exports = function(passport) {
                         console.log("There was an error");
                     }else{
                         var newPath =  path.join(__dirname, '../public/tmp', imageName);
-                        console.log(newPath);
+                       
                         fs.writeFile(newPath, data, function(err){
                             if (err) {
                                 console.log("err");
@@ -213,7 +213,7 @@ module.exports = function(passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
-                            console.log(newPath);
+                        
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
