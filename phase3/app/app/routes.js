@@ -1859,13 +1859,13 @@ module.exports = function(app, passport) {
  	app.get('/commentslist', isLoggedIn,  function(req, res){
          if (req.user.local.email == 'admin@bemaster.com') {
  			Comment.find().
- 			//sort('comment.date').
+ 			sort('-comment.date').
  			//select('_id comment.nickname comment.date comment.content').
  			exec(function(err, comments) {
  				if (err) {
                      throw err
                  }
- 				if (!comments) {
+ 				if (comments=="") {
                      res.render('admin/commentsList.ejs', {
  						message: "No comment",
  						comments: null
@@ -1886,13 +1886,13 @@ module.exports = function(app, passport) {
  	app.get('/messageslist', isLoggedIn,  function(req, res){
          if (req.user.local.email == 'admin@bemaster.com') {
  			Message.find().
- 			sort(' date').
+ 			sort(' -date').
  			//select('_id date receiver.id sender.id sender.content').
  			exec(function(err, messages) {
  				if (err) {
                      throw err
                  }
- 				if (messages == null) {
+ 				if (messages == "") {
                      res.render('admin/messageslist.ejs', {
  						message: "No message",
  						messages: null
@@ -2013,7 +2013,7 @@ module.exports = function(app, passport) {
                  admin.local.email = "admin@bemaster.com"
                  admin.local.password = admin.generateHash('admin');
                  admin.local.nickname = "TeamCSC309";
- 				admin.local.occupation = "administrator"
+ 				 admin.local.occupation = "administrator"
                  admin.save();
  				
  				req.login(admin, function(err) {
