@@ -1,4 +1,4 @@
-<!-- views/admin/updatecoach.ejs -->
+<!-- views/signup.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -15,16 +15,15 @@
   
   <div class="form">
     <!-- show any messages that come back with authentication -->
-	<% if (message.length > 0) { %>
-		<div class="alert"><%= message %></div>
-	<% } %>
+
     <form class="login-form" action="/updatecoach" method="post" enctype='multipart/form-data'>
 	  <span>Your email</span>
-	  <p><%= user.local.email %> </p>
+	  <p><%= user.local.email %></p>
+	  <input type="hidden" name="email" value="<%= user.local.email %>">
 	  <span>Your new Password</span>
       <input type="password" name="password" placeholder="password" />
 	  <span>Your new Nickname</span>                                               
-      <input type="text" name="nickname" placeholder="Nickname" />
+      <input type="text" name="nickname" placeholder="<%=user.local.nickname%>"/>
 	  
 	  <span>Type of Coaching Offered:</span>
 	  <select type="multiple" name="coachtype" id="coachtype">
@@ -36,9 +35,9 @@
 	  
       <section id="offlineLocation">	 
 		<span>Location for Offline Coaching</span>                                                                    
-		<input type="text" name="streetAddress" placeholder="Address"/>
-		<input type="text" name="city" placeholder="City"/>
-		<input type="text" name="province" placeholder="Province"/>
+		<input type="text" name="streetAddress" placeholder="<%=user.local.address.street%>"/>
+		<input type="text" name="city" placeholder="<%=user.local.address.city%>" />
+		<input type="text" name="province" placeholder="<%=user.local.address.province%>" />
       </section>
       
 	  
@@ -48,16 +47,16 @@
 		<option>Dota2</option>
         <option>CS:GO</option>
         <option>Overwatch</option>
+	
 	  </select>
 	  
-	  
-	  <span>Your new Photo</span>                                               
+	  <span>new Photo</span>                                               
       <input type="file" name="photo"/>
 	   <span>Your cost $/hour</span> 
-	   <input type=number name="cost" placeholder="$">
+	   <input type=number name="cost" placeholder="<%=user.local.cost%>">
 	
 	  <button type="submit">Submit</button>
-	  <p class="message">Cancel <a href="/updateuser">return</a></p>
+	  <p class="message">Cancel <a href="/profile">return</a></p>
     </form>
   </div>
 </div>

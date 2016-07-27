@@ -162,10 +162,15 @@ module.exports = function(passport) {
                         newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
 
                     }
-                    //console.log(jsonHTTP.responseText); 
+                    
+                   
+                    newUser.local.address.street = req.param('streetAddress');
+                    newUser.local.address.city = req.param('city');
+                    newUser.local.address.province = req.param('province');
+             
                 }
                 
-
+                newUser.local.coachtype = req.param("coachtype");
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
@@ -177,30 +182,9 @@ module.exports = function(passport) {
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list = [];
                 newUser.local.rate.studentlist=[];
-                newUser.local.coachtype = req.param("coachtype");
-                newUser.local.address.street = req.param('streetAddress');
-                newUser.local.address.city = req.param('city');
-                newUser.local.address.province = req.param('province');
-
-                //read image file
-                fs.readFile(req.files.photo.path, function(err, data){
-                    var imageName = req.files.photo.name;
-                    if(!imageName){
-                        console.log("There was an error");
-                    }else{
-                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
-                       
-                        fs.writeFile(newPath, data, function(err){
-                            if (err) {
-                                console.log("err");
-                                }
-                            });
-                        }
-                });
                 
-                //save the url to user photo field
-                newUser.local.photo = '/tmp/'+ req.files.photo.name;
-                  
+                
+                //handle imgae upload
                 if (req.files.photo.name == '') {
                     newUser.local.photo = '';
                 }

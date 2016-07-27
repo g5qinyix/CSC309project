@@ -14,7 +14,7 @@
   <div class="form">
 	
     <p style="text-align: center">Update student's info</p>
-    <form class="login-form" action="/updatestudent" method="post">
+    <form class="login-form" action="/updatestudent" method="post" enctype='multipart/form-data'>
       <span>Student e-mail:</span>
       <input type="email" name="email" value=<%= user.local.email %> />
 	  <span>Enter student new Password</span>
