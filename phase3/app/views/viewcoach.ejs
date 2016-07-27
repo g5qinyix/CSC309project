@@ -12,9 +12,10 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
+					<li style="font-weight:bold;float:left;margin-left:4%"><a href="/games/lol">Coaches</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-					<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
-				<li><a href='/profile'><%=user.local.nickname%></a></li>
+				<li style="font-weight:bold; margin-left:20px"><a href='/logout'>Log Out</a></li>
+				<li style="font-weight:bold;"><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
 		</nav>
@@ -41,17 +42,12 @@
 				<img src="/images/conversation.png">
 			</div></a>
 			<div id="follow">
-				<% if (user.local.occupation == "student") { %>
 				<% if (has_followed == 0){ %>
 					<a href="/follow/<%=coach._id%>">follow</a>
 				<% } %>
 				<% if (has_followed == 1){ %>
 					<a href="/unfollow/<%=coach._id%>">unfollow</a>
 				<% } %>
-				<% } %>
-			</div>
-			<div id="order">
-				<p onclick="location.href='/order/<%=coach._id%>'">book</p>
 			</div>
 			
 			<div id='showmessage' style="display:none">
@@ -111,7 +107,7 @@
     
 
 	<section class="others_life">
-	    <h1 id="viewcomment">View Comments</h1>
+	    <h1 id="viewcomment">Public Comments</h1>
 		<div id="showcomment" style="display:none" >
 		<% comments.forEach(function(comment) { %>
 		<div id="posts">
@@ -132,7 +128,8 @@
     
     <section class='comment'>
         <form action="/comments/<%=coach._id%>" method='post'>
-            <h1>Your comment</h1>
+            <h1>Leave a Comment</h1>
+			<h4>(You can only rate your coach once)</h4>
 			<label>
 			<span>Rate Your Coach</span>
 			<select name='rate'>
