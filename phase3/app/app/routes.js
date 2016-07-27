@@ -241,7 +241,6 @@ module.exports = function(app, passport) {
 		}
         
         if (req.isAuthenticated()){
-				console.log("cost is:" + cost);
                 User.find({'local.game' : Game,
 				   'local.occupation':'coach',
                    'local.coachtype': { $in : [coachtype, 'Both']},
@@ -465,37 +464,50 @@ module.exports = function(app, passport) {
                 user.local.password = user.generateHash(req.param('password'));     
             }
             
-            if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
-                    if (req.param('streetAddress').length == 0 ||
-                        req.param('city').length == 0 ||
-                        req.param('province').length == 0){
-                           return;
-                    }
-                    else{
-                    // obtain coordinates of address.
-                    var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
-                    var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
-                                           + req.param('province') + urlAPIKey; 
-                    var jsonHTTP = new XMLHttpRequest();
-                    jsonHTTP.open("GET", url, false);
-                    jsonHTTP.send(null);
-                    var result = JSON.parse(jsonHTTP.responseText);
-                    if (result["status"] == "ZERO_RESULTS"){
-                        return done(null, false, req.flash('signupMessage', 'Cannot find address'));
-                    }
-                    else {
-                        user.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
-                        user.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+            // Missing Address fields
+			if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
+				// Empty address fields means coach does not want to change address.
+				if (!(req.param('streetAddress').length == 0 &&
+					req.param('city').length == 0 &&
+					req.param('province').length == 0)){
+						// If not all filled out.
+						if (!(req.param('streetAddress').length != 0 &&
+							req.param('city').length != 0 &&
+							req.param('province').length != 0)){
+								res.render('editcoach.ejs', { 
+									message: 'Must enter all location fields if offline coach.',
+									user: req.user
+								});
+								return;
+						} else {
+							var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
+							var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+							var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
+												   + req.param('province') + urlAPIKey; 
+							var jsonHTTP = new XMLHttpRequest();
+							jsonHTTP.open("GET", url, false);
+							jsonHTTP.send(null);
+							var result = JSON.parse(jsonHTTP.responseText);
+							if (result["status"] == "ZERO_RESULTS"){
+								res.render('editcoach.ejs', { 
+										message: 'Invalid Address.',
+										user: req.user
+									});
+									return;
+							}
+							else {
+								user.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
+								user.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+								user.local.address.street = req.param('streetAddress');
+								user.local.address.city = req.param('city');
+								user.local.address.province = req.param('province');
+							}
+						}
+				}
 
-                    }
-                    user.local.address.street = req.param('streetAddress');
-                    user.local.address.city = req.param('city');
-                    user.local.address.province = req.param('province');
-                    user.local.coachtype = req.param("coachtype");
-                    }
-            
-                }
+				
+                    
+			}
                 
 
                 // use the generateHash function in our user model

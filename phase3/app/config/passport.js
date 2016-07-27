@@ -11,6 +11,9 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var configAuth = require('./auth');
 var fs     = require('fs');
 var path     = require('path');
+
+// Used to combat cross-site scripting
+var sanitizer = require('sanitizer');
 // expose this function to our app using module.exports
 module.exports = function(passport) {
     
@@ -64,11 +67,11 @@ module.exports = function(passport) {
                 var newUser  = new User();
 
                 // set the user's local credentials
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
+                newUser.local.email    = sanitizer.escape(email);
+                newUser.local.password = newUser.generateHash(sanitizer.escape(password)); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.nickname = req.param('nickname');
-                newUser.local.game = req.param('game');
+                newUser.local.nickname = sanitizer.escape(req.param('nickname'));
+                newUser.local.game = sanitizer.escape(req.param('game'));
                 newUser.local.occupation = 'student';
 
                 if (req.files.photo.name == '') {
@@ -170,17 +173,17 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.nickname = req.param('nickname');
+                newUser.local.nickname = sanitizer.escape(req.param('nickname'));
                 newUser.local.occupation = 'coach';
-                newUser.local.game = req.param('game');
-                newUser.local.cost = req.param('cost');
+                newUser.local.game = sanitizer.escape(req.param('game'));
+                newUser.local.cost = sanitizer.escape(req.param('cost'));
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list = [];
                 newUser.local.rate.studentlist=[];
-                newUser.local.coachtype = req.param("coachtype");
-                newUser.local.address.street = req.param('streetAddress');
-                newUser.local.address.city = req.param('city');
-                newUser.local.address.province = req.param('province');
+                newUser.local.coachtype = sanitizer.escape(req.param("coachtype"));
+                newUser.local.address.street = sanitizer.escape(req.param('streetAddress'));
+                newUser.local.address.city = sanitizer.escape(req.param('city'));
+                newUser.local.address.province = sanitizer.escape(req.param('province'));
 
                 //read image file
                 fs.readFile(req.files.photo.path, function(err, data){
