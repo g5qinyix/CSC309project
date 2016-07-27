@@ -4,9 +4,11 @@
 <head>
 	<link rel="stylesheet" href="../css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
 	<title>login</title>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<script type='text/javascript'>
+    var captchaContainer = null;
+    </script>
 </head>
 <body>
 	<!--codes for the navigation bar-->
@@ -26,7 +28,7 @@
       <input id="loginname" type="text" name="email" placeholder="username" autofocus/>
 
       <input id="loginpassword" type="password" name="password" placeholder="password"/>
-       
+      <div class="g-recaptcha" data-sitekey="6LfPFyYTAAAAAK7JszKQMl5NgMUSaHHTEKMY6_Na"></div>
 	  <button type="submit">Login</button>
 	   
       <p class="message">Not registered? <a href="/signup">Create an account</a></p>
@@ -38,7 +40,7 @@
   </div>
 </div>
     
-    
+	<script src="https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer></script>
 </body>
 
 
