@@ -1,50 +1,62 @@
-<!-- views/update.ejs -->
+<!-- views/admin/updatecoach.ejs -->
 <!doctype html>
 <html>
 <head>
 	<link rel="stylesheet" href="../css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>admin update user</title>
+	<script type="text/javascript" src="/script/jquery-2.2.1.js"></script>
+	<script type="text/javascript" src="/script/coachsignup.js"></script>
+	<title>Edit</title>
 </head>
 <body>
 	<!--codes for the navigation bar-->
 
 <div class="login-page">
-
+  
   <div class="form">
     <!-- show any messages that come back with authentication -->
-	<p style="text-align: center">Update coach's info</p>
-	
-    <form class="login-form" action="/updatecoach" method="post">
-	  <span>Coach's email</span>
-	  <input type="email" name="email" value=<%= user.local.email %> />
-	  <span>Enter new Password</span>
-      <input type="password" name="password" placeholder="password" autofocus/>
-	  <span>Enter new Nickname</span>                                               
-      <input type="text" name="nickname" placeholder=<%= user.local.nickname %> />
-	  <span>Enter new Location</span>                                                                                             
-      <input type="text" name="location" placeholder=<%= user.local.location %> />
-	  <span>Select coachtype the coach can offer</span>
+	<% if (message.length > 0) { %>
+		<div class="alert"><%= message %></div>
+	<% } %>
+    <form class="login-form" action="/updatecoach" method="post" enctype='multipart/form-data'>
+	  <span>Your email</span>
+	  <p><%= user.local.email %> </p>
+	  <span>Your new Password</span>
+      <input type="password" name="password" placeholder="password" />
+	  <span>Your new Nickname</span>                                               
+      <input type="text" name="nickname" placeholder="Nickname" />
 	  
-	  <select type="multiple" name="coachtype">
+	  <span>Type of Coaching Offered:</span>
+	  <select type="multiple" name="coachtype" id="coachtype">
 		<option>Offline</option>
 		<option>Online</option>
-		<option selected='selected'><%= user.local.coachtype %></option>
+		<option>Both</option>
 	 </select>
+      
 	  
-	  <span>Your want to be a mentor of</span>
+      <section id="offlineLocation">	 
+		<span>Location for Offline Coaching</span>                                                                    
+		<input type="text" name="streetAddress" placeholder="Address"/>
+		<input type="text" name="city" placeholder="City"/>
+		<input type="text" name="province" placeholder="Province"/>
+      </section>
+      
+	  
+	  <span>You want to be a mentor for</span>
       <select name="game">
 		<option>League of Legends</option>
 		<option>Dota2</option>
         <option>CS:GO</option>
         <option>Overwatch</option>
-		<option selected='selected'><%= user.local.game %></option>
 	  </select>
 	  
+	  
+	  <span>Your new Photo</span>                                               
+      <input type="file" name="photo"/>
 	   <span>Your cost $/hour</span> 
-	   <input type=number name="cost" placeholder=<%= user.local.cost %> >
+	   <input type=number name="cost" placeholder="$">
 	
-	  <button type="submit">Update</button>
+	  <button type="submit">Submit</button>
 	  <p class="message">Cancel <a href="/updateuser">return</a></p>
     </form>
   </div>

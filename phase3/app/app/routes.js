@@ -7,6 +7,7 @@ var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
 var fs     = require('fs');
 var path     = require('path');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 module.exports = function(app, passport) {
 
@@ -834,65 +835,68 @@ module.exports = function(app, passport) {
 
 	// process the login form
 	app.post('/admin', passport.authenticate('admin-login', {
-		successRedirect : '/adminPage', // redirect to the secure admin page
+		successRedirect : '/adminpage', // redirect to the secure admin page
 		failureRedirect : '/admin', // redirect back to the admin-login page if there is an error
 		failureFlash : true // allow flash messages 
 	}));
     
     // show admin page
-	app.get('/adminPage', isLoggedIn, function(req, res) {
+	app.get('/adminpage', isLoggedIn, function(req, res) {
 		// render the adminpage and pass in any flash data if it exists
         if (req.user.local.email == 'admin@bemaster.com') {
             res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
     //show the change password form
-	app.get('/changePassword', isLoggedIn,  function(req, res){
-		res.render('admin/changePassword.ejs' ,{
+	app.get('/changepassword', isLoggedIn,  function(req, res){
+		res.render('admin/changepassword.ejs' ,{
 			user: req.user
 		});
 	});
     
     
     // process the change password form
-	app.post('/changePassword', function(req, res){
+	app.post('/changepassword', function(req, res){
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
                 return next(err);
             } else {
-                user.local.password = user.generateHash(req.param('newPassword'));
+                user.local.password = user.generateHash(req.param('newpassword'));
                 user.save();
-                res.render('admin/changePasswordSuccess.ejs');
+				var messageInfo = 'Success: you password has been changed.'
+                res.render('admin/info.ejs', {
+					message: messageInfo
+					});
             }
 		});													
 	});
 	
     
     //show the add user form
-	app.get('/addUser', isLoggedIn,  function(req, res){
+	app.get('/adduser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addUser.ejs');
+            res.render('admin/adduser.ejs');
         } else {
-            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     //show the add stuent form
-	app.get('/addStudent', isLoggedIn,  function(req, res){
+	app.get('/addstudent', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addStudent.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addstudent.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     // process the add student form
-    app.post('/addStudent', function(req, res) {
+    app.post('/addstudent', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -901,7 +905,7 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addStudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addstudent.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
                 // if there is no user with that email
                 // create the user
@@ -916,13 +920,14 @@ module.exports = function(app, passport) {
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
+				var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
                 // save the user
                 newUser.save(function(err) {
                     if (err) {
                         throw err;
                     } else {
-                        res.render('admin/addStudentSuccess.ejs', {
-						user: newUser
+                        res.render('admin/info.ejs', {
+						message: messageInfo
 						});
                     }
                 });
@@ -933,17 +938,17 @@ module.exports = function(app, passport) {
     
     
     //show the add coach form
-	app.get('/addCoach', isLoggedIn,  function(req, res){
+	app.get('/addcoach', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
-            res.render('admin/addCoach.ejs', { message: req.flash('signupMessage')});
+            res.render('admin/addcoach.ejs', { message: req.flash('signupMessage')});
         } else {
-            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
     
     
     // process the add coach form
-    app.post('/addCoach', function(req, res) {
+    app.post('/addcoach', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -952,40 +957,123 @@ module.exports = function(app, passport) {
                 return next(err)
             // check to see if theres already a user with that email
             if (user) {
-                res.render('admin/addCoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
+                res.render('admin/addcoach.ejs', {message: ('signupMessage', 'That email is already taken.')});
             } else {
-                // if there is no user with that email
+				// if there is no user with that email
                 // create the user
                 var newUser  = new User();
+
+				// There are missing fields.
+                if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
+                    if (req.param('streetAddress').length == 0 ||
+                        req.param('city').length == 0 ||
+                        req.param('province').length == 0){
+                            return done(null, false, req.flash('signupMessage', 'Must enter all location fields if offline coach.'));
+                    }
+                    // obtain coordinates of address.
+                    var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
+                    var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
+                                           + req.param('province') + urlAPIKey; 
+                    var jsonHTTP = new XMLHttpRequest();
+                    jsonHTTP.open("GET", url, false);
+                    jsonHTTP.send(null);
+                    var result = JSON.parse(jsonHTTP.responseText);
+                    if (result["status"] == "ZERO_RESULTS"){
+                        return done(null, false, req.flash('signupMessage', 'Cannot find address'));
+                    }
+                    else {
+                        newUser.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
+                        newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
+
+                    }
+                    //console.log(jsonHTTP.responseText); 
+                    
+
+                }
                 
-                 // set the user's local credentials
+
+                // set the user's local credentials
                 newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(req.param('password'));
+                newUser.local.password = newUser.generateHash(req.param('password')); // use the generateHash function in our user model
+	            // parse the url
                 newUser.local.nickname = req.param('nickname');
-                newUser.local.location = req.param('location');
                 newUser.local.occupation = 'coach';
                 newUser.local.game = req.param('game');
                 newUser.local.cost = req.param('cost');
                 newUser.local.rate.grade = 0;
-                newUser.local.rate.list= [];
+                newUser.local.rate.list = [];
+                newUser.local.rate.studentlist=[];
                 newUser.local.coachtype = req.param("coachtype");
+                newUser.local.address.street = req.param('streetAddress');
+                newUser.local.address.city = req.param('city');
+                newUser.local.address.province = req.param('province');
+
+                //read image file
+                fs.readFile(req.files.photo.path, function(err, data){
+                    var imageName = req.files.photo.name;
+                    if(!imageName){
+                        console.log("There was an error");
+                    }else{
+                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
+                        console.log(newPath);
+                        fs.writeFile(newPath, data, function(err){
+                            if (err) {
+                                console.log("err");
+                                }
+                            });
+                        }
+                });
+                
+                //save the url to user photo field
+                newUser.local.photo = '/tmp/'+ req.files.photo.name;
+                  
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                }
+                
+                else{   
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                            console.log(newPath);
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                }
+                
+
                 // save the user
+			    var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
+				
                 newUser.save(function(err) {
-                    if (err) {
+					if (err) {
+						console.log('err');
                         throw err;
                     } else {
-                        res.render('admin/addCoachSuccess.ejs', {
-						user: newUser
+						console.log("message");
+                        res.render('admin/info.ejs', {
+						message: messageInfo
 						});
                     }
                 });
-            };
+			};
         });
     })
 	
 	
 	//dispaly all users
-	app.get('/usersList', isLoggedIn,  function(req, res){
+	app.get('/userslist', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
 			User.find().
 			sort('local.email').
@@ -1013,7 +1101,7 @@ module.exports = function(app, passport) {
 	
 	
 	//show the update user form
-	app.get('/updateUser', isLoggedIn,  function(req, res){
+	app.get('/updateuser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
             res.render('admin/selectUser.ejs', {message: req.flash('selectMessage')});
         } else {
@@ -1022,7 +1110,7 @@ module.exports = function(app, passport) {
 	});
 	
 	// process the select user form
-    app.post('/selectUser', function(req, res) {
+    app.post('/selectuser', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -1049,7 +1137,7 @@ module.exports = function(app, passport) {
 	})
 	
 	// process the updatestudent form
-	app.post('/updateStudent', function(req, res){
+	app.post('/updatestudent', function(req, res){
 		var email = req.param('email');
 		
 		//update database
@@ -1080,7 +1168,7 @@ module.exports = function(app, passport) {
 	});
 	
 	// process coach update form
-	app.post('/updateCoach', function(req, res){
+	app.post('/updatecoach', function(req, res){
 		var email = req.param('email');
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -1118,7 +1206,7 @@ module.exports = function(app, passport) {
 	});
 	
 	//show the delete user form
-	app.get('/deleteUser', isLoggedIn,  function(req, res){
+	app.get('/deleteuser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
             res.render('admin/deleteUser.ejs', {message: req.flash('deleteMessage')});
         } else {
@@ -1127,7 +1215,7 @@ module.exports = function(app, passport) {
 	});
 	
 	// process the delete user form
-    app.post('/deleteUser', function(req, res) {
+    app.post('/deleteuser', function(req, res) {
         var email = req.param('email');
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -1140,9 +1228,132 @@ module.exports = function(app, passport) {
             } else {
                 // user exists, delete the user
 				user.remove();
-				res.render('admin/deleteUserSuccess', {
-					user: user});
+				var messageInfo = 'Success: user ' + user.local.email + ' has been deleted.'
+				res.render('admin/info', {
+					message: messageInfo
+					});
 				
+			};
+		});
+	})
+	
+	//show the delete comment form
+	app.get('/deletecomment', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteComment.ejs', {message: req.flash('deleteCommentMessage')});
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete comment form
+    app.post('/deletecomment', function(req, res) {
+        var commentId = req.param('commentId');
+        
+        Comment.findOne({ '_id' :  commentId }, function(err, comment) {
+            // if there are any errors, return the error
+            if (err)
+                throw err
+            // check to see if theres is a comment with that id
+            if (!comment) {
+                res.render('admin/deleteComment.ejs', {
+					message: ('deleteCommentMessage', 'This comment does not exist')
+					});
+            } else {
+                // comment exists, delete the comment
+				comment.remove();
+				var messageInfo = 'Success: comment with id ' + commentId + ' has been deleted';
+				res.render('admin/info', {
+					message: messageInfo
+					});
+				
+			};
+		});
+	})
+	
+	//dispaly all comments
+	app.get('/commentslist', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+			Comment.find().
+			//sort('comment.date').
+			//select('_id comment.nickname comment.date comment.content').
+			exec(function(err, comments) {
+				if (err) {
+                    throw err
+                }
+				if (!comments) {
+                    res.render('admin/commentsList.ejs', {
+						message: "No comment",
+						comments: null
+					})
+                } else {
+					res.render('admin/commentsList.ejs', {
+						message: 'All comments list',
+						comments: comments
+					})
+				}
+			})
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        }
+	});
+	
+	//dispaly all messages
+	app.get('/messageslist', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+			Message.find().
+			sort('-date').
+			//select('_id date receiver.id sender.id sender.content').
+			exec(function(err, messages) {
+				if (err) {
+                    throw err
+                }
+				if (!messages) {
+                    res.render('admin/commentsList.ejs', {
+						message: "No message",
+						messages: null
+					})
+                } else {
+					res.render('admin/messagesList.ejs', {
+						message: 'All messages list',
+						messages: messages
+					})
+				}
+			})
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        }
+	});
+	
+	//show the delete message form
+	app.get('/deletemessage', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteMessage.ejs', {message: req.flash('deleteMessage')});
+        } else {
+            res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete message form
+    app.post('/deletemessage', function(req, res) {
+        var messageId = req.param('messageId');
+        
+        Message.findOne({ '_id' :  messageId }, function(err, message) {
+            // if there are any errors, return the error
+            if (err)
+                throw err
+            // check to see if theres is a message with that id
+            if (!message) {
+                res.render('admin/deleteMessage.ejs', {
+					message: ('deleteMessage', 'This message does not exist')
+					});
+            } else {
+                // comment exists, delete the comment
+				message.remove();
+				var messageinfo = 'Success: message with id ' + messageId + ' has been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
 			};
 		});
 	})
@@ -1150,9 +1361,6 @@ module.exports = function(app, passport) {
 	
 				
         
-        
-    
-    
     
     
 }

@@ -1,0 +1,24 @@
+<!-- views/admin/messagesList.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="/css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>admin messages list</title>
+</head>
+<body style="padding-left: 10px">
+	<% if (message) { %>
+        <h2><%= message %></h2>
+    <% } %>
+	
+	<% if (messages) { %>
+	    <% messages.forEach(function(message) { %>
+		    <p>message_id: <%= message._id %></p>
+			<p>date: <%= message.date %></p>
+			<p>sender_id: <%= message.sender.id %>; recerver_id: <%= message.receiver.id %></p>
+			<p>content: <%= message.sender.content %></p><br>
+		<% }); %>
+    <% } %>
+  
+</body>
+</html>

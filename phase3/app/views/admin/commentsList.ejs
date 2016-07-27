@@ -1,0 +1,24 @@
+<!-- views/usersList.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="/css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>admin</title>
+</head>
+<body style="padding-left: 10px">
+	<% if (message) { %>
+        <h2><%= message %></h2>
+    <% } %>
+	
+	<% if (comments) { %>
+	    <% comments.forEach(function(comment) { %>
+		    <p>comment_id: <%= comment._id %></p>
+			<p>sender: <%= comment.comment.nickname %>;
+			   date: <%= comment.comment.date %></p>
+			<p>content: <%= comment.comment.content %></p><br>
+		<% }); %>
+    <% } %>
+  
+</body>
+</html>

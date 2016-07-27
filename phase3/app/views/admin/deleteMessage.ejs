@@ -1,0 +1,31 @@
+<!-- views/deleteuser.ejs -->
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="../css/a4c.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>admin delete message</title>
+</head>
+<body>
+	<!--codes for the navigation bar-->
+
+<div class="login-page">
+	<h2 style="color:rgb(100, 65, 165);margin-bottom:0px">Delete message</h2>
+  <div style="margin-top:0px" class="form">
+    <!-- show any messages that come back with authentication -->
+	<% if (message.length > 0) { %>
+		<div class="alert"><%= message %></div>
+	<% } %>
+    <form class="login-form" action="/deletemessage" method="post">
+      <span>Enter message_id </span>
+      <input type="text" name="messageId" pattern="[0-9a-zA-Z]{24}" placeholder="24 digit/alphabeta" autofocus required/>
+	  
+	  <button type="submit">delete</button>
+
+    </form>
+  </div>
+</div>
+    
+    
+</body>
+</html>
