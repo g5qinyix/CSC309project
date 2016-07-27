@@ -40,8 +40,14 @@
 			<% } %>
 	        <% });%>
 				<div class="inner-container">
-					<img src="<%=contacter.local.photo%>" class="photo">
-					<div class="id"><%=contacter.local.nickname%></div>
+				<% if (contacter.local.photo == "") { %>
+			 	<img src="/images/person.gif" class="photo">
+				<% } %>
+				<% if (contacter.local.photo != "") { %>
+				<img src="<%=contacter.local.photo%>" class="photo">
+				<% } %>
+					
+				<div class="id"><%=contacter.local.nickname%></div>
 				</div>
 				</div>
 				</a>

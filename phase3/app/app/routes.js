@@ -497,7 +497,6 @@ module.exports = function(app, passport) {
                 // use the generateHash function in our user model
 	            // parse the url
                
-           
             if(req.param('coachtype') == 'Online'){
                 user.local.coachtype = req.param('coachtype');
 			}
