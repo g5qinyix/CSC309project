@@ -1912,7 +1912,7 @@ module.exports = function(app, passport) {
  	//show the delete message form
  	app.get('/deletemessage', isLoggedIn,  function(req, res){
          if (req.user.local.email == 'admin@bemaster.com') {
-             res.render('admin/deleteMessage.ejs', {message: req.flash('deleteMessage')});
+             res.render('admin/deletemessage.ejs', {message: req.flash('deleteMessage')});
          } else {
              res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
          };
