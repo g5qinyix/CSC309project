@@ -12,10 +12,9 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
-					<li style="font-weight:bold;float:left;margin-left:4%"><a href="/games/lol">Coaches</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
-				<li style="font-weight:bold;margin-left:20px"><a href='/logout'>Log Out</a></li>
-				<li style="font-weight:bold;"><a href='/profile'><%=user.local.nickname%></a></li>
+				<li style="margin-left:20px"><a href='/logout'>Log Out</a></li>
+				<li><a href='/profile'><%=user.local.nickname%></a></li>
 				<li><img src="/images/upwards-arrow.png" onmouseover='src="/images/upwards-arrow1.png"' onmouseout='src="/images/upwards-arrow.png"' id="upwards"></li>
 			</ul>
 		</nav>
@@ -46,30 +45,44 @@
 		</div>
 	</section>
     
-	
 	<section id="service">
-		<h1>Top Coaches for you</h1>
-		<% coaches.forEach(function(coach) { %>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3-1">
-					
+					<% if (user.local.game == "CS:GO") { %>
 		            <img style="width:100%;height:100%" class="img-responsive" src=
-			        "<%=coach.local.photo%>">
-		
+			        "/images/csgo_logo.png">
+					<% } %>
+					<% if (user.local.game == "League of Legends") { %>
+		            <img  style="width:100%;height:100%" class="img-responsive" src=
+			        "/images/lol_logo.png">
+					<% } %>
+					<% if (user.local.game == "Dota2") { %>
+		            <img style="width:100%;height:100%" class="img-responsive" src=
+			        "/images/dota2_logo.png">
+					<% } %>
+					<% if (user.local.game == "Overwatch") { %>
+		            <img style="width:100%;height:100%" class="img-responsive" src=
+			        "/images/overwatch_logo.png">
+					<% } %>
+					
 		        </div>
-				    <a href="/users/<%=coach._id%>"><div class="back-1">
-					<% if (coach.local.rate.grade == 0) { %>
-		        	<p style="font-size:15px">Rating:N/A</p>
-				    <% } %>
-					<% if (coach.local.rate.grade != 0) { %>
-		        	<p style="font-size:15px">Rating: <%=coach.local.rate.grade%></p>
-				    <% } %>		
-		        	<p style="font-size:15px">Price: $<%=coach.local.cost %>/hour</p>
-		        </div></a>
 	        </div>
         </div>
-		<% }); %>
+        <div class = "history">
+        	<h2>Total: <%=user.local.pocket%></h2>
+        	<h3>Order history</h3>
+        	<% for (var i = 0; i < 10; i = i + 2){ %>
+        	<div class="h_block">
+        		<div class="receiver">
+        			<p><%=user.local.recent_orders[i]%></p>
+        		</div>
+        		<div class="amount">
+        			<p><%=user.local.recent_orders[i + 1]%></p>
+        		</div>
+        	</div>
+        	<% } %>
+        </div>
     </section>
 	
 	
