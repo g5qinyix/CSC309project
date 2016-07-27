@@ -1372,13 +1372,13 @@ module.exports = function(app, passport) {
 				if (err) {
                     throw err
                 }
-				if (!messages) {
-                    res.render('admin/commentsList.ejs', {
+				if (messages == null) {
+                    res.render('admin/messageslist.ejs', {
 						message: "No message",
 						messages: null
 					})
                 } else {
-					res.render('admin/messagesList.ejs', {
+					res.render('admin/messageslist.ejs', {
 						message: 'All messages list',
 						messages: messages
 					})

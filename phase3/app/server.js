@@ -19,12 +19,20 @@ require('./config/passport')(passport); // pass passport for configuration
 
 
 //admin setting
-var admin = new User();
-admin.local.email = "admin@bemaster.com";
-admin.local.password = admin.generateHash('admin');
-admin.local.occupation = "administrator";
-admin.local.nickname = "TeamCSC309";
-admin.save();
+User.findOne({ 'local.email' :  'admin@bemaster.com' }, function(err, user) {
+    // if there are any errors, return the error
+    if (err)
+        throw err
+    // check to see if theres is a message with that id
+    if (!user) {
+        var admin = new User();
+        admin.local.email = "admin@bemaster.com";
+        admin.local.password = admin.generateHash('admin');
+        admin.local.occupation = "administrator";
+        admin.local.nickname = "TeamCSC309";
+        admin.save();
+    }
+})
 
 
 app.configure(function() {
