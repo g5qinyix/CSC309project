@@ -722,7 +722,7 @@ module.exports = function(app, passport) {
         newMessage.receiver.status=0;
         newMessage.date = date;
         newMessage.save();
-        console.log(receiverid);
+   
 
         
         res.redirect('/users/'+receiverid);

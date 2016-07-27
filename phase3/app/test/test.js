@@ -443,9 +443,9 @@ describe('Comment and Rate', function () {
         .expect(302)
         .end(done)  
          });
-    
       })
   });
+  
   
   after(function(done) {
       User.remove({"local.email" : 'testcomment@mail.com'}).exec(function(){

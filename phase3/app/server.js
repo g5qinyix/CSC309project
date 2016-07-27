@@ -10,12 +10,19 @@ var flash    = require('connect-flash');
 
 
 var configDB = require('./config/database.js');
+var User     = require('./app/models/user');
 
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
+
+//admin setting
+var admin = new User();
+admin.local.email = "admin@bemaster.com"
+admin.local.password = admin.generateHash('admin');
+admin.save();
 
 
 
