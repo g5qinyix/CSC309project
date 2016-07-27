@@ -21,7 +21,7 @@
 	  <span>Your new Password</span>
       <input type="password" name="password" placeholder="password" />
 	  <span>Your new Nickname</span>                                               
-      <input type="text" name="nickname" placeholder="Nickname" />
+      <input type="text" name="nickname" placeholder="<%=user.local.nickname%>" />
 	  
 	  <span>Type of Coaching Offered:</span>
 	  <select type="multiple" name="coachtype" id="coachtype">
@@ -51,7 +51,7 @@
 	  <span>Your new Photo</span>                                               
       <input type="file" name="photo"/>
 	   <span>Your cost $/hour</span> 
-	   <input type=number name="cost" placeholder="$">
+	   <input type=number name="cost" placeholder="<%=user.local.cost%>">
 	
 	  <button type="submit">Submit</button>
 	  <p class="message">Cancel <a href="/profile">return</a></p>
