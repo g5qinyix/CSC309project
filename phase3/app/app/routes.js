@@ -9,6 +9,9 @@ var fs     = require('fs');
 var path     = require('path');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+// to combat cross-site scripting
+var sanitizer = require('sanitizer');
+
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -393,11 +396,11 @@ module.exports = function(app, passport) {
             if (req.param('password') != '') {
                 user.local.password = user.generateHash(req.param('password'));     
             }
-            if ( req.param('nickname') != '') {
-                user.local.nickname = req.param('nickname');
+            if ( sanitizer.sanitize(req.param('nickname')) != '') {
+                user.local.nickname = sanitizer.sanitize(req.param('nickname'));
             }
             if ( req.param('game') != '') {
-                user.local.game = req.param('game');
+                user.local.game = sanitizer.sanitize(req.param('game'));
             }
             
          
@@ -467,13 +470,13 @@ module.exports = function(app, passport) {
             // Missing Address fields
 			if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
 				// Empty address fields means coach does not want to change address.
-				if (!(req.param('streetAddress').length == 0 &&
-					req.param('city').length == 0 &&
-					req.param('province').length == 0)){
+				if (!(sanitizer.sanitize(req.param('streetAddress')).length == 0 &&
+					sanitizer.sanitize(req.param('city')).length == 0 &&
+					sanitizer.sanitize(req.param('province')).length == 0)){
 						// If not all filled out.
-						if (!(req.param('streetAddress').length != 0 &&
-							req.param('city').length != 0 &&
-							req.param('province').length != 0)){
+						if (!(sanitizer.sanitize(req.param('streetAddress')).length != 0 &&
+							sanitizer.sanitize(req.param('city')).length != 0 &&
+							sanitizer.sanitize(req.param('province').length != 0))){
 								res.render('editcoach.ejs', { 
 									message: 'Must enter all location fields if offline coach.',
 									user: req.user
@@ -482,8 +485,8 @@ module.exports = function(app, passport) {
 						} else {
 							var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
 							var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-							var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
-												   + req.param('province') + urlAPIKey; 
+							var url = urlBeginning + sanitizer.sanitize(req.param('streetAddress')) + "+" + sanitizer.sanitize(req.param('city')) + "+"
+												   + sanitizer.sanitize(req.param('province')) + urlAPIKey; 
 							var jsonHTTP = new XMLHttpRequest();
 							jsonHTTP.open("GET", url, false);
 							jsonHTTP.send(null);
@@ -498,9 +501,9 @@ module.exports = function(app, passport) {
 							else {
 								user.local.coordinate.lat = result.results[0]["geometry"]["location"]["lat"];
 								user.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
-								user.local.address.street = req.param('streetAddress');
-								user.local.address.city = req.param('city');
-								user.local.address.province = req.param('province');
+								user.local.address.street = sanitizer.sanitize(req.param('streetAddress'));
+								user.local.address.city = sanitizer.sanitize(req.param('city'));
+								user.local.address.province = sanitizer.sanitize(req.param('province'));
 							}
 						}
 				}
@@ -519,14 +522,14 @@ module.exports = function(app, passport) {
                 
             }
             
-            if ( req.param('nickname') != '') {
-                user.local.nickname = req.param('nickname');
+            if ( sanitizer.sanitize(req.param('nickname')) != '') {
+                user.local.nickname = sanitizer.sanitize(req.param('nickname'));
             }
             if ( req.param('game') != '' ) {
                 user.local.game = req.param('game');
             }
-            if ( req.param('cost') != '' ) {
-                user.local.cost = req.param('cost');
+            if ( sanitizer.sanitize(req.param('cost')) != '' ) {
+                user.local.cost = sanitizer.sanitize(req.param('cost'));
             }
             
             if( req.files.photo.name != ''){  
@@ -717,8 +720,8 @@ module.exports = function(app, passport) {
         //get the id of coach to be commented
         var url = req.url;
         var coachid = url.substring(10);
-        var content = req.param("comment");
-        var rate = req.param('rate');
+        var content = sanitizer.sanitize(req.param("comment"));
+        var rate = sanitizer.sanitize(req.param('rate'));
         var newComment  = new Comment();
         var date = new Date();
         newComment.coachid = coachid;
@@ -774,8 +777,8 @@ module.exports = function(app, passport) {
         var newMessage = new Message();
         newMessage.sender.id = req.user._id;
         newMessage.receiver.id = receiverid;
-        newMessage.sender.content = req.param("content");
-        newMessage.receiver.content = req.param("content");
+        newMessage.sender.content = sanitizer.sanitize(req.param("content"));
+        newMessage.receiver.content = sanitizer.sanitize(req.param("content"));
         newMessage.receiver.status=0;
         newMessage.date = date;
         newMessage.save();
@@ -794,8 +797,8 @@ module.exports = function(app, passport) {
         var newMessage = new Message();
         newMessage.sender.id = req.user._id;
         newMessage.receiver.id = receiverid;
-        newMessage.sender.content = req.param("repley");
-        newMessage.receiver.content = req.param("repley");
+        newMessage.sender.content = sanitizer.sanitize(req.param("repley"));
+        newMessage.receiver.content = sanitizer.sanitize(req.param("repley"));
         newMessage.receiver.status= 0;
         newMessage.date = date;
         newMessage.save();
@@ -966,7 +969,7 @@ module.exports = function(app, passport) {
     
     // process the add student form
     app.post('/addstudent', function(req, res) {
-        var email = req.param('email');
+        var email = sanitizer.sanitize(req.param('email'));
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
@@ -985,8 +988,8 @@ module.exports = function(app, passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(req.param('password')); // use the generateHash function in our user model
                 // parse the url
-                newUser.local.location = req.param('location');
-                newUser.local.nickname = req.param('nickname');
+                newUser.local.location = sanitizer.sanitize(req.param('location'));
+                newUser.local.nickname = sanitizer.sanitize(req.param('nickname'));
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
 				var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
@@ -1018,7 +1021,7 @@ module.exports = function(app, passport) {
     
     // process the add coach form
     app.post('/addcoach', function(req, res) {
-        var email = req.param('email');
+        var email = sanitizer.sanitize(req.param('email'));
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
@@ -1034,16 +1037,16 @@ module.exports = function(app, passport) {
 
 				// There are missing fields.
                 if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
-                    if (req.param('streetAddress').length == 0 ||
-                        req.param('city').length == 0 ||
-                        req.param('province').length == 0){
+                    if (sanitizer.sanitize(req.param('streetAddress')).length == 0 ||
+                        sanitizer.sanitize(req.param('city')).length == 0 ||
+                        sanitizer.sanitize(req.param('province')).length == 0){
                             return done(null, false, req.flash('signupMessage', 'Must enter all location fields if offline coach.'));
                     }
                     // obtain coordinates of address.
                     var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
                     var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-                    var url = urlBeginning + req.param('streetAddress') + "+" + req.param('city') + "+"
-                                           + req.param('province') + urlAPIKey; 
+                    var url = urlBeginning + sanitizer.sanitize(req.param('streetAddress')) + "+" + sanitizer.sanitize(req.param('city')) + "+"
+                                           + sanitizer.sanitize(req.param('province')) + urlAPIKey; 
                     var jsonHTTP = new XMLHttpRequest();
                     jsonHTTP.open("GET", url, false);
                     jsonHTTP.send(null);
@@ -1066,17 +1069,17 @@ module.exports = function(app, passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(req.param('password')); // use the generateHash function in our user model
 	            // parse the url
-                newUser.local.nickname = req.param('nickname');
+                newUser.local.nickname = sanitizer.sanitize(req.param('nickname'));
                 newUser.local.occupation = 'coach';
-                newUser.local.game = req.param('game');
-                newUser.local.cost = req.param('cost');
+                newUser.local.game = sanitizer.sanitize(req.param('game'));
+                newUser.local.cost = sanitizer.sanitize(req.param('cost'));
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list = [];
                 newUser.local.rate.studentlist=[];
-                newUser.local.coachtype = req.param("coachtype");
-                newUser.local.address.street = req.param('streetAddress');
-                newUser.local.address.city = req.param('city');
-                newUser.local.address.province = req.param('province');
+                newUser.local.coachtype = sanitizer.sanitize(req.param("coachtype"));
+                newUser.local.address.street = sanitizer.sanitize(req.param('streetAddress'));
+                newUser.local.address.city = sanitizer.sanitize(req.param('city'));
+                newUser.local.address.province = sanitizer.sanitize(req.param('province'));
 
                 //read image file
                 fs.readFile(req.files.photo.path, function(err, data){
@@ -1180,7 +1183,7 @@ module.exports = function(app, passport) {
 	
 	// process the select user form
     app.post('/selectuser', function(req, res) {
-        var email = req.param('email');
+        var email = sanitizer.sanitize(req.param('email'));
         
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
@@ -1207,7 +1210,7 @@ module.exports = function(app, passport) {
 	
 	// process the updatestudent form
 	app.post('/updatestudent', function(req, res){
-		var email = req.param('email');
+		var email = sanitizer.sanitize(req.param('email'));
 		
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -1220,13 +1223,13 @@ module.exports = function(app, passport) {
                 user.local.password = user.generateHash(req.param('password'));     
             }
             if (req.param('location') != '') {
-                user.local.location = req.param('location');
+                user.local.location = sanitizer.sanitize(req.param('location'));
             }
             if ( req.param('nickname') != '') {
-                user.local.nickname = req.param('nickname');
+                user.local.nickname = sanitizer.sanitize(req.param('nickname'));
             }
             if ( req.param('game') != '') {
-                user.local.game = req.param('game');
+                user.local.game = sanitizer.sanitize(req.param('game'));
             }
 
 			user.save();
@@ -1238,7 +1241,7 @@ module.exports = function(app, passport) {
 	
 	// process coach update form
 	app.post('/updatecoach', function(req, res){
-		var email = req.param('email');
+		var email = sanitizer.sanitize(req.param('email'));
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
