@@ -16,15 +16,13 @@
 	<% if (message.length > 0) { %>
 		<div class="alert"><%= message %></div>
 	<% } %>
-    <form class="login-form" action="/addstudent" method="post">
+    <form class="login-form" action="/addstudent" method="post" enctype='multipart/form-data'>
       <span>Enter an e-mail</span>
       <input type="email" name="email" placeholder="123@mail.com" autofocus required/>
 	  <span>Password</span>
       <input type="password" name="password" placeholder="password" required/>
 	  <span>Nickname</span>                                               
       <input type="text" name="nickname" placeholder="smith" required/>
-	  <span>Location</span>                                               
-      <input type="text" name="location" placeholder="Toronto" required/>
 	  <span>Student's favourite Game</span>
 	  
       <select name="game">
@@ -34,7 +32,7 @@
 		<option>Overwatch</option>
 	  </select>
 	  
-	  <span>Student's Photo</span>                                               
+	  <span>Student's Photo</span>                                              
       <input type="file" name="photo"/>   
 	  <button type="submit">Add</button>
 

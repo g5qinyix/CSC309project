@@ -979,6 +979,32 @@ module.exports = function(app, passport) {
                 newUser.local.nickname = req.param('nickname');
                 newUser.local.game = req.param('game');
                 newUser.local.occupation = 'student';
+                 //handle imgae upload
+                 
+                if (req.files.photo.name == '') {
+                    newUser.local.photo = '';
+                }
+                
+                else{   
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                        
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                    //save the url to user photo field
+                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                }
+               
 				var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
                 // save the user
                 newUser.save(function(err) {
@@ -1024,11 +1050,7 @@ module.exports = function(app, passport) {
 
 				// There are missing fields.
                 if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
-                    if (req.param('streetAddress').length == 0 ||
-                        req.param('city').length == 0 ||
-                        req.param('province').length == 0){
-                            return done(null, false, req.flash('signupMessage', 'Must enter all location fields if offline coach.'));
-                    }
+
                     // obtain coordinates of address.
                     var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
                     var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
@@ -1046,11 +1068,13 @@ module.exports = function(app, passport) {
                         newUser.local.coordinate.lng = result.results[0]["geometry"]["location"]["lng"];
 
                     }
-                    //console.log(jsonHTTP.responseText); 
-                    
-
+                   newUser.local.address.street = req.param('streetAddress');
+                   newUser.local.address.city = req.param('city');
+                   newUser.local.address.province = req.param('province');
                 }
                 
+                
+                newUser.local.coachtype = req.param("coachtype");
 
                 // set the user's local credentials
                 newUser.local.email    = email;
@@ -1063,30 +1087,7 @@ module.exports = function(app, passport) {
                 newUser.local.rate.grade = 0;
                 newUser.local.rate.list = [];
                 newUser.local.rate.studentlist=[];
-                newUser.local.coachtype = req.param("coachtype");
-                newUser.local.address.street = req.param('streetAddress');
-                newUser.local.address.city = req.param('city');
-                newUser.local.address.province = req.param('province');
-
-                //read image file
-                fs.readFile(req.files.photo.path, function(err, data){
-                    var imageName = req.files.photo.name;
-                    if(!imageName){
-                        console.log("There was an error");
-                    }else{
-                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
-                        console.log(newPath);
-                        fs.writeFile(newPath, data, function(err){
-                            if (err) {
-                                console.log("err");
-                                }
-                            });
-                        }
-                });
-                
-                //save the url to user photo field
-                newUser.local.photo = '/tmp/'+ req.files.photo.name;
-                  
+                 
                 if (req.files.photo.name == '') {
                     newUser.local.photo = '';
                 }
@@ -1108,12 +1109,10 @@ module.exports = function(app, passport) {
                             }
                     });
                     //save the url to user photo field
-                    newUser.local.photo = '/tmp/'+ email+req.files.photo.name;
+                    newUser.local.photo = '/tmp/'+ email+ req.files.photo.name;
                 }
-                
-
                 // save the user
-			    var messageInfo = 'Success: new user ' + newUser.local.email + ' has been added.';
+			    var messageInfo = 'Success: new user ' + email + ' has been added.';
 				
                 newUser.save(function(err) {
 					if (err) {
@@ -1218,12 +1217,44 @@ module.exports = function(app, passport) {
             if ( req.param('game') != '') {
                 user.local.game = req.param('game');
             }
+            
+             //handle imgae upload
+         
+                   
+            if (req.files.photo.name != '') {
+                    //read image file
+                    fs.readFile(req.files.photo.path, function(err, data){
+                        var imageName = req.files.photo.name;
+                        if(!imageName){
+                            console.log("There was an error");
+                        }else{
+                            var newPath =  path.join(__dirname, '../public/tmp', email+imageName);
+                        
+                            fs.writeFile(newPath, data, function(err){
+                                if (err) {
+                                    console.log("err");
+                                    }
+                                });
+                            }
+                    });
+                 
+                   if ( user.local.photo != '') {
+                       //delete old images
+                       var oldPath = path.join(__dirname, '../public', user.local.photo);
+                      fs.unlinkSync(oldPath);
+                    }
+                    
+                    //save the url to user photo field
+                    user.local.photo = '/tmp/'+ email+ req.files.photo.name;
+            }
+             
+               
 
 			user.save();
            
-			res.render('studentcoach.ejs', {
-				user: user
-			})
+			res.send("A new student has been updated successfully");
+			
+
 		});														
 	});
 	
@@ -1241,12 +1272,10 @@ module.exports = function(app, passport) {
                 user.local.password = user.generateHash(req.param('password'));     
             }
             
+
             if (req.param("coachtype") == "Offline" || req.param("coachtype") == "Both"){
-                    if (req.param('streetAddress').length == 0 ||
-                        req.param('city').length == 0 ||
-                        req.param('province').length == 0){
-                    }
-                    else{
+                 
+                  
                     // obtain coordinates of address.
                     var urlAPIKey = "&key=AIzaSyA1IGuTcLPxARLu0f8zLHV5dyDx-6CbSa8";
                     var urlBeginning = "https://maps.googleapis.com/maps/api/geocode/json?address=";
@@ -1271,10 +1300,6 @@ module.exports = function(app, passport) {
                     user.local.coachtype = req.param("coachtype");
                     
                     }
-            
-                }
-                
-
                 // use the generateHash function in our user model
 	            // parse the url
                
@@ -1282,7 +1307,6 @@ module.exports = function(app, passport) {
             if(req.param('coachtype') == 'Online'){
                 user.local.coachtype = req.param('coachtype');    
             }
-            
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
             }
@@ -1318,7 +1342,7 @@ module.exports = function(app, passport) {
                 fs.unlinkSync(oldPath);
                 }
                 //save the url to user photo field
-                user.local.photo = '/tmp/'+ eamil+req.files.photo.name;
+                user.local.photo = '/tmp/'+ email+req.files.photo.name;
             } 
 			user.save();
 			//update session
@@ -1328,7 +1352,8 @@ module.exports = function(app, passport) {
                 user:user,
                 comments: null
                 })
-		});																			
+        });
+																				
 	});
 	
     
@@ -1479,6 +1504,90 @@ module.exports = function(app, passport) {
                 // comment exists, delete the comment
 				message.remove();
 				var messageinfo = 'Success: message with id ' + messageId + ' has been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
+			};
+		});
+	})
+	
+	
+	//show the delete all messages form
+	app.get('/deleteallmessages', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteallmessages.ejs', {message: req.flash('deleteMessages')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete all messages form
+    app.post('/deleteallmessages', function(req, res) {
+        Message.remove(function(err) {
+            // if there are any errors, return the error
+            if (err) {
+                throw err
+            } else {
+				var messageinfo = 'Success: all messages have been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
+			};
+		});
+	})
+	
+	//show the delete all comments form
+	app.get('/deleteallcomments', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteallcomments.ejs', {message: req.flash('deleteComments')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete all messages form
+    app.post('/deleteallcomments', function(req, res) {
+        Comment.remove(function(err) {
+            // if there are any errors, return the error
+            if (err) {
+                throw err
+            } else {
+				var messageinfo = 'Success: all comments have been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
+			};
+		});
+	})
+	
+	//show the delete all users form
+	app.get('/deleteallusers', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteallusers.ejs', {message: req.flash('deleteComments')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete all users form
+    app.post('/deleteallusers', function(req, res) {
+        User.remove(function(err) {
+            // if there are any errors, return the error
+            if (err) {
+                throw err
+            } else {
+				var admin = new User();
+                admin.local.email = "admin@bemaster.com"
+                admin.local.password = admin.generateHash('admin');
+                admin.local.nickname = "TeamCSC309";
+				admin.local.occupation = "administrator"
+                admin.save();
+				
+				req.login(admin, function(err) {
+				    if (err) console.log(err)
+			        });
+				
+				var messageinfo = 'Success: all users have been deleted';
 				res.render('admin/info', {
 					message: messageinfo
 					});

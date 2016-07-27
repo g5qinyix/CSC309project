@@ -20,10 +20,12 @@ require('./config/passport')(passport); // pass passport for configuration
 
 //admin setting
 var admin = new User();
-admin.local.email = "admin@bemaster.com"
+admin.local.email = "admin@bemaster.com";
 admin.local.password = admin.generateHash('admin');
+
+admin.local.occupation = "administrator";
 admin.local.nickname = "TeamCSC309";
-admin.local.occupation= "admin";
+
 admin.save();
 
 

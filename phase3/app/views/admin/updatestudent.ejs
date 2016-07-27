@@ -21,8 +21,6 @@
       <input type="password" name="password" placeholder="password" autofocus/>
 	  <span>Enter student new Nickname</span>                                               
       <input type="text" name="nickname" placeholder=<%= user.local.nickname %> />
-	  <span>Enter student new Location</span>                                               
-      <input type="text" name="location" placeholder=<%= user.local.location %> />
 	  <span>Select student game</span>
 	   <select name="game">
 		<option>Dota2</option>
@@ -31,7 +29,8 @@
 		<option>Overwatch</option>
 		<option selected='selected'><%= user.local.game %></option>
 	  </select>
-      
+       <span>Student's Photo</span>                                              
+      <input type="file" name="photo"/> 
 	  <button type="submit">Update</button>
 	<p class="message">Cancel <a href="/updateuser">return</a></p>
     </form>
