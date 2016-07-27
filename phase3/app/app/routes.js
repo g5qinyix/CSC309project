@@ -1253,8 +1253,14 @@ module.exports = function(app, passport) {
                 user.local.password = user.generateHash(req.param('password'));     
             }
             
-            if (req.param('location') != '') {
-                user.local.location = req.param('location');
+            if (req.param('streetAddress') != '') {
+                user.local.address.street = req.param('streetAddress');
+            }
+			if (req.param('city') != '') {
+                user.local.address.city = req.param('city');
+            }
+			if (req.param('province') != '') {
+                user.local.address.province = req.param('province');
             }
             if ( req.param('nickname') != '') {
                 user.local.nickname = req.param('nickname');
@@ -1381,13 +1387,13 @@ module.exports = function(app, passport) {
 				if (err) {
                     throw err
                 }
-				if (!messages) {
-                    res.render('admin/commentsList.ejs', {
+				if (messages == null) {
+                    res.render('admin/messageslist.ejs', {
 						message: "No message",
 						messages: null
 					})
                 } else {
-					res.render('admin/messagesList.ejs', {
+					res.render('admin/messageslist.ejs', {
 						message: 'All messages list',
 						messages: messages
 					})
@@ -1424,6 +1430,90 @@ module.exports = function(app, passport) {
                 // comment exists, delete the comment
 				message.remove();
 				var messageinfo = 'Success: message with id ' + messageId + ' has been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
+			};
+		});
+	})
+	
+	
+	//show the delete all messages form
+	app.get('/deleteallmessages', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteallmessages.ejs', {message: req.flash('deleteMessages')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete all messages form
+    app.post('/deleteallmessages', function(req, res) {
+        Message.remove(function(err) {
+            // if there are any errors, return the error
+            if (err) {
+                throw err
+            } else {
+				var messageinfo = 'Success: all messages have been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
+			};
+		});
+	})
+	
+	//show the delete all comments form
+	app.get('/deleteallcomments', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteallcomments.ejs', {message: req.flash('deleteComments')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete all messages form
+    app.post('/deleteallcomments', function(req, res) {
+        Comment.remove(function(err) {
+            // if there are any errors, return the error
+            if (err) {
+                throw err
+            } else {
+				var messageinfo = 'Success: all comments have been deleted';
+				res.render('admin/info', {
+					message: messageinfo
+					});
+			};
+		});
+	})
+	
+	//show the delete all users form
+	app.get('/deleteallusers', isLoggedIn,  function(req, res){
+        if (req.user.local.email == 'admin@bemaster.com') {
+            res.render('admin/deleteallusers.ejs', {message: req.flash('deleteComments')});
+        } else {
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
+        };
+	});
+	
+	// process the delete all users form
+    app.post('/deleteallusers', function(req, res) {
+        User.remove(function(err) {
+            // if there are any errors, return the error
+            if (err) {
+                throw err
+            } else {
+				var admin = new User();
+                admin.local.email = "admin@bemaster.com"
+                admin.local.password = admin.generateHash('admin');
+                admin.local.nickname = "TeamCSC309";
+				admin.local.occupation = "administrator"
+                admin.save();
+				
+				req.login(admin, function(err) {
+				    if (err) console.log(err)
+			        });
+				
+				var messageinfo = 'Success: all users have been deleted';
 				res.render('admin/info', {
 					message: messageinfo
 					});
