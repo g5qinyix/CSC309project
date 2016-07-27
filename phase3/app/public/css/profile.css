@@ -2,7 +2,7 @@ body{
 	display: block;
 	margin: 0px;
 	box-sizing: border-box;
-	font-family: 'Merriweather','Georgia',Cambria,"Times New Roman",Times;
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
 	background: #ececec;
 }
 
@@ -381,7 +381,7 @@ h1{
 /*comment section*/
 
 #showcomment{
-    height:600px;
+	height: 600px;
 	overflow: auto;
 }
 .content{
@@ -470,3 +470,49 @@ h1{
 	
 }
 
+    th,td
+    {
+        margin: 0;
+        text-align: center;
+        border-collapse: collapse;
+        outline: 1px solid #e3e3e3;
+    }
+
+    td
+    {
+        padding: 5px 10px;
+    }
+
+    th
+    {
+        background: #666;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    td:hover
+    {
+        cursor: pointer;
+        background: #666;
+        color: white;
+    }
+.n_ava{
+	background-color: black;
+}
+
+.test{
+	display: none;
+}
+
+.n_pass{
+	background-color: gray;
+}
+
+.passed{
+	display: none;
+}
+
+.history{
+	width: 50%;
+	background: white;
+}

@@ -8,6 +8,8 @@
 	<script type="text/javascript" src="/script/nav_control.js"></script>
 	<link rel="stylesheet" href="/css/map.css" type="text/css">
 	<link href="/css/lol.css" rel="stylesheet" type="text/css" />
+	
+ 
 </head>
 <body>
 	<header>
@@ -72,6 +74,7 @@
 		<label>
 		<span>Cost rate</span>
 		<select id="priceSelect" name='cost'>
+		<select name='cost'>
 			<option>Free</option>
 			<option>$1-$10</option>
 			<option>$11-$20</option>
@@ -90,13 +93,12 @@
 		<br>
 		<br>
 		<p id="coachInfo" hidden><%=JSON.stringify(gameCoachInfo)%></p>
-		
-		
-		<!--responsible design for mobile window -->
 		<div id="container_mobile">
 			<% coaches.forEach(function(coach) { %>
+		
 			<a href="/users/<%=coach._id%>"><div class="block">
-			<% if (coach.local.photo == "") { %>
+			
+				<% if (coach.local.photo == "") { %>
 			 	<img src="/images/person.gif" >
 				<% } %>
 				<% if (coach.local.photo != "") { %>
@@ -114,9 +116,7 @@
 			</div></a>
 			<% }); %>		
 		</div>
-		
-		
-	    <!--Recomendation :Top 4 Coaches for each game -->
+		 <!--Recomendation :Top 4 Coaches for each game -->
 		
 		<% if (coachtype == null) { %>
 		<% coaches.forEach(function(coach) { %>
@@ -145,11 +145,9 @@
 		        </div></a>
 	        </div>
         </div>
-        <% }); %>	
+        <% }); %>
 		<% } %>
-		
-		
-	   <!--Search online coaches -->
+		 <!--Search online coaches -->
 	   
 		<% if (coachtype == "Online") { %>
 		<% coaches.forEach(function(coach) { %>
@@ -160,13 +158,13 @@
 		            <img class="img-responsive" src=
 			        "/images/person.gif">
 					<% } %>
-					<% if (coach.local.photo != "") { %>
+				<% if (coach.local.photo != "") { %>
 		            <img class="img-responsive" src=
 			        "<%=coach.local.photo%>">
 					<% } %>
 			        <p style="font-size:20px"><%=coach.local.nickname%></p>
 					
-		        </div>
+				</div>
 		        <a href="/users/<%=coach._id%>"><div class="back-1">
 					<% if (coach.local.rate.grade == 0) { %>
 		        	<p style="font-size:15px">Rating:N/A</p>

@@ -30,6 +30,24 @@ var userSchema = mongoose.Schema({
         coachtype    : String,
         photo        : String,
         follow       : [String],
+        schedule      : {
+            "_10_11": {type: [String], default: [0,0,0,0,0,0,0]},
+            "_11_12": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_12_13": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_13_14": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_14_15": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_15_16": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_16_17": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_17_18": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_18_19": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_19_20": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_20_21": {type: [String], default: [0,0,0,0,0,0,0]}, 
+            "_21_22": {type: [String], default: [0,0,0,0,0,0,0]}, 
+           "_22_23": {type: [String], default: [0,0,0,0,0,0,0]},
+            "_23_00": {type: [String], default: [0,0,0,0,0,0,0]}  
+        },
+        pocket: {type:Number, default: 10000},
+        recent_orders :[String]
     },
     
     facebook         : {
