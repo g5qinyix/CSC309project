@@ -74,7 +74,6 @@
 		<label>
 		<span>Cost rate</span>
 		<select id="priceSelect" name='cost'>
-		<select name='cost'>
 			<option>Free</option>
 			<option>$1-$10</option>
 			<option>$11-$20</option>
@@ -83,7 +82,7 @@
 			<option>All</option>
 			<% if (cost != null) { %>
 			<option selected='selected'><%=cost%></option>
-            <% } %>
+			<% } %>
 		</select>
 		</label>
 		<label>
