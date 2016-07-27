@@ -2,7 +2,7 @@
 // set up ======================================================================
 // get all the tools we need
 var express  = require('express');
-var app      = express();
+var app=module.exports= express();
 var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');

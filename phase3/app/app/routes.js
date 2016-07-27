@@ -15,7 +15,8 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/', function(req, res) {  
             res.render("home.ejs",{
-                user: null
+                user: null,
+                message: null
                 }); 
 	}); 
 	// =====================================
@@ -90,6 +91,8 @@ module.exports = function(app, passport) {
 		failureRedirect : '/coachsignup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+    
+    
     
     // =====================================
 	// Game pages =====================
@@ -247,7 +250,7 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }    
                         else {
-							console.log("coaches:" + coaches);
+						
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
@@ -282,7 +285,7 @@ module.exports = function(app, passport) {
                          console.log("some error");
                         }
                         else{
-							console.log(coaches);
+					
 							var limitedCoachInfo = [];
 							for (var i=0; i<coaches.length; i++){
 								var limitedCoach = new Object();
@@ -348,7 +351,8 @@ module.exports = function(app, passport) {
 	// Returned to homepage
 	app.get('/home', isLoggedIn, function(req, res) {
             res.render("home.ejs", {
-                user: req.user
+                user: req.user,
+                message: null
             });
 	});
 	
@@ -398,7 +402,7 @@ module.exports = function(app, passport) {
                             console.log("There was an error");
                         }else{
                             var newPath =  path.join(__dirname, '../public/tmp', req.user.local.email+imageName);
-                            console.log(newPath);
+                        
                             fs.writeFile(newPath, data, function(err){
                                 if (err) {
                                     console.log("err");
@@ -419,7 +423,7 @@ module.exports = function(app, passport) {
 			user.save();
 			//update session
 			req.login(user, function(err) {
-				if (err) return next(err)
+				if (err) console.log(err)
 				else{
 					res.redirect('/profile');
 				}
@@ -531,6 +535,7 @@ module.exports = function(app, passport) {
     app.get('/users/*', checkLogin, function(req, res) {
         var url = req.url;
         var id = url.substring(7);
+        
         if (id == req.user._id) {
                 res.redirect('/profile');
         }
@@ -542,12 +547,19 @@ module.exports = function(app, passport) {
                 has_followed = 1;
             }
         }
-        console.log(id);
+ 
         User.findOne({ '_id' :  id }, function(err, user) {
+                 if (!user) {
+                        res.redirect('/') 
+                 }
+                 
+                 else{
+                        
                  if (err) {
-                        console.log(err);
-                        }    
-                console.log(user.local.occupation);     
+                        res.redirect('/')
+                             
+                }
+                
                 if (user.local.occupation =="student") {
                         res.render('viewstudent.ejs', {
                                 student : user,
@@ -573,24 +585,20 @@ module.exports = function(app, passport) {
                                 });
                         });
                 }
+         }
         });
         }
+        
     });
 
     app.get('/follow/*', checkLogin, function(req, res){
-        console.log("!!!!!!!!!!!!!!!!!!!")
         var url = req.url;
         var id = url.substring(8);
-        console.log(id);
+
         var email = req.user.local.email;
-        User.findOne({ '_id' :  id }, function(err, user){
-            if (err){
-                console.log(err);
-            }
-        });
+  
         User.findOne({ 'local.email' :  email }, function(err, user){
             user.local.follow.push(id);
-            console.log(user.local.follow);
             user.save();
             req.login(user, function(err) {
                 if (err) return next(err)
@@ -614,7 +622,7 @@ module.exports = function(app, passport) {
                 }
             }
             user.local.follow.splice(index, 1);
-            console.log(user.local.follow);
+          
             user.save();
             req.login(user, function(err) {
                 if (err) return next(err)
@@ -665,6 +673,11 @@ module.exports = function(app, passport) {
         
         // handle rate(each coach has to get at least 3 times rate in order to get grade)
         User.findOne({'_id': coachid}).exec(function(err, coach){
+                if (!coach) {
+                     res.direct('/')
+           
+                 }
+                 else{
                 if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
                         coach.local.rate.list.push(rate);
                         if (coach.local.rate.list.length >= 3) {
@@ -681,6 +694,7 @@ module.exports = function(app, passport) {
                         }
                 coach.save();
                 res.redirect('/users/'+coachid);
+                 }
         }); 
     });
     
@@ -709,10 +723,7 @@ module.exports = function(app, passport) {
         newMessage.date = date;
         newMessage.save();
         console.log(receiverid);
-        User.findOne({'_id' : receiverid}).exec(function(err, user){
-                console.log("receiver id: " + user);
-                
-        });
+
         
         res.redirect('/users/'+receiverid);
     });
