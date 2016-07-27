@@ -64,19 +64,20 @@ describe('Student', function () {
         });
      
     });
-})
-
+});
 
 
 //Coach sign up --Online
-//test signup for no duplicate user, each
+//Test signup for no duplicate user, each
 //user has to sign up with an unique email
 describe('Coach', function () {
+  
   before(function(done) {
     return done();
     });
+  
   describe('Online Coach Sign up test', function () {
-    var newPath =  path.join(__dirname+'/person.gif');
+    var newPath =  path.join(__dirname +'/person.gif');
  
       it('should redirect to /home', function (done) {
         agent
@@ -91,13 +92,14 @@ describe('Coach', function () {
         .expect('Location','/home')
         .end(done)
       })
-  });     
+  });
+  
   after(function(done) {
       User.findOne({"local.email" : 'test2@mail.com'}).exec(function(err, user){
          var oldPath = path.join(__dirname, '../public', user.local.photo);
           fs.unlinkSync(oldPath);
           user.remove();
-            return done();
+          return done();
       });
  
   
@@ -135,7 +137,7 @@ describe('Coach', function () {
   });     
   after(function(done) {
       User.findOne({"local.email" : 'test3@mail.com'}).exec(function(err, user){
-            var oldPath = path.join(__dirname, '../public', user.local.photo);
+          var oldPath = path.join(__dirname, '../public', user.local.photo);
           fs.unlinkSync(oldPath);
           user.remove();
            return done();
@@ -222,6 +224,8 @@ describe('Search', function(){
   
 
 
+
+
 // =====================================
 // PROFILE SECTION =====================
 // =====================================
@@ -255,41 +259,6 @@ describe('UserProfile', function () {
 
     });
 });
-
-
-//User is login the can access his profile
-describe('UserProfile', function () { 
-  before(function(done) {
-      var user  = new User();
-      user.local.email ="userprofiletest2@mail.com";
-      user.local.password = user.generateHash("123456");
-      user.save();
-      agent
-        .post('/login')
-        .field('email', 'userprofiletest2@mail.com')
-        .field('password', '123456')
-        .expect('Location','/home')
-        .end(done)   
-    });
-  
-  describe('Login in - Profile ', function () {
-      it('should redirect to /profile', function (done) {
-        agent
-        .get('/profile')
-        .expect(200)
-        .end(done)
-      })
-  });
-  
-  after(function(done) {
-      User.remove({"local.email" : 'userprofiletest2@mail.com'}, function(err){
-         return done();
-        });
-     
-    });
-});
-
-
 
 
 // =====================================
@@ -457,5 +426,7 @@ describe('Comment and Rate', function () {
         });
      
     });
+    
 });
+
 
