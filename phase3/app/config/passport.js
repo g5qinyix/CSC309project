@@ -190,22 +190,7 @@ module.exports = function(passport) {
                 newUser.local.address.city = sanitizer.sanitize(req.param('city'));
                 newUser.local.address.province = sanitizer.sanitize(req.param('province'));
 
-                //read image file
-                fs.readFile(req.files.photo.path, function(err, data){
-                    var imageName = req.files.photo.name;
-                    if(!imageName){
-                        console.log("There was an error");
-                    }else{
-                        var newPath =  path.join(__dirname, '../public/tmp', imageName);
-                       
-                        fs.writeFile(newPath, data, function(err){
-                            if (err) {
-                                console.log("err");
-                                }
-                            });
-                        }
-                });
-                
+       
                 
                 //handle imgae upload
                 if (req.files.photo.name == '') {
