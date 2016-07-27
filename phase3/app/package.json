@@ -23,6 +23,8 @@
     "chai"   : "latest",
     "should" : "latest",
     "supertest" : "latest",
-	"sanitizer" : "latest"
+	"sanitizer" : "latest",
+    "load-tester" : "latest",
+    "compression" : "latest"
   }
 }
