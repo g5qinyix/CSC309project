@@ -309,12 +309,6 @@ module.exports = function(app, passport) {
      
         });
     
-    
-
-    
-    
-    
-    
 	// =====================================
 	// PROFILE SECTION =====================
 	// =====================================
@@ -1167,7 +1161,10 @@ module.exports = function(app, passport) {
         
         // handle rate(each coach has to get at least 3 times rate in order to get grade)
         User.findOne({'_id': coachid}).exec(function(err, coach){
-                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
+                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {
+					if (!coach) {
+						res.direct('/');          
+					}					
                         coach.local.rate.list.push(rate);
                         if (coach.local.rate.list.length >= 3) {
                                 var total = 0;
@@ -1347,7 +1344,7 @@ module.exports = function(app, passport) {
         if (req.user.local.email == 'admin@bemaster.com') {
             res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('aadmin/dminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
