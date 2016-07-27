@@ -19,9 +19,8 @@ require('./config/passport')(passport); // pass passport for configuration
 
 
 //admin setting
-
-
 User.findOne({ 'local.email' :  'admin@bemaster.com' }, function(err, user) {
+    console.log(user);
     // if there are any errors, return the error
     if (err)
         throw err

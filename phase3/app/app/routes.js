@@ -1303,12 +1303,8 @@ module.exports = function(app, passport) {
 	
 	// process coach update form
 	app.post('/updatecoach', function(req, res){
-<<<<<<< HEAD
 		var email = sanitizer.sanitize(req.param('email'));
-=======
-		var email = req.param('email');
-        console.log(email)
->>>>>>> origin/master
+
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
