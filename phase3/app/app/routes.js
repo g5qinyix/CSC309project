@@ -5,8 +5,10 @@
 var User       		= require('../app/models/user'); 
 var Comment         = require('../app/models/comment');
 var Message         = require('../app/models/message');
+
 var fs     = require('fs');
 var path     = require('path');
+
 
 module.exports = function(app, passport) {
 	// =====================================
@@ -14,7 +16,8 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/', function(req, res) {  
             res.render("home.ejs",{
-                user: null
+                user: null,
+                message: null
                 }); 
 	}); 
 	// =====================================
