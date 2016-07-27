@@ -163,8 +163,6 @@ module.exports = function(passport) {
 
                     }
                     //console.log(jsonHTTP.responseText); 
-                    
-
                 }
                 
 

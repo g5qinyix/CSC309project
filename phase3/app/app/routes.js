@@ -327,10 +327,13 @@ module.exports = function(app, passport) {
         
 		//handle student  
 		if (req.user.local.occupation == "student") {
-                res.render('studentprofile.ejs', {
-                           user : req.user
+                User.find({'local.occupation':'coach', 'local.game':req.user.local.game}).sort({'rate': -1}).
+                limit(4).exec(function(err, coaches){
+                        res.render('studentprofile.ejs', {
+                           user : req.user,
+                           coaches: coaches
                            });
-         
+                        })
         }
         
 		//handle coach
@@ -870,14 +873,16 @@ module.exports = function(app, passport) {
     
     // process the change password form
 	app.post('/changePassword', function(req, res){
+        console.log(req.user.local.password);
 		var email = req.user.local.email;
 		//update database
 		User.findOne({ 'local.email' :  email }, function(err, user) {
             if (err) {
                 return next(err);
             } else {
-                user.local.password = user.generateHash(req.param('newPassword'));
+                user.local.password = user.generateHash(req.param('newpassword'));
                 user.save();
+                
                 res.render('admin/changePasswordSuccess.ejs');
             }
 		});													
@@ -1119,7 +1124,6 @@ module.exports = function(app, passport) {
             if ( req.param('coachtype') != '') {
                 user.local.coachtype = req.param('coachtype');
             }
-			
 			user.save();
 			res.render('coachprofile.ejs', {
 				user: user,
@@ -1128,6 +1132,7 @@ module.exports = function(app, passport) {
 		});														
 	});
 	
+    
 	//show the delete user form
 	app.get('/deleteUser', isLoggedIn,  function(req, res){
         if (req.user.local.email == 'admin@bemaster.com') {
@@ -1136,6 +1141,7 @@ module.exports = function(app, passport) {
             res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
         };
 	});
+    
 	
 	// process the delete user form
     app.post('/deleteUser', function(req, res) {
