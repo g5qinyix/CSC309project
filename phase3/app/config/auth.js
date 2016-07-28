@@ -6,8 +6,9 @@ module.exports = {
     'facebookAuth' : {
         'clientID'      : '683943341746934', // your App ID
         'clientSecret'  : '4b07872f774bddd899ff06a7a31ca03d', // your App Secret
-        'callbackURL'   : 'https://radiant-savannah-34193.herokuapp.com/BeMaster/facebook/callback'
+        'callbackURL'   : 'http://localhost:3000/BeMaster/facebook/callback'
     }
 }
+
 
 

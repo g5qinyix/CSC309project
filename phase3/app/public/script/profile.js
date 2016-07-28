@@ -16,4 +16,10 @@ $(document).ready(function(){
 		function(e){
 		$('#friends_text').hide();
     });
+	
+	$('#viewcomment').on('click', function(){
+		$('#showcomment').toggle();
+		
+	})
+	
  })
