@@ -675,7 +675,7 @@ module.exports = function(app, passport) {
             req.login(user, function(err) {
                 if (err) return next(err)
                 else{
-                    res.redirect('/friend');
+                    res.redirect('/users/' + id);
                    
                 }
             });
@@ -1114,26 +1114,33 @@ module.exports = function(app, passport) {
                 user.local.recent_orders.splice(0,2);
             }
             user.save();
-            req.login(user, function(err) {
-            if (err) return next(err)
-                else{
-                    res.render('confirmation.ejs',{
-                        money : cost,
-                        target_coach: target_coach,
-                        target_coach_id : target_coach_id
-                    });
-                }
-            });
-            console.log(cost);
-            var newMessage = new Message(); 
-            newMessage.sender.id = user._id;
-            newMessage.receiver.id = id;
-            newMessage.sender.content = req.user.local.nickname + "book a reservation" + ", sending you " + cost + " dollars";
-            newMessage.receiver.content = req.user.local.nickname + "book a reservation" + ", sending you " + cost + " dollars";
-            newMessage.receiver.status=0;
-            var date = new Date();
-            newMessage.date = date;
-            newMessage.save();   
+            if (cost!= 0){
+            	req.login(user, function(err) {
+            	if (err) return next(err)
+                	else{
+                    	res.render('confirmation.ejs',{
+                        	money : cost,
+                        	target_coach: target_coach,
+                        	target_coach_id : target_coach_id
+                    	});
+                	}
+            	});
+            	console.log(cost);
+	            var newMessage = new Message(); 
+	            newMessage.sender.id = user._id;
+	            newMessage.receiver.id = id;
+	            newMessage.sender.content = "I " + "book a reservation" + ", sending you " + cost + " dollars";
+	            newMessage.receiver.content = req.user.local.nickname + "book a reservation" + ", sending you " + cost + " dollars";
+	            newMessage.receiver.status=0;
+	            var date = new Date();
+	            newMessage.date = date;
+	            newMessage.save();   
+            }
+            else{
+            	req.login(user, function(err) {
+            		res.redirect('/order/' + id);
+            	})
+            }
         });                                             
     });
 	

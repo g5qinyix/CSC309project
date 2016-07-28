@@ -36,16 +36,16 @@
 				<p>Your account: <%=user.local.email%></p>
 				<p>Your coachtype: <%=user.local.coachtype%></p>
 			</div>
-			<div id="edit" onclick="location.href='/editcoach'">
-				<p>Edit Information</p>
-				<img src="/images/edit.png">
-			</div>
-			<div id="schedule" onclick = "location.href='/myschedule'">
-				<p>My schedule</p>
-			</div>
+			<button id="edit" onclick="location.href='/editcoach'">
+				Edit Information
+			</button>
+			<button id="schedule" onclick = "location.href='/myschedule'">
+				My schedule
+			</button>
 		</div>
 	</section>
 	<section id="service">
+		<h3>Service</h3>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3-1">
@@ -87,7 +87,7 @@
   
     </section>
 	<section class="others_life">
-		<h1 id="viewcomment">View Comments</h1>
+		<h3 id="viewcomment">View Comments</h3>
 		<div id="showcomment">
 		<% if (comments) { %>
 			<% comments.forEach(function(comment) { %>
