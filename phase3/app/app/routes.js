@@ -1114,6 +1114,7 @@ module.exports = function(app, passport) {
         });
         User.findOne({'_id' : req.user._id}, function(err, user){
             user.local.pocket = user.local.pocket - cost;
+            console.log(cost);
             user.local.recent_orders.push(target_coach);
             user.local.recent_orders.push(cost);
             if (user.local.recent_orders.length > 10){
@@ -1130,6 +1131,7 @@ module.exports = function(app, passport) {
                     });
                 }
             });
+            console.log(cost);
             var newMessage = new Message(); 
             newMessage.sender.id = user._id;
             newMessage.receiver.id = id;

@@ -1,0 +1,19 @@
+body{
+	display: block;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: "Josefin slab", "Myriad Pro", Arial,sans-serif;
+	background: #ececec;
+}
+
+
+
+#confirmation{
+	text-align: center;
+	margin:0 auto;
+	margin:25%;
+	padding: 2%;
+	background: white;
+	box-shadow: #666 0px 0px 10px; 
+	border-radius: 15px;
+}

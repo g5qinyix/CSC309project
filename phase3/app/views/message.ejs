@@ -19,7 +19,6 @@
 		<nav>
 			<ul>
 				<li class="logo"><a href="/home">BeMaster</a></li>
-				<li style="font-weight:bold;float:left;margin-left:4%"><a href="/games/lol">Coaches</a></li>
 				<li><img src="/images/close-envelope.png" onmouseover='src="/images/close-envelope1.png"' onmouseout='src="/images/close-envelope.png"' onclick="location.href='/messaging';"></li>
                 <li style="font-weight:bold; margin-left:20px"><a href='/logout'>Log Out</a></li>
 				<li style="font-weight:bold"><a href='/profile'><%= user.local.nickname%></a></li>
@@ -29,6 +28,7 @@
 	
 	<section id= "chat-sys">
 		<div id = "friend-list">
+			<h4>Your Contact Person</h4>
 			<% contacters.forEach(function(contacter){ %>
 			<a href="/viewmessage/<%=contacter._id%>">
 				<div class="block">				

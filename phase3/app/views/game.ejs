@@ -30,19 +30,19 @@
 	</header>
 	<section id="nav">
 		<div class="games">
-			<a href='/games/lol'><p class="text">League of Legends</p>
+			<a href='/games/lol'><p class="text"></p>
 			<img class="img" src="/images/lol_logo.png"></a>
 		</div>
 		<div class="games">
-			<a href='/games/overwatch'><p class="text">Overwatch</p>
+			<a href='/games/overwatch'><p class="text"></p>
 			<img class="img" src="/images/overwatch_logo.png"></a>
 		</div>
 		<div class="games">
-			<a href='/games/dota2'><p class="text">Dota2</p>
+			<a href='/games/dota2'><p class="text"></p>
 		    <img class="img" src="/images/dota2_logo.png"></a>
 		</div>
 		<div class="games">
-			<a href='/games/csgo'><p class="text">CS: GO</p>
+			<a href='/games/csgo'><p class="text"></p>
            <img class="img" src="/images/csgo_logo.png"></a>
 		</div>
 	</section>
@@ -74,7 +74,6 @@
 		<label>
 		<span>Cost rate</span>
 		<select id="priceSelect" name='cost'>
-		<select name='cost'>
 			<option>Free</option>
 			<option>$1-$10</option>
 			<option>$11-$20</option>
@@ -119,7 +118,12 @@
 		 <!--Recomendation :Top 4 Coaches for each game -->
 		
 		<% if (coachtype == null) { %>
+		<% var i = 0 %>
 		<% coaches.forEach(function(coach) { %>
+		<% if (i == 3){ %>
+		<%	i = 0 %>
+		<%	} %>
+		<% i = i + 1 %>
 		<div style="margin-bottom:10%" class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3">
@@ -134,7 +138,8 @@
 			        <p style="font-size:20px"><%=coach.local.nickname%></p>
 					
 		        </div>
-		        <a href="/users/<%=coach._id%>"><div class="back-1">
+		        <% var style = "back-" + i %>
+		        <a href="/users/<%=coach._id%>"><div class="<%=style%>">
 					<% if (coach.local.rate.grade == 0) { %>
 		        	<p style="font-size:15px">Rating:N/A</p>
 				    <% } %>

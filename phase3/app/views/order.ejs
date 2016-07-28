@@ -23,7 +23,6 @@
 	<% var today=new Date(); %>
 	<% var n_day=today.getDay(); %>
 	<% var h=today.getHours(); %>
-	<h1><%=h%></h1>
 	<form id="order_sheet" action="/transaction/<%=target_coach._id%>" method="post" enctype='multipart/form-data'>
 		<td><input class = "test" type="checkbox" name='validate' value='test' checked></td>
 		<table width="80%" align="center" >
@@ -94,9 +93,9 @@
 		        	<th>Saturday</th>
 		        <%}%>
 		    </tr>
-		</div class = "sche">
-			<h3>Schedule</h3>
-			<p>The cost is <%=target_coach.local.cost%> per hour</p>
+		</div>
+			<h3>Select a time slot</h3>
+			<h4>The cost is <%=target_coach.local.cost%> dollars per hour</h4>
 		    <tr>
 		        <th>10:00 - 11:00</th>
 		        	<% for (var i =0; i < _10_11.length; i ++) { %>
@@ -353,6 +352,7 @@
 		        </div>
 		    </tr>
 		</table>
+		<br>
 		<button type="submit">Confirm</button>
 		</form>
 	</section>
