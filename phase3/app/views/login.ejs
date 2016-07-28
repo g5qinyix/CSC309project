@@ -5,10 +5,15 @@
 	<link rel="stylesheet" href="../css/a4c.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>login</title>
+	<script type="text/javascript" src="/script/jquery-2.2.4.min.js"></script>
 	<script src='https://www.google.com/recaptcha/api.js'></script>
-	<script type='text/javascript'>
-    var captchaContainer = null;
-    </script>
+	<script>
+	console.log('plz');
+	function recapchaCheck() {
+		$('#submitbtn').removeAttr('disabled');
+	}
+	</script>
+
 </head>
 <body>
 	<!--codes for the navigation bar-->
@@ -23,18 +28,15 @@
 	<% } %>
 
 	<!-- LOGIN FORM -->
+	<p class="message">Enter Login Information Below:</p>
     <form class="login-form" action="/login" method="post">
-
-      <input id="loginname" type="text" name="email" placeholder="username" autofocus/>
-
-      <input id="loginpassword" type="password" name="password" placeholder="password"/>
-      <div class="g-recaptcha" data-sitekey="6LfPFyYTAAAAAK7JszKQMl5NgMUSaHHTEKMY6_Na"></div>
-	  <button type="submit">Login</button>
-	   
-      <p class="message">Not registered? <a href="/signup">Create an account</a></p>
-
-      <a href="/BeMaster/facebook"><img src="images/facebook.png" style="padding-top:20px;width:190px;height:45px">
-	  </a>
+		<input id="loginname" type="text" name="email" placeholder="username" autofocus/>
+		<input id="loginpassword" type="password" name="password" placeholder="password"/>
+		<p class="message">Must complete reCAPTCHA to login.</p>
+		<div class="g-recaptcha" data-callback="recapchaCheck" data-sitekey="6LfPFyYTAAAAAK7JszKQMl5NgMUSaHHTEKMY6_Na"></div>
+		<button type="submit" id="submitbtn" disabled>Login</button>
+		<p class="message">Not registered? <a href="/signup">Create an account</a></p>
+		<a href="/BeMaster/facebook"><img src="images/facebook.png" style="padding-top:20px;width:190px;height:45px"></a>
       
     </form>
   </div>
