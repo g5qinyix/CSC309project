@@ -8,16 +8,11 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 var compression = require('compression');
-
-
-
-
-var configDB = require('./config/database.js');
 var User     = require('./app/models/user');
 
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect('mongodb://heroku_7wd41t3s:3j5sv89q5p26ot7db3sokdr68p@ds031965.mlab.com:31965/heroku_7wd41t3s'); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 
 
