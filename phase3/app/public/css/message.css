@@ -74,14 +74,13 @@ nav ul li.logo{
 }
 
 #chat-sys{
-  margin:auto;
-  width:100%;
+  margin:5%;
   overflow: auto;
 }
 
 #friend-list{
-  margin-top: 10%;
-  margin-left: 6%;
+  margin-top: 5%;
+  margin-left: 10%;
   overflow: auto;
   height: 35vw;
   float: left;
@@ -90,9 +89,9 @@ nav ul li.logo{
 
 
 #convo{
-  margin-top:2%;
+  margin-top:5%;
   float: left;
-  margin-left: 10%;
+  margin-left: 5%;
 
 }
 

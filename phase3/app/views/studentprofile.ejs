@@ -36,18 +36,26 @@
 				<p>Your account: <%=user.local.email%></p>
 			</div>
 			<div id="edit" onclick="location.href='/editstudent'">
-				<img src="/images/edit.png">
+				<img id = "edit_img" src="/images/edit.png">
 			</div>
 			<div id="friends">
-				<p onclick="location.href='/friend'">my friends</p>
+				<img id = "friends_img" src = "/images/friends.png" onclick="location.href='/friend'">
 			</div>
+			<br>
+			<br>
+			<p id = "friends_text"> Your Favourite Coaches</p>
+			<p id = "edit_text">Edit Your profile</p>
 	
 		</div>
 	</section>
     
 	<section id="service">
+<<<<<<< HEAD
+		<h4>Top Coaches for you</h4>
+=======
 		<h1>Top Coaches for you</h1>
 		
+>>>>>>> 3913460cb61e58299c9b12a67d3681921399625a
 		<% coaches.forEach(function(coach) { %>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
@@ -67,23 +75,32 @@
 	        </div>
         </div>
 		<% }); %>
+<<<<<<< HEAD
+    </section>
+    <div class = "history">
+        	<h2>Balance: $<%=user.local.pocket%></h2>
+=======
 		
         <div class = "history">
         	<h2>Total: <%=user.local.pocket%></h2>
+>>>>>>> 3913460cb61e58299c9b12a67d3681921399625a
         	<h3>Order history</h3>
         	<% for (var i = 0; i < 10; i = i + 2){ %>
+        	<% if (user.local.recent_orders[i] != undefined){ %>
         	<div class="h_block">
         		<div class="receiver">
-        			<p><%=user.local.recent_orders[i]%></p>
+        			<h4><%=user.local.recent_orders[i]%></h4>
+        			<p>Money Sent</p>
         		</div>
         		<div class="amount">
-        			<p><%=user.local.recent_orders[i + 1]%></p>
+        			<h4>-$<%=user.local.recent_orders[i + 1]%></h4>
         		</div>
         	</div>
         	<% } %>
-        </div>
-    </section>
-	
+        <% } %>
+     </div>
+     <script type="text/javascript" src="/script/jquery-2.2.1.js"></script>
+	<script type="text/javascript" src="/script/profile.js"></script>
 	
 	
 	

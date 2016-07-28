@@ -65,6 +65,7 @@
 		</div>
 	</section>
 	<section id="service">
+		<h3>Services</h3>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3-1">
@@ -111,8 +112,8 @@
     
 
 	<section class="others_life">
-	    <h1 id="viewcomment">Public Comments</h1>
-		<div id="showcomment" style="display:none" >
+	    <h2 id="viewcomment">Public Comments</h2>
+		<div id="showcomment" >
 		<% comments.forEach(function(comment) { %>
 		<div id="posts">
 			<div class = "small_photo">
@@ -132,7 +133,7 @@
     
     <section class='comment'>
         <form action="/comments/<%=coach._id%>" method='post'>
-             <h1>Leave a Comment</h1>
+             <h3>Leave a Comment</h3>
 			<h4>(You can only rate your coach once)</h4>
 			<label>
 			<span>Rate Your Coach</span>

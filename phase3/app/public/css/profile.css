@@ -132,6 +132,10 @@ nav ul li.logo{
 	margin-top:2.5%;
 }
 
+#service h4{
+	margin-bottom: 0;
+}
+
 .flip-container {
 	perspective: 1000;
 	position: relative;
@@ -155,7 +159,6 @@ nav ul li.logo{
   	box-sizing: border-box;
     text-align: center;
     margin:1%;
-    margin-top:5%;
 }
 
 .flip-container-2{
@@ -168,7 +171,6 @@ nav ul li.logo{
   	box-sizing: border-box;
     text-align: center;
     margin:1%;
-    margin-top:5%;
 }
 
 .flip-container-3{
@@ -328,12 +330,15 @@ nav ul li.logo{
     background: rgb(135, 212, 136);
 }
 #edit{
-	padding-right: 5%;
-	padding-left: 30%;
 	float: left;
+	margin-left:30%;
 }
+#edit_text{
+	display: none;
+}
+
 #edit img{
-	width: 50%;
+	width: 25px;
 	cursor: pointer;
 }
 #message{
@@ -513,6 +518,56 @@ h1{
 }
 
 .history{
-	width: 50%;
+	margin: 5%;
 	background: white;
+	padding: 5%;
+	text-align: center;
+}
+
+#timetable{
+	text-align: center;
+	margin-left: 10%;
+	margin-right: 10%;
+	background: white;
+	border-radius: 15px;
+}
+
+#order_sheet{
+	padding: 5%;
+}
+.h_block{
+	background: #f2f2f2;
+	overflow: auto;
+	padding: 2%;
+	margin: 2%;
+}
+.h_block p{
+	float: left;
+	margin: 1%;
+}
+
+.h_block h4{
+	float: left;
+	margin: 1%;
+}
+
+.receiver{
+	float: left;
+}
+
+.amount{
+	float: right;
+}
+
+#friends img{
+	width: 25px;
+}
+
+#friends_text{
+	display: none;
+}
+
+#friends{
+	float: right;
+	margin-right: 30%;
 }
