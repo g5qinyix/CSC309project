@@ -50,9 +50,7 @@
 	</section>
     
 	<section id="service">
-
 		<h4>Top Coaches for you</h4>
-
 		<% coaches.forEach(function(coach) { %>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
@@ -73,10 +71,9 @@
         </div>
 		<% }); %>
 
-		
-        <div class = "history">
-        	<h2>Total: <%=user.local.pocket%></h2>
-
+    </section>
+    <div class = "history">
+        	<h2>Balance: $<%=user.local.pocket%></h2>
         	<h3>Order history</h3>
         	<% for (var i = 0; i < 10; i = i + 2){ %>
         	<% if (user.local.recent_orders[i] != undefined){ %>
