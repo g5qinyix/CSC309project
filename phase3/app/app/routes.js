@@ -309,12 +309,6 @@ module.exports = function(app, passport) {
      
         });
     
-    
-
-    
-    
-    
-    
 	// =====================================
 	// PROFILE SECTION =====================
 	// =====================================
@@ -503,7 +497,6 @@ module.exports = function(app, passport) {
                 // use the generateHash function in our user model
 	            // parse the url
                
-           
             if(req.param('coachtype') == 'Online'){
                 user.local.coachtype = req.param('coachtype');
 			}
@@ -1169,7 +1162,10 @@ module.exports = function(app, passport) {
         
         // handle rate(each coach has to get at least 3 times rate in order to get grade)
         User.findOne({'_id': coachid}).exec(function(err, coach){
-                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {  
+                if (coach.local.rate.studentlist.indexOf(req.user._id) == -1) {
+					if (!coach) {
+						res.direct('/');          
+					}					
                         coach.local.rate.list.push(rate);
                         if (coach.local.rate.list.length >= 3) {
                                 var total = 0;
@@ -1349,7 +1345,7 @@ module.exports = function(app, passport) {
         if (req.user.local.email == 'admin@bemaster.com') {
             res.render('admin/admin.ejs', { message: req.flash('loginMessage') });
         } else {
-            res.render('aadmin/dminlogin.ejs', { message: req.flash('loginMessage')});
+            res.render('admin/adminlogin.ejs', { message: req.flash('loginMessage')});
         } 
 	});
     
@@ -1865,13 +1861,13 @@ module.exports = function(app, passport) {
  	app.get('/commentslist', isLoggedIn,  function(req, res){
          if (req.user.local.email == 'admin@bemaster.com') {
  			Comment.find().
- 			//sort('comment.date').
+ 			sort('-comment.date').
  			//select('_id comment.nickname comment.date comment.content').
  			exec(function(err, comments) {
  				if (err) {
                      throw err
                  }
- 				if (!comments) {
+ 				if (comments=="") {
                      res.render('admin/commentsList.ejs', {
  						message: "No comment",
  						comments: null
@@ -1892,13 +1888,13 @@ module.exports = function(app, passport) {
  	app.get('/messageslist', isLoggedIn,  function(req, res){
          if (req.user.local.email == 'admin@bemaster.com') {
  			Message.find().
- 			sort(' date').
+ 			sort(' -date').
  			//select('_id date receiver.id sender.id sender.content').
  			exec(function(err, messages) {
  				if (err) {
                      throw err
                  }
- 				if (messages == null) {
+ 				if (messages == "") {
                      res.render('admin/messageslist.ejs', {
  						message: "No message",
  						messages: null
@@ -1918,7 +1914,7 @@ module.exports = function(app, passport) {
  	//show the delete message form
  	app.get('/deletemessage', isLoggedIn,  function(req, res){
          if (req.user.local.email == 'admin@bemaster.com') {
-             res.render('admin/deleteMessage.ejs', {message: req.flash('deleteMessage')});
+             res.render('admin/deletemessage.ejs', {message: req.flash('deleteMessage')});
          } else {
              res.render('admin/adminLogin.ejs', { message: req.flash('loginMessage')});
          };
@@ -2019,7 +2015,7 @@ module.exports = function(app, passport) {
                  admin.local.email = "admin@bemaster.com"
                  admin.local.password = admin.generateHash('admin');
                  admin.local.nickname = "TeamCSC309";
- 				admin.local.occupation = "administrator"
+ 				 admin.local.occupation = "administrator"
                  admin.save();
  				
  				req.login(admin, function(err) {

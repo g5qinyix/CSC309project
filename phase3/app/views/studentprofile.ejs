@@ -50,15 +50,18 @@
 	</section>
     
 	<section id="service">
+<<<<<<< HEAD
 		<h4>Top Coaches for you</h4>
+=======
+		<h1>Top Coaches for you</h1>
+		
+>>>>>>> 3913460cb61e58299c9b12a67d3681921399625a
 		<% coaches.forEach(function(coach) { %>
 		<div class="flip-container-1" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
 				<div class="col-md-3-1">
-					
 		            <img style="width:100%;height:100%" class="img-responsive" src=
 			        "<%=coach.local.photo%>">
-		
 		        </div>
 				    <a href="/users/<%=coach._id%>"><div class="back-1">
 					<% if (coach.local.rate.grade == 0) { %>
@@ -72,9 +75,15 @@
 	        </div>
         </div>
 		<% }); %>
+<<<<<<< HEAD
     </section>
     <div class = "history">
         	<h2>Balance: $<%=user.local.pocket%></h2>
+=======
+		
+        <div class = "history">
+        	<h2>Total: <%=user.local.pocket%></h2>
+>>>>>>> 3913460cb61e58299c9b12a67d3681921399625a
         	<h3>Order history</h3>
         	<% for (var i = 0; i < 10; i = i + 2){ %>
         	<% if (user.local.recent_orders[i] != undefined){ %>

@@ -7,6 +7,9 @@ var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
+var compression = require('compression');
+
+
 
 
 var configDB = require('./config/database.js');
@@ -20,7 +23,6 @@ require('./config/passport')(passport); // pass passport for configuration
 
 //admin setting
 User.findOne({ 'local.email' :  'admin@bemaster.com' }, function(err, user) {
-    console.log(user);
     // if there are any errors, return the error
     if (err)
         throw err
@@ -39,6 +41,8 @@ User.findOne({ 'local.email' :  'admin@bemaster.com' }, function(err, user) {
 
 app.configure(function() {
     // set up our express application
+    // use GZIP in Express (performance improved)
+    app.use(compression());
 	app.use(express.logger('dev')); // log every request to the console
 	app.use(express.cookieParser()); // read cookies (needed for auth)
 	app.use(express.bodyParser()); // get information from html forms
@@ -51,8 +55,10 @@ app.configure(function() {
 });
 
 
-//serve static file css/scripts
-app.use(express.static('public'));
+//serve static file css/scripts(performance)
+app.use(express.static( 'public', {
+    maxAge: 86400000
+    }));
 
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
